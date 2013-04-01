@@ -3,7 +3,8 @@
 # ~~~~
 
 # Home page
-GET     /                                       Application.index
+*       /                                       Application.index
+GET  	/mac									Application.index2
 
 # Ignore favicon requests
 GET     /favicon.ico                            404

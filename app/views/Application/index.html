@@ -1,4 +1,153 @@
 #{extends 'main.html' /}
-#{set title:'Home' /}
+#{set title:'MultiAgency Collective' /}
+<!DOCTYPE html>
+<!--[if lt IE 7]> <html class="ie6 oldie"> <![endif]-->
+<!--[if IE 7]>    <html class="ie7 oldie"> <![endif]-->
+<!--[if IE 8]>    <html class="ie8 oldie"> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html class="">
+<!--<![endif]-->
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Untitled Document</title>
+<link href="boilerplate.css" rel="stylesheet" type="text/css">
+<link href="1.css" rel="stylesheet" type="text/css">
+<!-- 
+To learn more about the conditional comments around the html tags at the top of the file:
+paulirish.com/2008/conditional-stylesheets-vs-css-hacks-answer-neither/
 
-#{welcome /}
+Do the following if using your customized build of modernizr (http://www.modernizr.com/):
+* insert the link to your js here
+* remove the link below to the html5shiv
+* add the "no-js" class to the html tags at the top
+* you can also remove the link to respond.min.js if you included the MQ Polyfill in your modernizr build 
+-->
+<!--[if lt IE 9]>
+<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+<script src="respond.min.js"></script>
+</head>
+<body>
+<div class="gridContainer clearfix">
+  <h2>Exchange Archive <br> Artists do not create work in a vacuum.* </h2>
+  <h3><strong>All artists work in dialog with other people. Why isn’t this dialog visible? In all other fields, footnotes are the norm. Exchange Archive hopes to recognize and support artistic dialog and research by acknowledging the references, influences, and inspirations that flow between projects. </strong></h3>
+  <h3><strong>Please add your work to the archive, as well as the projects that influenced this work. If you are not an artist, feel free to suggest possible connections, inspirations, or potential dialog between art works.</strong></h3>
+  <h3><strong>Thank you!<br>
+    MultiAgency Collective, Caroline Woolard, MoMA’s Education Department</strong><strong></strong></h3>
+  <p>*Vacuums are for cleaning, not for divine inspiration. Andy Warhol traded a print for a vacuum from Sydney Lewis. He also put vacuums in plexi and called it art. He made work in a Factory with 100 other artists.</p>
+  <form name="exchangeform" method="post" action="@{Application.testSubmit()}">
+    <p>
+      <label for="ProjectTitle">Project Title:</label>
+      <input type="text" name="ProjectTitle" id="ProjectTitle">
+    </p>
+    <p>
+      <label for="ProjectDescription">Project Description: 100 words</label>
+    </p>
+  <p>
+    <textarea name="ProjectDescription" cols="100" rows="10" id="ProjectDescription"></textarea>
+  </p>
+  <p>This Project is about: EXCHANGE</p>
+    <label>
+      <input type="checkbox" name="exchangeyes" value="checkbox" id="exchangeyes">
+    yes</label>
+      <br>
+      <label>
+        <input type="checkbox" name="exchangeno" value="checkbox" id="exchangeno">
+        no</label>
+    </p>
+
+  <p>It’s also about: 
+    <input type="text" name="alsoabout1" id="alsoabout1">
+  and 
+  <input type="text" name="alsoabout2" id="alsoabout2"> 
+  and 
+  <input type="text" name="alsoabout3" id="alsoabout3">
+  </p>
+  <p>It's NOT about:
+    <input type="text" name="notabout1" id="notabout1">
+nor about
+<input type="text" name="notabout2" id="notabout2">
+nor about 
+<input type="text" name="notabout3" id="notabout3">
+  </p>
+  <p>Start Date: 
+    <input type="text" name="StartDate" id="StartDate">
+  </p>
+  <p>Project Location: 
+    <input type="text" name="ProjectLocation" id="ProjectLocation">
+  </p>
+  <p>Upload an Image: 
+    <input type="file" name="imageupload" id="imageupload" value="">
+  </p>
+  <p>Your Name: 
+    <input type="text" name="YourName" id="YourName">
+  </p>
+  <p>Your Collective's Name (optional): 
+    <input type="text" name="CollectivesName" id="CollectivesName">
+  </p>
+  <p>How to Contact you (email): 
+    <input type="text" name="ContactEmail" id="ContactEmail">
+  </p>
+  <p>I am submitting information about myself and my inspirations:</p>
+    <p>
+      <label>
+        <input type="checkbox" name="AboutMyself" value="checkbox" id="AboutMyself">
+        yes</label>
+      <br>
+      <label>
+        <input type="checkbox" name="NotAboutMyself" value="checkbox" id="NotAboutMyself">
+        no</label>
+      <br>
+    </p>
+  <p>I am submitting information about someone else:</p>
+    <p>
+      <label>
+        <input type="checkbox" name="AboutAnother" value="checkbox" id="AboutAnother">
+        yes</label>
+      <br>
+      <label>
+        <input type="checkbox" name="NotAboutAnother" value="checkbox" id="NotAboutAnother">
+        no</label>
+      <br>
+    </p>
+  <p>Name two dead artists that may have inspired to this project: 
+    <input type="text" name="DeadOne" id="DeadOne"> 
+    <input type="text" name="DeadTwo" id="DeadTwo">
+    <br>
+    (Can tell them you were inspired by them? Email here:) 
+    <input type="text" name="CanTellDeadOne" id="CanTellDeadOne">
+    <input type="text" name="CanTellDeadTwo" id="CanTellDeadTwo">
+  </p>
+  <p>Name two living artists that may have inspired to this project:
+    <input type="text" name="LiveOne" id="LiveOne">
+    <input type="text" name="LiveTwo" id="LiveTwo">
+    <br>
+(Can tell them you were inspired by them? Email here:)
+<input type="text" name="CanTellLiveOne" id="CanTellLiveOne">
+<input type="text" name="CanTellLiveTwo" id="CanTellLiveTwo">
+  </p>
+  <p>Name non-artists that may have inspired to this project:
+    <input type="text" name="NonArtistOne" id="NonArtistOne">
+    <input type="text" name="NonArtistTwo" id="NonArtistTwo">
+    <br>
+(Can tell them you were inspired by them? Email here:)
+<input type="text" name="CanTellNonOne" id="CanTellNonOne">
+<input type="text" name="CanTellNonTwo" id="CanTellNonTwo">
+  </p>
+  <p>Is there another exchange project you'd recommend for this archive?<br>
+    Name: 
+    <input type="text" name="AnotherName" id="AnotherName">
+    <br>
+    Project: 
+    <input type="text" name="AnotherProject" id="AnotherProject">
+    <br>
+  Email (if known): 
+  <input type="text" name="AnotherEmail" id="AnotherEmail">
+  </p>
+    <input type="submit" name="submit" id="submit" value="Submit">
+  </form>
+  <p>&nbsp;</p>
+</div>
+</body>
+</html>
