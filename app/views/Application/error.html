@@ -1,0 +1,10 @@
+#{extends 'main.html' /}
+#{set title:'ERROR in processing form' /}
+
+
+#{if flash.error}
+    <p style="color:#c00">
+        ${flash.error}
+    </p>
+#{/if}
+

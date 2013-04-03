@@ -1,5 +1,7 @@
 #{extends 'main.html' /}
 #{set title:'MultiAgency Collective' /}
+
+
 <!DOCTYPE html>
 <!--[if lt IE 7]> <html class="ie6 oldie"> <![endif]-->
 <!--[if IE 7]>    <html class="ie7 oldie"> <![endif]-->
@@ -29,6 +31,14 @@ Do the following if using your customized build of modernizr (http://www.moderni
 <script src="respond.min.js"></script>
 </head>
 <body>
+
+
+#{if flash.error}
+    <p style="color:#c00">
+        ${flash.error}
+    </p>
+#{/if}
+
 <div class="gridContainer clearfix">
   <h2>Exchange Archive <br> Artists do not create work in a vacuum.* </h2>
   <h3><strong>All artists work in dialog with other people. Why isn’t this dialog visible? In all other fields, footnotes are the norm. Exchange Archive hopes to recognize and support artistic dialog and research by acknowledging the references, influences, and inspirations that flow between projects. </strong></h3>
@@ -36,7 +46,8 @@ Do the following if using your customized build of modernizr (http://www.moderni
   <h3><strong>Thank you!<br>
     MultiAgency Collective, Caroline Woolard, MoMA’s Education Department</strong><strong></strong></h3>
   <p>*Vacuums are for cleaning, not for divine inspiration. Andy Warhol traded a print for a vacuum from Sydney Lewis. He also put vacuums in plexi and called it art. He made work in a Factory with 100 other artists.</p>
-  <form name="exchangeform" method="post" action="@{Application.testSubmit()}">
+  
+  #{form @testSubmit(), enctype:'multipart/form-data'}
     <p>
       <label for="ProjectTitle">Project Title:</label>
       <input type="text" name="ProjectTitle" id="ProjectTitle">
@@ -49,15 +60,15 @@ Do the following if using your customized build of modernizr (http://www.moderni
   </p>
   <p>This Project is about: EXCHANGE</p>
     <label>
-      <input type="checkbox" name="exchangeyes" value="checkbox" id="exchangeyes">
+      <input type="radio" name="aboutexchange" value="yes" id="aboutexchange">
     yes</label>
       <br>
       <label>
-        <input type="checkbox" name="exchangeno" value="checkbox" id="exchangeno">
+        <input type="radio" name="aboutexchange" value="no" id="aboutexchange">
         no</label>
     </p>
 
-  <p>It’s also about: 
+  <p>It’s (also) about: 
     <input type="text" name="alsoabout1" id="alsoabout1">
   and 
   <input type="text" name="alsoabout2" id="alsoabout2"> 
@@ -78,7 +89,7 @@ nor about
     <input type="text" name="ProjectLocation" id="ProjectLocation">
   </p>
   <p>Upload an Image: 
-    <input type="file" name="imageupload" id="imageupload" value="">
+    <input type="file" name="imageupload" id="imageupload" />
   </p>
   <p>Your Name: 
     <input type="text" name="YourName" id="YourName">
@@ -92,22 +103,22 @@ nor about
   <p>I am submitting information about myself and my inspirations:</p>
     <p>
       <label>
-        <input type="checkbox" name="AboutMyself" value="checkbox" id="AboutMyself">
+        <input type="radio" name="AboutMyself" value="yes" id="AboutMyself">
         yes</label>
       <br>
       <label>
-        <input type="checkbox" name="NotAboutMyself" value="checkbox" id="NotAboutMyself">
+        <input type="radio" name="AboutMyself" value="no" id="AboutMyself">
         no</label>
       <br>
     </p>
   <p>I am submitting information about someone else:</p>
     <p>
       <label>
-        <input type="checkbox" name="AboutAnother" value="checkbox" id="AboutAnother">
+        <input type="radio" id="AboutAnother" name="AboutAnother" value="yes" >
         yes</label>
       <br>
       <label>
-        <input type="checkbox" name="NotAboutAnother" value="checkbox" id="NotAboutAnother">
+        <input type="radio" id="AboutAnother" name="AboutAnother" value="no" >
         no</label>
       <br>
     </p>
@@ -115,15 +126,13 @@ nor about
     <input type="text" name="DeadOne" id="DeadOne"> 
     <input type="text" name="DeadTwo" id="DeadTwo">
     <br>
-    (Can tell them you were inspired by them? Email here:) 
-    <input type="text" name="CanTellDeadOne" id="CanTellDeadOne">
-    <input type="text" name="CanTellDeadTwo" id="CanTellDeadTwo">
+	<br>
   </p>
   <p>Name two living artists that may have inspired to this project:
     <input type="text" name="LiveOne" id="LiveOne">
     <input type="text" name="LiveTwo" id="LiveTwo">
     <br>
-(Can tell them you were inspired by them? Email here:)
+(Can we tell them you were inspired by them? If so, enter their Email here:)
 <input type="text" name="CanTellLiveOne" id="CanTellLiveOne">
 <input type="text" name="CanTellLiveTwo" id="CanTellLiveTwo">
   </p>
@@ -131,7 +140,7 @@ nor about
     <input type="text" name="NonArtistOne" id="NonArtistOne">
     <input type="text" name="NonArtistTwo" id="NonArtistTwo">
     <br>
-(Can tell them you were inspired by them? Email here:)
+(Can we tell them you were inspired by them? If so, enter their Email here:)
 <input type="text" name="CanTellNonOne" id="CanTellNonOne">
 <input type="text" name="CanTellNonTwo" id="CanTellNonTwo">
   </p>
@@ -146,7 +155,7 @@ nor about
   <input type="text" name="AnotherEmail" id="AnotherEmail">
   </p>
     <input type="submit" name="submit" id="submit" value="Submit">
-  </form>
+   #{/}
   <p>&nbsp;</p>
 </div>
 </body>
