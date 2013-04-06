@@ -6,6 +6,11 @@
 *       /                                       Application.index
 GET  	/mac									Application.index2
 
+*		/test									Application.setupTest
+*		/testJSON								Application.testJSON
+*		/image									Application.showIt
+
+
 # Ignore favicon requests
 GET     /favicon.ico                            404
 

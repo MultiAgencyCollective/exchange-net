@@ -1,0 +1,47 @@
+#{extends 'main.html' /}
+#{set title:'setupTest.html' /}
+
+<head>
+
+<script type="text/javascript">
+    var dictionary;
+   	
+	function tryit2( anaction ) {
+	   $('#result').load(
+	       anaction,
+	       function(data) {
+       	   		dictionary = JSON.parse(data);
+       		}
+   		)
+	}
+	
+		   
+ 	$(document).ready(function() {
+   		var testAction = #{jsAction @Application.testJSON(':echo') /};
+		var blah = testAction({echo: 'corey'});
+	  	tryit2( blah );
+	  	alert("done");
+	});
+		  
+		  
+	function recall() {
+	   alert(dictionary.key1);
+	   
+	}
+	
+	
+</script>
+</head>
+
+<body>
+
+
+
+<div id="result" name="result">
+
+ dummy data
+</div>
+
+<button value="press" onclick="recall()">Lookup Value of 'key1'</button>
+
+</body>

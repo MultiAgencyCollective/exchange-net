@@ -50,13 +50,13 @@ Do the following if using your customized build of modernizr (http://www.moderni
   #{form @testSubmit(), enctype:'multipart/form-data'}
     <p>
       <label for="ProjectTitle">Project Title:</label>
-      <input type="text" name="ProjectTitle" id="ProjectTitle">
+      <input type="text" name="ProjectTitle" id="ProjectTitle" value=${argus.ProjectTitle}>
     </p>
     <p>
       <label for="ProjectDescription">Project Description: 100 words</label>
     </p>
   <p>
-    <textarea name="ProjectDescription" cols="100" rows="10" id="ProjectDescription"></textarea>
+    <textarea name="ProjectDescription" cols="100" rows="10" id="ProjectDescription">${argus.ProjectDescription}</textarea>
   </p>
   <p>This Project is about: EXCHANGE</p>
     <label>
@@ -69,36 +69,36 @@ Do the following if using your customized build of modernizr (http://www.moderni
     </p>
 
   <p>It’s (also) about: 
-    <input type="text" name="alsoabout1" id="alsoabout1">
+    <input type="text" name="alsoabout1" id="alsoabout1" value=${argus.alsoabout1}>
   and 
-  <input type="text" name="alsoabout2" id="alsoabout2"> 
+  <input type="text" name="alsoabout2" id="alsoabout2" value=${argus.alsoabout2}>
   and 
-  <input type="text" name="alsoabout3" id="alsoabout3">
+  <input type="text" name="alsoabout3" id="alsoabout3" value=${argus.alsoabout3}>
   </p>
   <p>It's NOT about:
-    <input type="text" name="notabout1" id="notabout1">
+    <input type="text" name="notabout1" id="notabout1" value=${argus.notabout1}>
 nor about
-<input type="text" name="notabout2" id="notabout2">
+<input type="text" name="notabout2" id="notabout2" value=${argus.notabout2}>
 nor about 
-<input type="text" name="notabout3" id="notabout3">
+<input type="text" name="notabout3" id="notabout3" value=${argus.notabout3}>
   </p>
   <p>Start Date: 
-    <input type="text" name="StartDate" id="StartDate">
+    <input type="text" name="StartDate" id="StartDate" value=${argus.StartDate}>
   </p>
   <p>Project Location: 
-    <input type="text" name="ProjectLocation" id="ProjectLocation">
+    <input type="text" name="ProjectLocation" id="ProjectLocation" value=${argus.ProjectLocation}>
   </p>
   <p>Upload an Image: 
-    <input type="file" name="imageupload" id="imageupload" />
+    <input type="file" name="imageupload.image" id="imageupload.image" />
   </p>
   <p>Your Name: 
-    <input type="text" name="YourName" id="YourName">
+    <input type="text" name="YourName" id="YourName" value=${argus.YourName}>
   </p>
   <p>Your Collective's Name (optional): 
-    <input type="text" name="CollectivesName" id="CollectivesName">
+    <input type="text" name="CollectivesName" id="CollectivesName" value=${argus.CollectivesName}>
   </p>
   <p>How to Contact you (email): 
-    <input type="text" name="ContactEmail" id="ContactEmail">
+    <input type="text" name="ContactEmail" id="ContactEmail" value=${argus.ContactEmail}>
   </p>
   <p>I am submitting information about myself and my inspirations:</p>
     <p>
@@ -123,36 +123,36 @@ nor about
       <br>
     </p>
   <p>Name two dead artists that may have inspired to this project: 
-    <input type="text" name="DeadOne" id="DeadOne"> 
-    <input type="text" name="DeadTwo" id="DeadTwo">
+    <input type="text" name="DeadOne" id="DeadOne" value=${argus.DeadOne}>
+    <input type="text" name="DeadTwo" id="DeadTwo" value=${argus.DeadTwo}>
     <br>
 	<br>
   </p>
   <p>Name two living artists that may have inspired to this project:
-    <input type="text" name="LiveOne" id="LiveOne">
-    <input type="text" name="LiveTwo" id="LiveTwo">
+    <input type="text" name="LiveOne" id="LiveOne" value=${argus.LiveOne}>
+    <input type="text" name="LiveTwo" id="LiveTwo" value=${argus.LiveTwo}>
     <br>
 (Can we tell them you were inspired by them? If so, enter their Email here:)
-<input type="text" name="CanTellLiveOne" id="CanTellLiveOne">
-<input type="text" name="CanTellLiveTwo" id="CanTellLiveTwo">
+<input type="text" name="CanTellLiveOne" id="CanTellLiveOne" value=${argus.CanTellLiveOne}>
+<input type="text" name="CanTellLiveTwo" id="CanTellLiveTwo" value=${argus.CanTellLiveTwo}>
   </p>
   <p>Name non-artists that may have inspired to this project:
-    <input type="text" name="NonArtistOne" id="NonArtistOne">
-    <input type="text" name="NonArtistTwo" id="NonArtistTwo">
+    <input type="text" name="NonArtistOne" id="NonArtistOne" value=${argus.NonArtistOne}>
+    <input type="text" name="NonArtistTwo" id="NonArtistTwo" value=${argus.NonArtistTwo}>
     <br>
 (Can we tell them you were inspired by them? If so, enter their Email here:)
-<input type="text" name="CanTellNonOne" id="CanTellNonOne">
-<input type="text" name="CanTellNonTwo" id="CanTellNonTwo">
+<input type="text" name="CanTellNonOne" id="CanTellNonOne"  value=${argus.CanTellNonOne}>
+<input type="text" name="CanTellNonTwo" id="CanTellNonTwo" value=${argus.CanTellNonTwo}>
   </p>
   <p>Is there another exchange project you'd recommend for this archive?<br>
     Name: 
-    <input type="text" name="AnotherName" id="AnotherName">
+    <input type="text" name="AnotherName" id="AnotherName" value=${argus.AnotherName}>
     <br>
     Project: 
-    <input type="text" name="AnotherProject" id="AnotherProject">
+    <input type="text" name="AnotherProject" id="AnotherProject"  value=${argus.AnotherProject}>
     <br>
   Email (if known): 
-  <input type="text" name="AnotherEmail" id="AnotherEmail">
+  <input type="text" name="AnotherEmail" id="AnotherEmail" value=${argus.AnotherEmail}>
   </p>
     <input type="submit" name="submit" id="submit" value="Submit">
    #{/}
