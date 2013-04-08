@@ -9,6 +9,8 @@ GET  	/mac									Application.index2
 *		/test									Application.setupTest
 *		/testJSON								Application.testJSON
 *		/image									Application.showIt
+* 		/inspirations							Application.getInspirations
+GET		/ins									Application.inspirednetwork
 
 *      /admin              						module:crud
 

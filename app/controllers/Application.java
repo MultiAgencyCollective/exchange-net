@@ -25,39 +25,6 @@ public class Application extends Controller {
         render(orgname);
     }
     
-    public static void setupTest() {
-    	render();
-    }
-    
-    public static void testJSON( String echo ) {
-
-    	HashMap<String, String> hm = new HashMap<String, String>();
-    	hm.put("key1", "value1");
-    	hm.put("key2", "value2");
-    	
-    	com.google.gson.Gson gson = new Gson();
-    	String json = gson.toJson(hm);
-    	renderJSON( json );
-    }
-    
-    public static void testUpload( Picture pic ) {
-    	if (pic.image == null)
-    	{
-    		flash.error("Oops, you need to select an image file!");
-            showIt();
-    	}
-    	else
-    	{
-	    	pic.save();
-	    	showIt();
-    	}
-    }
-    
-    public static void showIt() {
-    	render();
-    }
-    
-    
     
     public static void getPicture(long id) {
         Picture picture = Picture.findById(id);
@@ -70,13 +37,35 @@ public class Application extends Controller {
     
     }
     
-    public static void error( String message )
+    public static void inspirednetwork()
     {
-    	flash.error("ERROR in processing uploaded file");
-    	render(message);
+    	render();
+    }
+   
+    //return a javascript object via json  with all the inspirations.
+    public static void getInspirations() {
+    	List<PersonalInspiration> pis = PersonalInspiration.findAll();
+    	
+    	ArrayList<String[]> inspirations = new ArrayList<String[]>();
+    	
+    	for (PersonalInspiration pi : pis )
+    	{
+    		String[] inspiration = new String[2];
+    		inspiration[0] = pi.inspired.name;
+    		inspiration[1] = pi.inspiration.name;
+    		inspirations.add( inspiration );
+    	}
+    	
+    	com.google.gson.Gson gson = new Gson();
+    	String json = gson.toJson(inspirations);
+    	renderJSON( json );
     }
 
-    public static void testSubmit(  Picture imageupload, String ProjectTitle, String ProjectDescription, String aboutexchange, 
+    
+    
+    //PROCESS THE MAIN FORM DATA.
+    //TODO: decide what validation to do; what needs to be filled in, etc.  add Required tag to these entries & flash error.
+    public static void formSubmit(  Picture imageupload, String ProjectTitle, String ProjectDescription, String aboutexchange, 
     		String alsoabout1, String alsoabout2, String alsoabout3, String notabout1, String notabout2, String notabout3,
     		String StartDate, String ProjectLocation, String YourName, String CollectivesName, String ContactEmail,
     		String AboutMyself, String AboutAnother, 
@@ -302,4 +291,47 @@ public class Application extends Controller {
     	renderJSON("GOT IT");
     	
     }
+    
+    
+    
+    
+    
+    
+    //TESTING FUNCTIONALITY
+    public static void setupTest() {
+    	render();
+    }
+    
+    public static void testJSON( String echo ) {
+
+    	HashMap<String, String> hm = new HashMap<String, String>();
+    	hm.put("key1", "value1");
+    	hm.put("key2", "value2");
+    	
+    	com.google.gson.Gson gson = new Gson();
+    	String json = gson.toJson(hm);
+    	renderJSON( json );
+    }
+    
+    public static void testUpload( Picture pic ) {
+    	if (pic.image == null)
+    	{
+    		flash.error("Oops, you need to select an image file!");
+            showIt();
+    	}
+    	else
+    	{
+	    	pic.save();
+	    	showIt();
+    	}
+    }
+    
+    public static void showIt() {
+    	render();
+    }
+    
+    
+    
+    
+    
 }

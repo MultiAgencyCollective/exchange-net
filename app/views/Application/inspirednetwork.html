@@ -1,0 +1,287 @@
+#{extends 'main.html' /}
+#{set title:'inspirednetwork.html' /}
+
+<head>
+
+<script type="text/javascript">
+    var dictionary;
+    var inspindex = 0;
+    var existingnodes = [];
+   	
+	function getinspiration( anaction ) {
+	   $('#result').load(
+	       anaction,
+	       function(data) {
+       	   		dictionary = JSON.parse(data);
+       		}
+   		)
+	}
+	
+		   
+ 	$(document).ready(function() {
+   		var testAction = #{jsAction @Application.getInspirations() /};
+		var blah = testAction();
+	  	getinspiration( blah );
+	  	//alert("done");
+	});
+		  
+		  
+	function recall() {
+	   alert(dictionary[3]);
+	   
+	}
+	
+	function loadnextinspiration() {
+	    if (inspindex >= dictionary.length)
+	    {
+	    	alert("done");
+	    	return;
+	    }
+		var nex = dictionary[inspindex];
+		var n0 = nex[0];
+		var n1 = nex[1];
+		//alert(n0 + " and " + n1);
+		var isnew0 = true;
+		var isnew1 = true;
+		for (var i = 0; i< existingnodes.length; i++)
+		{
+		 	if ( existingnodes[i] == n0 ) { isnew0 = false; }
+		 	if ( existingnodes[i] == n1 ) { isnew1 = false; }
+		}
+		var cluster = clusters[0];
+		if ( isnew0 )
+		{
+			sigInst.addNode(n0,{
+			      'x': Math.random(),
+			      'y': Math.random(),
+			      'size': 0.5+4.5*Math.random(),
+			      'color': cluster['color'],
+			      'cluster': cluster['id']
+    			});
+		}
+		if ( isnew1 )
+		{
+			sigInst.addNode(n1,{
+			      'x': Math.random(),
+			      'y': Math.random(),
+			      'size': 0.5+4.5*Math.random(),
+			      'color': cluster['color'],
+			      'cluster': cluster['id']
+    			});
+		}
+		existingnodes.push(n0);
+		existingnodes.push(n1);
+		edgeIndex++;
+		inspindex++;
+		sigInst.addEdge(edgeIndex,n0,n1);
+		sigInst.refresh();
+  		sigInst.draw();
+	}
+	
+</script>
+
+
+  <script src="http://sigmajs.org/js/prettify.js"></script>
+  <script src="http://sigmajs.org/js/sigma.min.js"></script>
+
+  <script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-29798319-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+
+<script type="text/javascript">
+var clusters = [];
+var sigInst;
+var nodeIndex = 0;
+var edgeIndex = 0;
+
+var testColor = '#999';
+var oldsize = 1;
+var oldcolor = '#F00';
+function init() {
+  // Instantiate sigma.js and customize it :
+  sigInst = sigma.init(document.getElementById('node-demo')).drawingProperties({
+     defaultEdgeType: 'straight',
+    defaultLabelColor: '#fff'
+  });
+  
+  
+  //console.log(sigInst);
+  
+  sigInst.bind('overnodes',function(event){ 
+  			var theno = event.content[0]; 
+  			document.getElementById("status").innerHTML=event.content[0]; 
+  			sigInst.iterNodes(function(n){
+     
+      		if (n.id == theno) { oldsize = n.size; n.size = 10;  oldcolor = n.color; n.color = testColor;}
+      		else { if (n.size == 10) { n.size = oldsize; n.color = oldcolor; }}
+    });
+  			sigInst.refresh();
+  			sigInst.draw();
+  	 });
+
+  // Generate a random graph with :
+  //   . N nodes
+  //   . E edges
+  //   . C clusters
+  //   . d the proportion of edges that connect two nodes
+  //     from the same cluster
+  var i, N = 15, E = 10, C = 1, d = 1;
+  for(i = 0; i < C; i++){
+    clusters.push({
+      'id': i,
+      'nodes': [],
+      'color': 'rgb('+Math.round(Math.random()*256)+','+
+                      Math.round(Math.random()*256)+','+
+                      Math.round(Math.random()*256)+')'
+    });
+  }
+
+  for(i = 0; i < N; i++){
+    nodeIndex++;
+    var cluster = clusters[0];
+    sigInst.addNode('n'+nodeIndex,{
+      'x': Math.random(),
+      'y': Math.random(),
+      'size': 0.5+4.5*Math.random(),
+      'color': cluster['color'],
+      'cluster': cluster['id']
+    });
+    cluster.nodes.push('n'+nodeIndex);
+  }
+
+  for(i = 0; i < E; i++){
+    edgeIndex++;
+    if(Math.random() < 1-d){
+      sigInst.addEdge(edgeIndex,'n'+(Math.random()*nodeIndex|0),'n'+(Math.random()*nodeIndex|0));
+    }else{
+      var cluster = clusters[0], n = cluster.nodes.length;
+      sigInst.addEdge(edgeIndex,cluster.nodes[Math.random()*n|0],cluster.nodes[Math.random()*n|0]);
+    }
+  }
+
+
+sigInst.position(0,0,1).draw();
+  document.getElementById('add-nodes').addEventListener('click',function(){
+    addNodes();
+  	sigInst.position(0,0,1).draw();
+  },true);
+
+}
+
+if (document.addEventListener) {
+  document.addEventListener('DOMContentLoaded', init, false);
+} else {
+  window.onload = init;
+}
+
+
+function addNodes() {
+
+
+for(i = 0; i < 2; i++){
+    nodeIndex++;
+    var cluster = clusters[0];
+    sigInst.addNode('n'+nodeIndex,{
+      'x': Math.random(),
+      'y': Math.random(),
+      'size': 0.5+4.5*Math.random(),
+      'color': cluster['color'],
+      'cluster': cluster['id']
+    });
+    cluster.nodes.push('n'+nodeIndex);
+  }
+
+  for(i = 0; i < 2; i++){
+    edgeIndex++;
+   // if(Math.random() < 1-d){  --DO THIS ALWAYS for NOW (only one cluster so blah)
+      sigInst.addEdge(edgeIndex,'n'+(Math.random()*nodeIndex|0),'n'+(Math.random()*nodeIndex|0));
+   // }else{
+   //   var cluster = clusters[0], n = cluster.nodes.length;
+   //   sigInst.addEdge(edgeIndex,cluster.nodes[Math.random()*nodeIndex|0],cluster.nodes[Math.random()*nodeIndex|0]);
+    //}
+  }
+
+}
+
+
+</script>
+
+
+<style type="text/css">
+  /* sigma.js context : */
+  .sigma-parent {
+    position: relative;
+    border-radius: 4px;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+    background: #222;
+    height: 500px;
+    width: 600px;
+  }
+  .sigma-expand {
+    position: absolute;
+    width: 400px;
+    height: 400px;
+    top: 0;
+    left: 0;
+  }
+  
+  .status-area {
+    position: absolute;
+    background: #DDD;
+    width: 90px;
+    height 50px;
+    top: 0px;
+    left: 510px;
+  }
+  
+  .buttons-container{
+    padding-bottom: 8px;
+    padding-top: 12px;
+  }
+</style>
+
+</head>
+<body>
+  <div class="container">
+    <div class="row">
+  <h2 class="span12" id="post-title">demo of sigma.js</h2>
+  
+  <div class="span12 buttons-container">
+    
+    <button class="btn" id="add-nodes">Add Nodes</button>
+    
+    
+  </div>
+  
+  <div class="span12 sigma-parent" id="sigma-example-parent">
+    <div class="sigma-expand" id="node-demo"></div>
+    <div id="status" class="status-area"></div>
+  </div>
+</div>
+
+<br>
+
+
+
+
+<div id="result" name="result">
+
+ preload
+</div>
+
+<button value="press" onclick="recall()">Lookup Value of item #3</button><br><br>
+<button value="press" onclick="loadnextinspiration()">Load Next inspiration event</button>
+
+
+</body>
