@@ -17,6 +17,10 @@ import models.*;
 public class Application extends Controller {
 
     public static void index( HashMap<String,Object>argus) {
+    	if (argus == null)
+    	{
+    		argus = new HashMap<String,Object>();
+    	}
         render(argus);
     }
     
