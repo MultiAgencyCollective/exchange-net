@@ -17,7 +17,6 @@ import models.*;
 public class Application extends Controller {
 
     public static void index( HashMap<String,Object>argus) {
-    	System.err.println("ARGUS has value ProjectTitle = " + argus.get("ProjectTitle") );
         render(argus);
     }
     
@@ -81,15 +80,18 @@ public class Application extends Controller {
     		String alsoabout1, String alsoabout2, String alsoabout3, String notabout1, String notabout2, String notabout3,
     		String StartDate, String ProjectLocation, String YourName, String CollectivesName, String ContactEmail,
     		String AboutMyself, String AboutAnother, 
-    		String DeadOne, String DeadTwo, String CanTellDeadOne, String CanTellDeadTwo, String LiveOne, String LiveTwo,
+    		String DeadOne, String DeadTwo, String LiveOne, String LiveTwo,
     		String CanTellLiveOne, String CanTellLiveTwo, String NonArtistOne, String NonArtistTwo, 
     		String CanTellNonOne, String CanTellNonTwo, String AnotherName, String AnotherProject, String AnotherEmail) {
     	
+    	
+    	//Long pictureid = new Long(-1);
     	
     	if (imageupload != null && imageupload.image != null )
     	{
     		System.err.println("Was able to read image file");
     		imageupload.save();
+    		//pictureid = imageupload.getId();
     	}
     	else
     	{
@@ -138,6 +140,8 @@ public class Application extends Controller {
     		}
     	}
     	
+    	//now we have a valid pictureid in Long pictureid
+    	
     	System.err.println("01:" + ProjectTitle);
     	System.err.println("02:" + ProjectDescription);
     	System.err.println("03:" + aboutexchange );
@@ -167,6 +171,133 @@ public class Application extends Controller {
     	System.err.println("20:" + AnotherName);
     	System.err.println("21:" + AnotherProject);
     	System.err.println("22:" + AnotherEmail);
+    	
+    	//save the record of the entry, first.
+    	Entry entry = new Entry(   ProjectTitle,  ProjectDescription,  aboutexchange, 
+    		 alsoabout1,  alsoabout2,  alsoabout3,  notabout1,  notabout2,  notabout3,
+    		 StartDate,  ProjectLocation,  YourName,  CollectivesName,  ContactEmail,
+    		 AboutMyself,  AboutAnother, 
+    		 DeadOne,  DeadTwo,   LiveOne,  LiveTwo,
+    		 CanTellLiveOne,  CanTellLiveTwo,  NonArtistOne,  NonArtistTwo, 
+    		 CanTellNonOne,  CanTellNonTwo,  AnotherName,  AnotherProject,  AnotherEmail);
+    	
+    	entry.picture = imageupload;
+    	entry.save();
+    	
+    	//now create the database representation of the project.
+    	Project proj = new Project(ProjectTitle);
+    	proj.picture = imageupload;
+    	proj.description = ProjectDescription;
+    	if (alsoabout1 != null && alsoabout1.length() > 0)
+    		proj.descriptors.add(alsoabout1);
+    	if (alsoabout2 != null && alsoabout2.length() > 0)
+    		proj.descriptors.add(alsoabout2);
+    	if (alsoabout3 != null && alsoabout3.length() > 0)
+    		proj.descriptors.add(alsoabout3);
+    	
+    	if (notabout1 != null && notabout1.length() > 0)
+    		proj.nondescriptors.add(notabout1);
+    	if (notabout2 != null && notabout2.length() > 0)
+    		proj.nondescriptors.add(notabout2);
+    	if (notabout3 != null && notabout3.length() > 0)
+    		proj.nondescriptors.add(notabout3);
+    	
+    	proj.startdate = StartDate;
+    	proj.location = ProjectLocation;
+    	if ( aboutexchange.equalsIgnoreCase("no") )
+    		proj.aboutexchange = false;
+    	
+    	//make a person entry for the person who filled out the form.
+    	Person sub = new Person( YourName );
+    	sub.email = ContactEmail;
+    	sub.collective = CollectivesName;
+    	if ( AboutMyself.equalsIgnoreCase("yes") )
+    		sub.projects.add( proj );
+    	sub.save();
+    	
+    	//that person is the contact for the project
+    	proj.contact = sub;
+    	proj.save();
+    	
+    	//add influences -- doing it both for project and for the subject, above.
+    	if (LiveOne.length() > 0)
+    	{
+	    	Person alive1 = new Person(LiveOne);
+	    	alive1.email = CanTellLiveOne;
+	    	alive1.save();
+	    	ProjectInspiration ipa1 = new ProjectInspiration(proj, alive1);
+	    	ipa1.save();
+	    	PersonalInspiration isa1 = new PersonalInspiration(sub, alive1);
+	    	isa1.save();
+	    	proj.inspirations.add(ipa1);
+	    	sub.inspirations.add(isa1);
+    	}
+    	
+    	if (LiveTwo.length() > 0)
+    	{
+	    	Person alive2 = new Person(LiveTwo);
+	    	alive2.email = CanTellLiveTwo;
+	    	alive2.save();
+	    	ProjectInspiration ipa2 = new ProjectInspiration(proj, alive2);
+	    	ipa2.save();
+	    	PersonalInspiration isa2 = new PersonalInspiration(sub, alive2);
+	    	isa2.save();
+	    	proj.inspirations.add(ipa2);
+	    	sub.inspirations.add(isa2);
+    	}
+    	
+    	if (DeadOne.length() > 0 )
+    	{
+	    	Person dead1 = new Person(DeadOne);
+	    	dead1.save();
+	    	ProjectInspiration ipd1 = new ProjectInspiration(proj, dead1);
+	    	ipd1.save();
+	    	PersonalInspiration isd1 = new PersonalInspiration(sub, dead1);
+	    	isd1.save();
+	    	proj.inspirations.add(ipd1);
+	    	sub.inspirations.add(isd1);
+    	}
+    	
+    	if (DeadTwo.length() > 0 )
+    	{
+	    	Person dead2 = new Person(DeadTwo);
+	    	dead2.save();
+	    	ProjectInspiration ipd2 = new ProjectInspiration(proj, dead2);
+	    	ipd2.save();
+	    	PersonalInspiration isd2 = new PersonalInspiration(sub, dead2);
+	    	isd2.save();
+	    	proj.inspirations.add(ipd2);
+	    	sub.inspirations.add(isd2);
+    	}
+    	
+    	if (NonArtistOne.length() > 0)
+    	{
+	    	Person nona1 = new Person(NonArtistOne);
+	    	nona1.email = CanTellNonOne;
+	    	nona1.save();
+	    	ProjectInspiration ipn1 = new ProjectInspiration(proj, nona1);
+	    	ipn1.save();
+	    	PersonalInspiration isn1 = new PersonalInspiration(sub, nona1);
+	    	isn1.save();
+	    	proj.inspirations.add(ipn1);
+	    	sub.inspirations.add(isn1);
+    	}
+    	
+    	if (NonArtistTwo.length() > 0 )
+    	{
+	    	Person nona2 = new Person(NonArtistTwo);
+	    	nona2.email = CanTellNonTwo;
+	    	nona2.save();
+	    	ProjectInspiration ipn2 = new ProjectInspiration(proj, nona2);
+	    	ipn2.save();
+	    	PersonalInspiration isn2 = new PersonalInspiration(sub, nona2);
+	    	isn2.save();
+	    	proj.inspirations.add(ipn2);
+	    	sub.inspirations.add(isn2);
+    	}
+    	//commit the project to the database.
+    	proj.save();
+    	sub.save();
     	
     	renderJSON("GOT IT");
     	

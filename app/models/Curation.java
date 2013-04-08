@@ -7,8 +7,6 @@ import javax.persistence.*;
 import java.util.*;
 
 @Entity
-public class Picture extends Model {
- 
-	public Blob image;
-	
+public class Curation extends Model {
+    
 }
