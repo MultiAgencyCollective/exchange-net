@@ -21,14 +21,14 @@ public class Bootstrap extends Job {
         	
         	ArrayList<Long>ids = new ArrayList<Long>();
         	
-        	for (int i = 0; i<10; i++)
+        	for (int i = 0; i<100; i++)
         	{
         		String name = "p" + i;
         		Person p = new Person(name);
         		p.save();
         		ids.add( p.id );
         	}
-        	for (int j = 0; j<30; j++ )
+        	for (int j = 0; j<300; j++ )
         	{
         		int i1 = (int) Math.floor( ids.size() * Math.random() );
         		int i2 = (int) Math.floor( ids.size() * Math.random() );

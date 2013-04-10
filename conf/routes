@@ -5,6 +5,7 @@
 # Home page
 *       /                                       Application.index
 GET  	/mac									Application.index2
+GET		/picture								Application.getPicture
 
 *		/test									Application.setupTest
 *		/testJSON								Application.testJSON
