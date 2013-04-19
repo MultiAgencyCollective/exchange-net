@@ -1,7 +1,7 @@
 package controllers;
 
-import models.Picture;
 import play.data.validation.Check;
+import play.db.jpa.Blob;
 
 public class MyChecks {
 
@@ -34,14 +34,16 @@ public class MyChecks {
             final Object project,
             final Object photo
         ) {
+            setMessage("Please upload a photo.");
+            
             if (photo == null) {
                 return false;
             }
-            if (!(photo instanceof Picture)) {
+            if (!(photo instanceof Blob)) {
                 return false;
             }
-            Picture photoPicture = (Picture) photo;
-            if (photoPicture.image == null) {
+            final Blob photoBlob = (Blob) photo;
+            if (photoBlob.length() == 0l) {
                 return false;
             }
             

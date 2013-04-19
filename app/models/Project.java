@@ -5,6 +5,7 @@ import javax.persistence.Lob;
 
 import play.data.validation.CheckWith;
 import play.data.validation.Required;
+import play.db.jpa.Blob;
 import play.db.jpa.Model;
 import controllers.MyChecks;
 
@@ -23,7 +24,7 @@ public class Project extends Model {
     
     @Required(message = "Please upload a photo.")
     @CheckWith(MyChecks.PhotoCheck.class)
-    public Picture myImage;
+    public Blob myImage;
     
     @Required(message = PLEASE_ENTER_A + " description.")
     @CheckWith(MyChecks.NameCheck.class)
@@ -58,7 +59,7 @@ public class Project extends Model {
 	public Project(
         final String projectTitle,
         final String artist,
-        final Picture myImage,
+        final Blob myImage,
         final String description,
         final String tags,
         final String livingInspirations,
@@ -79,4 +80,32 @@ public class Project extends Model {
 	    this.message = message;
 	}
 
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        builder.append("Project [PLEASE_ENTER_A=");
+        builder.append(PLEASE_ENTER_A);
+        builder.append(", projectTitle=");
+        builder.append(projectTitle);
+        builder.append(", artist=");
+        builder.append(artist);
+        builder.append(", myImage=");
+        builder.append(myImage);
+        builder.append(", description=");
+        builder.append(description);
+        builder.append(", tags=");
+        builder.append(tags);
+        builder.append(", livingInspirations=");
+        builder.append(livingInspirations);
+        builder.append(", pastInspirations=");
+        builder.append(pastInspirations);
+        builder.append(", nonArtistInspirations=");
+        builder.append(nonArtistInspirations);
+        builder.append(", emails=");
+        builder.append(emails);
+        builder.append(", message=");
+        builder.append(message);
+        builder.append("]");
+        return builder.toString();
+    }
 }
