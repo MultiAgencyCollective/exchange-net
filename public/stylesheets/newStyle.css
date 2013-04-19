@@ -209,6 +209,7 @@ input[type="text"] { width:550px; }
 input:valid, textarea:valid {  }
 input:invalid, textarea:invalid { background-color: #f0dddd; }
 
+.error { color:#ff0000; }
 
 /* =============================================================================
    Tables

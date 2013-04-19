@@ -33,12 +33,6 @@ Do the following if using your customized build of modernizr (http://www.moderni
 
 <body>
 
-#{ifErrors}
-  <p class="error">
-    All fields are required!
-  </p>
-#{/ifErrors}
-
 #{if flash.success}
     <p class="success">${flash.success}</p>
 #{/if}
@@ -85,57 +79,68 @@ Do the following if using your customized build of modernizr (http://www.moderni
     <p>
       Project Title
       <br />
-      <input type="text" name="projectTitle" id="projectTitle" placeholder="Project title">
+      <input type="text" name="projectTitle" id="projectTitle" placeholder="Project title" value="${flash.projectTitle}">
+      <span class="error">#{error 'newProject.projectTitle' /}</span>
     </p>
     <p>
       Artist
       <br />
-      <input type="text" name="artist" id="artist" placeholder="Artist and/or collective's name">
+      <input type="text" name="artist" id="artist" placeholder="Artist and/or collective's name" value="${flash.artist}">
+      <span class="error">#{error 'newProject.artist' /}</span>
     </p>
     <p>
       Photo of Project
       <br />
-      <input type="file" name="myImage" id="myImage">
+      <input type="file" name="myImage" id="myImage" value="${flash.myImage}">
+      <br />
+      <span class="error">#{error 'newProject.myImage' /}</span>
     </p>
     <p>
       Description
       <br />
-      <textarea name="description" cols="100" rows="4" id="description" placeholder="Add a short description of your project"></textarea>
+      <textarea name="description" cols="100" rows="4" id="description" placeholder="Add a short description of your project" value="${flash.description}"></textarea>
+      <span class="error">#{error 'newProject.description' /}</span>
     </p>
     <p>
       Tags 
       <span style="color:#888888">. . . words that describe your work</span>
       <br />
-      <input type="text" name="tags" id="tags" placeholder="Enter tags, separated by commas">
+      <input type="text" name="tags" id="tags" placeholder="Enter tags, separated by commas" value="${flash.tags}">
+      <span class="error">#{error 'newProject.tags' /}</span>
     </p>
     <p>
       Contemporary Inspirations 
       <span style="color:#888888">. . . living artists who inspire your work</span>
       <br />
-      <input type="text" name="livingInspirations" id="livingInspirations" placeholder="Enter artists, separated by commas">
+      <input type="text" name="livingInspirations" id="livingInspirations" placeholder="Enter artists, separated by commas" value="${flash.livingInspirations}">
+      <span class="error">#{error 'newProject.livingInspirations' /}</span>
     </p>
     <p>
       Historical Inspirations 
       <span style="color:#888888">. . . past artists who inspire your work</span>
       <br />
-      <input type="text" name="pastInspirations" id="pastInspirations" placeholder="Enter artists, separated by commas">
+      <input type="text" name="pastInspirations" id="pastInspirations" placeholder="Enter artists, separated by commas" value="${flash.pastInspirations}">
+      <span class="error">#{error 'newProject.pastInspirations' /}</span>
     </p>
     <p>
       Non-Artist Inspirations 
       <span style="color:#888888">. . . whoever or whatever inspires your work</span>
       <br />
-      <input type="text" name="nonArtistInspirations" id="nonArtistInspirations" placeholder="Enter inspirations, separated by commas">
+      <input type="text" name="nonArtistInspirations" id="nonArtistInspirations" placeholder="Enter inspirations, separated by commas" value="${flash.nonArtistInspirations}">
+      <span class="error">#{error 'newProject.nonArtistInspirations' /}</span>
     <p>
       <strong>Recommend artists for the archive!</strong>
       <br />
       Email this form to: 
       <span style="color:#888888">(optional)</span>
       <br />
-      <input type="text" name="emails" id="emails" placeholder="Enter email addresses, separated by commas">
+      <input type="text" name="emails" id="emails" placeholder="Enter email addresses, separated by commas" value="${flash.emails}">
+      <span class="error">#{error 'newProject.emails' /}</span>
     </p>
     <p>
       Add a message to the email 
-      <textarea name="message" cols="100" rows="2" id="message" placeholder="Add a short message to the email"></textarea>
+      <textarea name="message" cols="100" rows="2" id="message" placeholder="Add a short message to the email" value="${flash.message}"></textarea>
+      <span class="error">#{error 'newProject.message' /}</span>
     </p>
     <p>
       <input type="submit" name="submit" id="submit" value="Submit">

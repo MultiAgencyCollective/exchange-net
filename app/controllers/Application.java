@@ -1,20 +1,20 @@
 package controllers;
 
-import play.*;
-import play.db.jpa.Blob;
-import play.mvc.*;
+import java.util.HashMap;
+import java.util.List;
 
-import java.io.File;
-import java.util.*;
-
-import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-
-import models.*;
+import models.Picture;
+import models.Project;
+import play.mvc.Controller;
 
 public class Application extends Controller {
+    
+    public static void data() {
+        List<Project> projects = Project.find(
+            "order by projectTitle asc"
+        ).from(1).fetch(100);
+        render(projects);
+    }
 
     public static void index( HashMap<String,Object>argus) {
     	if (argus == null)
@@ -46,13 +46,30 @@ public class Application extends Controller {
     	render();
     }
    
+    public static void index3(HashMap<String,Object> argus) {
+        if (argus == null)
+        {
+            argus = new HashMap<String,Object>();
+        }
+        render(argus);
+    }
+    
+    public static void index4() {
+        List<Project> projects = Project.find(
+            "order by projectTitle asc"
+        ).from(1).fetch(100);
+        
+        render(projects);
+    }
+    
     //return a javascript object via json  with all the inspirations.
+    /*
     public static void getInspirations() {
-    	List<PersonalInspiration> pis = PersonalInspiration.findAll();
+    	List<OldPersonalInspirations> pis = OldPersonalInspirations.findAll();
     	
     	ArrayList<String[]> inspirations = new ArrayList<String[]>();
     	
-    	for (PersonalInspiration pi : pis )
+    	for (OldPersonalInspirations pi : pis )
     	{
     		String[] inspiration = new String[2];
     		inspiration[0] = pi.inspired.name;
@@ -64,9 +81,53 @@ public class Application extends Controller {
     	String json = gson.toJson(inspirations);
     	renderJSON( json );
     }
-
+    */
     
+    public static void addProject(
+        final String projectTitle,
+        final String artist,
+        final Picture myImage,
+        final String description,
+        final String tags,
+        final String livingInspirations,
+        final String pastInspirations,
+        final String nonArtistInspirations,
+        final String emails,
+        final String message
+    ) {       
+        final Project newProject = new Project(
+            projectTitle,
+            artist,
+            myImage,
+            description,
+            tags,
+            livingInspirations,
+            pastInspirations,
+            nonArtistInspirations,
+            emails,
+            message
+        );
+        
+        if (validation.valid(newProject).ok) {
+            System.out.println("ok");
+            newProject.save();
+            flash.success("Thanks for posting");
+            index4();
+        } else {
+            System.out.println("not okay");
+            List<Project> projects = Project.find(
+                "order by projectTitle asc"
+            ).from(1).fetch(100);
+            params.flash();
+            validation.keep();
+            for (play.data.validation.Error error: validation.errors()) {
+                System.out.println(error.getKey() + " " + error.message());
+            }
+            render("Application/index4.html", projects);
+        }
+    }
     
+    /*
     //PROCESS THE MAIN FORM DATA.
     //TODO: decide what validation to do; what needs to be filled in, etc.  add Required tag to these entries & flash error.
     public static void formSubmit(  Picture imageupload, String ProjectTitle, String ProjectDescription, String aboutexchange, 
@@ -178,7 +239,7 @@ public class Application extends Controller {
     	entry.save();
     	
     	//now create the database representation of the project.
-    	Project proj = new Project(ProjectTitle);
+    	OldProject proj = new OldProject(ProjectTitle);
     	proj.picture = imageupload;
     	proj.description = ProjectDescription;
     	if (alsoabout1 != null && alsoabout1.length() > 0)
@@ -201,7 +262,7 @@ public class Application extends Controller {
     		proj.aboutexchange = false;
     	
     	//make a person entry for the person who filled out the form.
-    	Person sub = new Person( YourName );
+    	OldPerson sub = new OldPerson( YourName );
     	sub.email = ContactEmail;
     	sub.collective = CollectivesName;
     	if ( AboutMyself.equalsIgnoreCase("yes") )
@@ -215,12 +276,12 @@ public class Application extends Controller {
     	//add influences -- doing it both for project and for the subject, above.
     	if (LiveOne.length() > 0)
     	{
-	    	Person alive1 = new Person(LiveOne);
+	    	OldPerson alive1 = new OldPerson(LiveOne);
 	    	alive1.email = CanTellLiveOne;
 	    	alive1.save();
 	    	ProjectInspiration ipa1 = new ProjectInspiration(proj, alive1);
 	    	ipa1.save();
-	    	PersonalInspiration isa1 = new PersonalInspiration(sub, alive1);
+	    	OldPersonalInspirations isa1 = new OldPersonalInspirations(sub, alive1);
 	    	isa1.save();
 	    	proj.inspirations.add(ipa1);
 	    	sub.inspirations.add(isa1);
@@ -228,12 +289,12 @@ public class Application extends Controller {
     	
     	if (LiveTwo.length() > 0)
     	{
-	    	Person alive2 = new Person(LiveTwo);
+	    	OldPerson alive2 = new OldPerson(LiveTwo);
 	    	alive2.email = CanTellLiveTwo;
 	    	alive2.save();
 	    	ProjectInspiration ipa2 = new ProjectInspiration(proj, alive2);
 	    	ipa2.save();
-	    	PersonalInspiration isa2 = new PersonalInspiration(sub, alive2);
+	    	OldPersonalInspirations isa2 = new OldPersonalInspirations(sub, alive2);
 	    	isa2.save();
 	    	proj.inspirations.add(ipa2);
 	    	sub.inspirations.add(isa2);
@@ -241,11 +302,11 @@ public class Application extends Controller {
     	
     	if (DeadOne.length() > 0 )
     	{
-	    	Person dead1 = new Person(DeadOne);
+	    	OldPerson dead1 = new OldPerson(DeadOne);
 	    	dead1.save();
 	    	ProjectInspiration ipd1 = new ProjectInspiration(proj, dead1);
 	    	ipd1.save();
-	    	PersonalInspiration isd1 = new PersonalInspiration(sub, dead1);
+	    	OldPersonalInspirations isd1 = new OldPersonalInspirations(sub, dead1);
 	    	isd1.save();
 	    	proj.inspirations.add(ipd1);
 	    	sub.inspirations.add(isd1);
@@ -253,11 +314,11 @@ public class Application extends Controller {
     	
     	if (DeadTwo.length() > 0 )
     	{
-	    	Person dead2 = new Person(DeadTwo);
+	    	OldPerson dead2 = new OldPerson(DeadTwo);
 	    	dead2.save();
 	    	ProjectInspiration ipd2 = new ProjectInspiration(proj, dead2);
 	    	ipd2.save();
-	    	PersonalInspiration isd2 = new PersonalInspiration(sub, dead2);
+	    	OldPersonalInspirations isd2 = new OldPersonalInspirations(sub, dead2);
 	    	isd2.save();
 	    	proj.inspirations.add(ipd2);
 	    	sub.inspirations.add(isd2);
@@ -265,12 +326,12 @@ public class Application extends Controller {
     	
     	if (NonArtistOne.length() > 0)
     	{
-	    	Person nona1 = new Person(NonArtistOne);
+	    	OldPerson nona1 = new OldPerson(NonArtistOne);
 	    	nona1.email = CanTellNonOne;
 	    	nona1.save();
 	    	ProjectInspiration ipn1 = new ProjectInspiration(proj, nona1);
 	    	ipn1.save();
-	    	PersonalInspiration isn1 = new PersonalInspiration(sub, nona1);
+	    	OldPersonalInspirations isn1 = new OldPersonalInspirations(sub, nona1);
 	    	isn1.save();
 	    	proj.inspirations.add(ipn1);
 	    	sub.inspirations.add(isn1);
@@ -278,12 +339,12 @@ public class Application extends Controller {
     	
     	if (NonArtistTwo.length() > 0 )
     	{
-	    	Person nona2 = new Person(NonArtistTwo);
+	    	OldPerson nona2 = new OldPerson(NonArtistTwo);
 	    	nona2.email = CanTellNonTwo;
 	    	nona2.save();
 	    	ProjectInspiration ipn2 = new ProjectInspiration(proj, nona2);
 	    	ipn2.save();
-	    	PersonalInspiration isn2 = new PersonalInspiration(sub, nona2);
+	    	OldPersonalInspirations isn2 = new OldPersonalInspirations(sub, nona2);
 	    	isn2.save();
 	    	proj.inspirations.add(ipn2);
 	    	sub.inspirations.add(isn2);
@@ -333,7 +394,7 @@ public class Application extends Controller {
     public static void showIt() {
     	render();
     }
-    
+    */
     
     
     

@@ -1,99 +1,82 @@
 package models;
 
-import play.*;
+import javax.persistence.Entity;
+import javax.persistence.Lob;
+
+import play.data.validation.CheckWith;
 import play.data.validation.Required;
-import play.db.jpa.*;
-
-import javax.persistence.*;
-
-import java.util.*;
+import play.db.jpa.Model;
+import controllers.MyChecks;
 
 @Entity
 public class Project extends Model {
     
-	@Required
-	public String title;
-	
-	public String description;
-	
-	@OneToOne
-	public Person contact;
-	
-	public String location;
-	
-	public String startdate;
-	
-	@OneToOne
-	public Picture picture;
-	
-	public boolean aboutexchange = false;
-	
-	public ArrayList<String>descriptors;
-	
-	public ArrayList<String>nondescriptors;
-	
-	@ManyToMany(cascade=CascadeType.PERSIST)
-	public Set<ProjectAffiliation>affiliations;
-	
-	@Required
-	@OneToMany (mappedBy="inspired", cascade=CascadeType.ALL)
-	public List<ProjectInspiration>inspirations;
-	
-	
-	
-	public Project(String atitle ) 
-	{
-		title = atitle;
-		descriptors = new ArrayList<String>();
-		nondescriptors = new ArrayList<String>();
-		inspirations = new ArrayList<ProjectInspiration>();
-		affiliations = new HashSet<ProjectAffiliation>();
-		description = "";
-		location = "";
-		startdate = "";
-	}
-	
-	public String toString() {
-		String toreturn = title;
-		if (contact != null )
-			toreturn += ", by " + contact.name;
-		if (description.length() > 0)
-			toreturn += ".  Description: " + description ;
-		if (location.length() > 0)
-			toreturn += ".  Located at: " + location;
-		if (startdate.length() > 0)
-			toreturn += ".  Start date " + startdate;
-		toreturn += ". This work";
-		if (aboutexchange)
-		{
-			toreturn += " is about exchange";
-		}
-		else
-		{
-			toreturn += " is not about exchange";
-		}
-		if (descriptors.size() > 0)
-		{
-			toreturn += ".  It has been described as being about " + descriptors.get(0);
-			for (int j = 1 ; j<descriptors.size(); j++)
-				toreturn += " and " + descriptors.get(j);
-			
-		}
-		if (nondescriptors.size() > 0)
-		{
-			toreturn += ".  It has been described as NOT being about " + nondescriptors.get(0);
-			for (int j = 1 ; j<nondescriptors.size(); j++)
-				toreturn += " nor about " + nondescriptors.get(j);
-			
-		}
-		if ( inspirations.size() > 0 )
-		{
-			toreturn += ".  It was inspired by: " + inspirations.get(0).inspiration.name;
-			for (int j = 1; j<inspirations.size(); j++)
-				toreturn += " and " + inspirations.get(j).inspiration.name;
-			
-		}
-		return toreturn;
+    final String PLEASE_ENTER_A = "Please enter a";
+    
+    @Required(message = PLEASE_ENTER_A + " title.")
+    @CheckWith(MyChecks.NameCheck.class)
+    public String projectTitle;
+    
+    @Required(message = PLEASE_ENTER_A + "n artist.")
+    @CheckWith(MyChecks.NameCheck.class)
+    public String artist;
+    
+    @Required(message = "Please upload a photo.")
+    @CheckWith(MyChecks.PhotoCheck.class)
+    public Picture myImage;
+    
+    @Required(message = PLEASE_ENTER_A + " description.")
+    @CheckWith(MyChecks.NameCheck.class)
+    @Lob 
+    public String description;
+    
+    @Required(message = PLEASE_ENTER_A + " tag.")
+    @CheckWith(MyChecks.NameCheck.class)
+    public String tags;
+    
+    @Required(message = PLEASE_ENTER_A + " living artist.")
+    @CheckWith(MyChecks.NameCheck.class)
+    public String livingInspirations;
+    
+    @Required(message = PLEASE_ENTER_A + " past artist.")
+    @CheckWith(MyChecks.NameCheck.class)
+    public String pastInspirations;
+    
+    @Required(message = PLEASE_ENTER_A + "n inspiration.")
+    @CheckWith(MyChecks.NameCheck.class)
+    public String nonArtistInspirations;
+    
+    public String emails;
+    
+    @Lob
+    public String message;
+    
+    public Project() {
+        // do nothing
+    }
+    
+	public Project(
+        final String projectTitle,
+        final String artist,
+        final Picture myImage,
+        final String description,
+        final String tags,
+        final String livingInspirations,
+        final String pastInspirations,
+        final String nonArtistInspirations,
+        final String emails,
+        final String message 
+    ) {
+	    this.projectTitle = projectTitle;
+	    this.artist = artist;
+	    this.myImage = myImage;
+	    this.description = description;
+	    this.tags = tags;
+	    this.livingInspirations = livingInspirations;
+	    this.pastInspirations = pastInspirations;
+	    this.nonArtistInspirations = nonArtistInspirations;
+	    this.emails = emails;
+	    this.message = message;
 	}
 
 }

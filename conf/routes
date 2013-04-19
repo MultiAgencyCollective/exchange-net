@@ -3,9 +3,12 @@
 # ~~~~
 
 # Home page
-*       /                                       Application.index
+*       /                                       Application.index4
 GET  	/mac									Application.index2
+GET     /foo								    Application.index3
+GET	    /bar									Application.index4
 GET		/picture								Application.getPicture
+GET     /data									Application.data
 
 *		/test									Application.setupTest
 *		/testJSON								Application.testJSON
