@@ -2,7 +2,6 @@ package controllers;
 
 import java.util.List;
 
-import models.Picture;
 import models.Project;
 import play.mvc.Controller;
 
@@ -16,13 +15,13 @@ public class Application extends Controller {
     }
     
     public static void getPicture(long id) {
-        Picture picture = Picture.findById(id);
-        if (picture == null) {
-        	System.err.println( "There was no picture found with id = " + id); 
+        Project project = Project.findById(id);
+        if (project == null) {
+        	System.err.println( "There was no project found with id = " + id); 
         }
         //TODO:  create an "image not found" image to serve in case there's none found.
-        response.setContentTypeIfNotSet(picture.image.type());
-        renderBinary(picture.image.get());
+        response.setContentTypeIfNotSet(project.myImage.type());
+        renderBinary(project.myImage.get());
     
     }
     
@@ -37,6 +36,7 @@ public class Application extends Controller {
     
     public static void addProject2(Project newProject) {
         if (validation.valid(newProject).ok) {
+            newProject.initializeSets();
             newProject.save();
             flash.success("Thanks for posting");
             index4();

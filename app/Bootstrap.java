@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 
-import models.Picture;
 import models.Project;
+import play.db.jpa.Blob;
 import play.jobs.Job;
 import play.jobs.OnApplicationStart;
 import play.test.Fixtures;
@@ -23,7 +23,7 @@ public class Bootstrap extends Job {
         		Project project = new Project(
     		        randomWord(), 
     		        randomWord(), 
-    		        new Picture(), 
+    		        new Blob(), 
     		        randomWord(), 
     		        randomWord(), 
     		        randomWord(), 

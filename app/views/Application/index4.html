@@ -85,13 +85,13 @@ Do the following if using your customized build of modernizr (http://www.moderni
     <p>
       Project Title
       <br />
-      <input type="text" name="newProject.projectTitle" id="projectTitle" placeholder="Project title" value="${flash.projectTitle}">
+      <input type="text" name="newProject.projectTitle" id="projectTitle" placeholder="Project title" value="${flash.projectTitle}" maxlength="50">
       <span class="error">#{error 'newProject.projectTitle' /}</span>
     </p>
     <p>
       Artist
       <br />
-      <input type="text" name="newProject.artist" id="artist" placeholder="Artist and/or collective's name" value="${flash.artist}">
+      <input type="text" name="newProject.artist" id="artist" placeholder="Artist and/or collective's name" value="${flash.artist}" maxlength="50">
       <span class="error">#{error 'newProject.artist' /}</span>
     </p>
     <p>
@@ -104,35 +104,35 @@ Do the following if using your customized build of modernizr (http://www.moderni
     <p>
       Description
       <br />
-      <textarea name="newProject.description" cols="100" rows="4" id="description" placeholder="Add a short description of your project">${flash.description}</textarea>
+      <textarea name="newProject.description" cols="100" rows="4" id="description" placeholder="Add a short description of your project" maxlength="5000">${flash.description}</textarea>
       <span class="error">#{error 'newProject.description' /}</span>
     </p>
     <p>
       Tags 
       <span style="color:#888888">. . . words that describe your work</span>
       <br />
-      <input type="text" name="newProject.tags" id="tags" placeholder="Enter tags, separated by commas" value="${flash.tags}">
+      <input type="text" name="newProject.tags" id="tags" placeholder="Enter tags, separated by commas" value="${flash.tags}" maxlength="100">
       <span class="error">#{error 'newProject.tags' /}</span>
     </p>
     <p>
       Contemporary Inspirations 
       <span style="color:#888888">. . . living artists who inspire your work</span>
       <br />
-      <input type="text" name="newProject.livingInspirations" id="livingInspirations" placeholder="Enter artists, separated by commas" value="${flash.livingInspirations}">
+      <input type="text" name="newProject.livingInspirations" id="livingInspirations" placeholder="Enter artists, separated by commas" value="${flash.livingInspirations}" maxlength="100">
       <span class="error">#{error 'newProject.livingInspirations' /}</span>
     </p>
     <p>
       Historical Inspirations 
       <span style="color:#888888">. . . past artists who inspire your work</span>
       <br />
-      <input type="text" name="newProject.pastInspirations" id="pastInspirations" placeholder="Enter artists, separated by commas" value="${flash.pastInspirations}">
+      <input type="text" name="newProject.pastInspirations" id="pastInspirations" placeholder="Enter artists, separated by commas" value="${flash.pastInspirations}" maxlength="100">
       <span class="error">#{error 'newProject.pastInspirations' /}</span>
     </p>
     <p>
       Non-Artist Inspirations 
       <span style="color:#888888">. . . whoever or whatever inspires your work</span>
       <br />
-      <input type="text" name="newProject.nonArtistInspirations" id="nonArtistInspirations" placeholder="Enter inspirations, separated by commas" value="${flash.nonArtistInspirations}">
+      <input type="text" name="newProject.nonArtistInspirations" id="nonArtistInspirations" placeholder="Enter inspirations, separated by commas" value="${flash.nonArtistInspirations}" maxlength="100">
       <span class="error">#{error 'newProject.nonArtistInspirations' /}</span>
     <p>
       <strong>Recommend artists for the archive!</strong>
@@ -140,12 +140,12 @@ Do the following if using your customized build of modernizr (http://www.moderni
       Email this form to: 
       <span style="color:#888888">(optional)</span>
       <br />
-      <input type="text" name="newProject.emails" id="emails" placeholder="Enter email addresses, separated by commas" value="${flash.emails}">
+      <input type="text" name="newProject.emails" id="emails" placeholder="Enter email addresses, separated by commas" value="${flash.emails}" maxlength="100">
       <span class="error">#{error 'newProject.emails' /}</span>
     </p>
     <p>
       Add a message to the email 
-      <textarea name="newProject.message" cols="100" rows="2" id="message" placeholder="Add a short message to the email">${flash.message}</textarea>
+      <textarea name="newProject.message" cols="100" rows="2" id="message" placeholder="Add a short message to the email" maxlength="500">${flash.message}</textarea>
       <span class="error">#{error 'newProject.message' /}</span>
     </p>
     <p>

@@ -1,7 +1,12 @@
 package models;
 
+import java.util.HashSet;
+import java.util.Set;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Lob;
+import javax.persistence.OneToMany;
 
 import play.data.validation.CheckWith;
 import play.data.validation.Required;
@@ -49,11 +54,26 @@ public class Project extends Model {
     
     public String emails;
     
+    @OneToMany(mappedBy="id", cascade=CascadeType.ALL)
+    public Set<Token> tagSet;
+    
+    @OneToMany(mappedBy="id", cascade=CascadeType.ALL)
+    public Set<Token> livingInspirationSet;
+    
+    @OneToMany(mappedBy="id", cascade=CascadeType.ALL)
+    public Set<Token> pastInspirationSet;
+    
+    @OneToMany(mappedBy="id", cascade=CascadeType.ALL)
+    public Set<Token> nonArtistInspirationSet;
+        
     @Lob
     public String message;
     
     public Project() {
-        // do nothing
+        this.tagSet = new HashSet<Token>();
+        this.livingInspirationSet = new HashSet<Token>();
+        this.pastInspirationSet = new HashSet<Token>();
+        this.nonArtistInspirationSet = new HashSet<Token>();
     }
     
 	public Project(
@@ -78,6 +98,38 @@ public class Project extends Model {
 	    this.nonArtistInspirations = nonArtistInspirations;
 	    this.emails = emails;
 	    this.message = message;
+	    
+	    this.tagSet = new HashSet<Token>();
+        this.livingInspirationSet = new HashSet<Token>();
+        this.pastInspirationSet = new HashSet<Token>();
+        this.nonArtistInspirationSet = new HashSet<Token>();
+	}
+	
+	public void initializeSets() {
+	    initializeSet(tagSet, tags);
+	    initializeSet(livingInspirationSet, livingInspirations);
+        initializeSet(pastInspirationSet, pastInspirations);
+        initializeSet(nonArtistInspirationSet, nonArtistInspirations);
+	}
+	
+	private void initializeSet(
+        final Set<Token> targetSet,
+        final String source
+    ) {
+	    assert targetSet != null && source != null;
+	    targetSet.clear();
+	    for (final String commaToken: source.split(",")) {
+	        if (isValidToken(commaToken)) {
+	            final Token newToken = new Token();
+	            newToken.text = commaToken;
+	            targetSet.add(newToken);
+	        }
+	    }
+	}
+	
+	private boolean isValidToken(final String token) {
+	    // token must contain a word character: letter or digit
+	    return token.matches(".*\\w.*");
 	}
 
     @Override
@@ -103,6 +155,14 @@ public class Project extends Model {
         builder.append(nonArtistInspirations);
         builder.append(", emails=");
         builder.append(emails);
+        builder.append(", tagSet=");
+        builder.append(tagSet);
+        builder.append(", livingInspirationSet=");
+        builder.append(livingInspirationSet);
+        builder.append(", pastInspirationSet=");
+        builder.append(pastInspirationSet);
+        builder.append(", nonArtistInspirationSet=");
+        builder.append(nonArtistInspirationSet);
         builder.append(", message=");
         builder.append(message);
         builder.append("]");
