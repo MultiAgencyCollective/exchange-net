@@ -1,0 +1,29 @@
+tika-app-1.3.jar should go in exchange-net/lib
+Apache Tika is used to check whether an uploaded file is an image file.
+http://tika.apache.org/download.html
+http://stackoverflow.com/questions/8488491/how-to-accurately-determine-mime-data-from-a-file
+
+private static final Detector DETECTOR = new DefaultDetector(
+        MimeTypes.getDefaultMimeTypes());
+
+public static String detectMimeType(final File file) throws IOException {
+    TikaInputStream tikaIS = null;
+    try {
+        tikaIS = TikaInputStream.get(file);
+
+        /*
+         * You might not want to provide the file's name. If you provide an Excel
+         * document with a .xls extension, it will get it correct right away; but
+         * if you provide an Excel document with .doc extension, it will guess it
+         * to be a Word document
+         */
+        final Metadata metadata = new Metadata();
+        // metadata.set(Metadata.RESOURCE_NAME_KEY, file.getName());
+
+        return DETECTOR.detect(tikaIS, metadata).toString();
+    } finally {
+        if (tikaIS != null) {
+            tikaIS.close();
+        }
+    }
+}
