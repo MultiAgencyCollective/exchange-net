@@ -2,3 +2,12 @@
 
 require:
     - play -> crud
+    - provided -> tika-app 1.3
+
+repositories:
+  - provided:
+      type:       local
+      artifact:   "${application.path}/lib/[module]-[revision].jar"
+      contains:
+        - provided -> *
+        

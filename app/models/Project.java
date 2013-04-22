@@ -15,9 +15,9 @@ import play.db.jpa.Model;
 import controllers.MyChecks;
 
 @Entity
-public class Project extends Model {
+public final class Project extends Model {
     
-    final String PLEASE_ENTER_A = "Please enter a";
+    static final String PLEASE_ENTER_A = "Please enter a";
     
     @Required(message = PLEASE_ENTER_A + " title.")
     @CheckWith(MyChecks.NameCheck.class)

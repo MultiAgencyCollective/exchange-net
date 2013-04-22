@@ -13,17 +13,20 @@ import play.test.Fixtures;
 @OnApplicationStart
 public class Bootstrap extends Job {
  
-	public void doJob() {
+	public final void doJob() {
 
 	    //Check if the database is empty
-        if(Project.count() == 0) {
+        if (Project.count() == 0) {
         	System.err.println("REMOVING ALL DATABASE ENTRIES....");
         	Fixtures.deleteDatabase();
-        	System.err.println("About to create and add new seed data to database");
+        	System.err.println(
+    	        "About to create and add new seed data to database"
+	        );
         
         	ArrayList<Long> ids = new ArrayList<Long>();
         	
-        	for (int i = 0; i< 20; i++) {
+        	final int numberOfRecords = 20;
+        	for (int i = 0; i < numberOfRecords; i++) {
         	    final Blob imageBlob = new Blob();
         	    final File imageFile = randomImageFile();
         	    try {
@@ -52,14 +55,22 @@ public class Bootstrap extends Job {
         }
     }
 	
-	public File randomImageFile() {
-	    final String FOLDER = "/Users/masonwright/dropbox/photos/badlands trip/";
-	    final String[] files = {"95970001.jpg", "95970005.jpg", "95970009.jpg", "95970002.jpg", "95970006.jpg"};
-	    final String choice = files[(int) (Math.random() * files.length)];
-	    return new File(FOLDER + choice);
+	private File randomImageFile() {
+	    final String folder = 
+            "/Users/masonwright/dropbox/photos/badlands trip/";
+	    final String[] imageFiles = {
+	            "95970001.jpg", 
+	            "95970005.jpg", 
+	            "95970009.jpg", 
+	            "95970002.jpg", 
+	            "95970006.jpg"
+            };
+	    final String choice = 
+            imageFiles[(int) (Math.random() * imageFiles.length)];
+	    return new File(folder + choice);
 	}
 	
-	public String randomWord() {
+	private String randomWord() {
 	    String[] words = {"foo", "bar", "baz", "bat", "qux", "quux"};
 	    return words[(int) (Math.random() * words.length)];
 	}
