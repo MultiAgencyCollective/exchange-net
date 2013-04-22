@@ -14,15 +14,28 @@ public class Application extends Controller {
         render(projects);
     }
     
+    public static void getImage(long id) {
+        Project project = Project.findById(id);
+        if (project == null) {
+            return;
+        }
+
+        if (project.myImage == null) {
+            return;
+        }
+        
+        response.setContentTypeIfNotSet(project.myImage.type());
+        renderBinary(project.myImage.get());
+    }
+    
     public static void getPicture(long id) {
         Project project = Project.findById(id);
         if (project == null) {
-        	System.err.println( "There was no project found with id = " + id); 
+            return;
         }
         //TODO:  create an "image not found" image to serve in case there's none found.
         response.setContentTypeIfNotSet(project.myImage.type());
         renderBinary(project.myImage.get());
-    
     }
     
     public static void index4() {
@@ -36,6 +49,7 @@ public class Application extends Controller {
     
     public static void addProject2(Project newProject) {
         if (validation.valid(newProject).ok) {
+            // load the Set<Token> sets from the input Strings
             newProject.initializeSets();
             newProject.save();
             flash.success("Thanks for posting");

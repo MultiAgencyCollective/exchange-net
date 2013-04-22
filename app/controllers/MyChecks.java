@@ -1,5 +1,7 @@
 package controllers;
 
+import javax.activation.MimetypesFileTypeMap;
+
 import play.data.validation.Check;
 import play.db.jpa.Blob;
 
@@ -47,7 +49,9 @@ public class MyChecks {
                 return false;
             }
             
-            return true;
+            final String mimeType = 
+                new MimetypesFileTypeMap().getContentType(photoBlob.getFile());
+            return  mimeType.contains("image");
         }
     }
 }
