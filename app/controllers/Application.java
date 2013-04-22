@@ -25,8 +25,8 @@ public class Application extends Controller {
             flash.success("Thanks for posting");
             index();
         } else {
-            if (newProject != null && newProject.getId() != null) {
-                deleteImage(newProject.getId());
+            if (newProject != null) {
+                deleteProject(newProject);
             }
             
             final int maxToReturn = 100;
@@ -73,16 +73,15 @@ public class Application extends Controller {
         renderBinary(project.myImage.get());
     }
     
-    private static void deleteImage(final long id) {
-        Project project = Project.findById(id);
+    private static void deleteProject(final Project project) {
         if (project == null) {
             return;
         }
 
-        if (project.myImage == null) {
-            return;
+        if (project.myImage != null) {
+            project.myImage.getFile().delete();
         }
         
-        project.myImage.getFile().delete();
+        project.delete();
      }
 }
