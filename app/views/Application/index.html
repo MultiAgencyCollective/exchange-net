@@ -1,6 +1,5 @@
 #{extends 'main.html' /}
-#{set title:'MultiAgency Collective' /}
-
+#{set title:'EXCHANGE ARCHIVE - Add a Project' /}
 
 <!DOCTYPE html>
 <!--[if lt IE 7]> <html class="ie6 oldie"> <![endif]-->
@@ -9,10 +8,11 @@
 <!--[if gt IE 8]><!-->
 <html class="">
 <!--<![endif]-->
+
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" media="screen" href="@{'/public/stylesheets/boilerplate.css'}">
+<link rel="stylesheet" media="screen" href="@{'/public/stylesheets/newStyle.css'}">
 <link rel="stylesheet" media="screen" href="@{'/public/stylesheets/main.css'}">
 <script src="@{'/public/javascripts/respond.min.js'}" type="text/javascript" ></script>
         
@@ -30,133 +30,129 @@ Do the following if using your customized build of modernizr (http://www.moderni
 <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
 <![endif]-->
 </head>
+
 <body>
 
+#{if flash.success}
+    <p class="success">${flash.success}</p>
+#{/if}
 
 #{if flash.error}
-    <p style="color:#c00">
-        ${flash.error}
-    </p>
+    <p class="error">${flash.success}</p>
+#{/if}
+
+#{if projects}
+  <div>    
+    <h1>Projects</h1>
+	#{list projects, as:'project'}
+      #{simpleProject project:project /}
+    #{/list}
+  </div>
 #{/if}
 
 <div class="gridContainer clearfix">
-  <h2>Exchange Archive <br> Artists do not create work in a vacuum.* </h2>
-  <h3><strong>All artists work in dialog with other people. Why isn’t this dialog visible? In all other fields, footnotes are the norm. Exchange Archive hopes to recognize and support artistic dialog and research by acknowledging the references, influences, and inspirations that flow between projects. </strong></h3>
-  <h3><strong>Please add your work to the archive, as well as the projects that influenced this work. If you are not an artist, feel free to suggest possible connections, inspirations, or potential dialog between art works.</strong></h3>
-  <h3><strong>Thank you!<br>
-    MultiAgency Collective, Caroline Woolard, MoMA’s Education Department</strong><strong></strong></h3>
-  <p>*Vacuums are for cleaning, not for divine inspiration. Andy Warhol traded a print for a vacuum from Sydney Lewis. He also put vacuums in plexi and called it art. He made work in a Factory with 100 other artists.</p>
-  
-  #{form @formSubmit(), enctype:'multipart/form-data'}
-    <p>
-      <label for="ProjectTitle">Project Title:</label>
-      <input type="text" name="ProjectTitle" id="ProjectTitle" value=${argus.ProjectTitle}>
-    </p>
-    <p>
-      <label for="ProjectDescription">Project Description: 100 words</label>
-    </p>
+  <h2>
+    EXCHANGE ARCHIVE
+    <br />
+    Artists do not create work in a vacuum.*
+  </h2>
+  <br />
+  <h3>
+    All artists work in a dialog with others. Exchange Archive supports
+    <br />
+    <strong>artistic dialog</strong> 
+    by showing the inspirations that flow between projects.
+  </h3>
+  <h3>
+    Please <strong>add your work</strong> to the archive.
+  </h3>
+  <h3>
+     <strong>Thank you!</strong>
+     <br />
+     -- Caroline Woolard, MultiAgency Collective, 
+     <a href="http://www.moma.org/learn/" target="_blank">MoMA LEARN</a>
+  </h3>
+  <br />
   <p>
-    <textarea name="ProjectDescription" cols="100" rows="10" id="ProjectDescription">${argus.ProjectDescription}</textarea>
+    * <a href="https://ourgoods.org/blog/warhol_put_an_add_in_the_village_voice_saying_i_will_trade_art_for_anything" target="_blank">Vacuums are for cleaning, not for divine inspiration</a>.
   </p>
-  <p>This Project is about: EXCHANGE</p>
-    <label>
-      <input type="radio" name="aboutexchange" value="yes" id="aboutexchange">
-    yes</label>
-      <br>
-      <label>
-        <input type="radio" name="aboutexchange" value="no" id="aboutexchange">
-        no</label>
-    </p>
-
-  <p>It’s (also) about: 
-    <input type="text" name="alsoabout1" id="alsoabout1" value=${argus.alsoabout1}>
-  and 
-  <input type="text" name="alsoabout2" id="alsoabout2" value=${argus.alsoabout2}>
-  and 
-  <input type="text" name="alsoabout3" id="alsoabout3" value=${argus.alsoabout3}>
-  </p>
-  <p>It's NOT about:
-    <input type="text" name="notabout1" id="notabout1" value=${argus.notabout1}>
-nor about
-<input type="text" name="notabout2" id="notabout2" value=${argus.notabout2}>
-nor about 
-<input type="text" name="notabout3" id="notabout3" value=${argus.notabout3}>
-  </p>
-  <p>Start Date: 
-    <input type="date" name="StartDate" id="StartDate" value=${argus.StartDate}>
-  </p>
-  <p>Project Location: 
-    <input type="text" name="ProjectLocation" id="ProjectLocation" value=${argus.ProjectLocation}>
-  </p>
-  <p>Upload an Image: 
-    <input type="file" name="imageupload.image" id="imageupload.image" />
-  </p>
-  <p>Your Name: 
-    <input type="text" name="YourName" id="YourName" value=${argus.YourName}>
-  </p>
-  <p>Your Collective's Name (optional): 
-    <input type="text" name="CollectivesName" id="CollectivesName" value=${argus.CollectivesName}>
-  </p>
-  <p>How to Contact you (email): 
-    <input type="text" name="ContactEmail" id="ContactEmail" value=${argus.ContactEmail}>
-  </p>
-  <p>I am submitting information about myself and my inspirations:</p>
+  <hr />
+  <h2>Add a Project</h2>
+  
+  #{form @Application.addProject2(), enctype:'multipart/form-data'}
     <p>
-      <label>
-        <input type="radio" name="AboutMyself" value="yes" id="AboutMyself">
-        yes</label>
-      <br>
-      <label>
-        <input type="radio" name="AboutMyself" value="no" id="AboutMyself">
-        no</label>
-      <br>
+      Project Title
+      <br />
+      <input type="text" name="newProject.projectTitle" id="projectTitle" placeholder="Project title" value="${flash.projectTitle}" maxlength="50">
+      <span class="error">#{error 'newProject.projectTitle' /}</span>
     </p>
-  <p>I am submitting information about someone else:</p>
     <p>
-      <label>
-        <input type="radio" id="AboutAnother" name="AboutAnother" value="yes" >
-        yes</label>
-      <br>
-      <label>
-        <input type="radio" id="AboutAnother" name="AboutAnother" value="no" >
-        no</label>
-      <br>
+      Artist
+      <br />
+      <input type="text" name="newProject.artist" id="artist" placeholder="Artist and/or collective's name" value="${flash.artist}" maxlength="50">
+      <span class="error">#{error 'newProject.artist' /}</span>
     </p>
-  <p>Name two dead artists that may have inspired to this project: 
-    <input type="text" name="DeadOne" id="DeadOne" value=${argus.DeadOne}>
-    <input type="text" name="DeadTwo" id="DeadTwo" value=${argus.DeadTwo}>
-    <br>
-	<br>
-  </p>
-  <p>Name two living artists that may have inspired to this project:
-    <input type="text" name="LiveOne" id="LiveOne" value=${argus.LiveOne}>
-    <input type="text" name="LiveTwo" id="LiveTwo" value=${argus.LiveTwo}>
-    <br>
-(Can we tell them you were inspired by them? If so, enter their Email here:)
-<input type="text" name="CanTellLiveOne" id="CanTellLiveOne" value=${argus.CanTellLiveOne}>
-<input type="text" name="CanTellLiveTwo" id="CanTellLiveTwo" value=${argus.CanTellLiveTwo}>
-  </p>
-  <p>Name non-artists that may have inspired to this project:
-    <input type="text" name="NonArtistOne" id="NonArtistOne" value=${argus.NonArtistOne}>
-    <input type="text" name="NonArtistTwo" id="NonArtistTwo" value=${argus.NonArtistTwo}>
-    <br>
-(Can we tell them you were inspired by them? If so, enter their Email here:)
-<input type="text" name="CanTellNonOne" id="CanTellNonOne"  value=${argus.CanTellNonOne}>
-<input type="text" name="CanTellNonTwo" id="CanTellNonTwo" value=${argus.CanTellNonTwo}>
-  </p>
-  <p>Is there another exchange project you'd recommend for this archive?<br>
-    Name: 
-    <input type="text" name="AnotherName" id="AnotherName" value=${argus.AnotherName}>
-    <br>
-    Project: 
-    <input type="text" name="AnotherProject" id="AnotherProject"  value=${argus.AnotherProject}>
-    <br>
-  Email (if known): 
-  <input type="text" name="AnotherEmail" id="AnotherEmail" value=${argus.AnotherEmail}>
-  </p>
-    <input type="submit" name="submit" id="submit" value="Submit">
+    <p>
+      Photo of Project
+      <br />
+      <input type="file" name="newProject.myImage" id="myImage" value="${flash.myImage}">
+      <br />
+      <span class="error">#{error 'newProject.myImage' /}</span>
+    </p>
+    <p>
+      Description
+      <br />
+      <textarea name="newProject.description" cols="100" rows="4" id="description" placeholder="Add a short description of your project" maxlength="5000">${flash.description}</textarea>
+      <span class="error">#{error 'newProject.description' /}</span>
+    </p>
+    <p>
+      Tags 
+      <span style="color:#888888">. . . words that describe your work</span>
+      <br />
+      <input type="text" name="newProject.tags" id="tags" placeholder="Enter tags, separated by commas" value="${flash.tags}" maxlength="100">
+      <span class="error">#{error 'newProject.tags' /}</span>
+    </p>
+    <p>
+      Contemporary Inspirations 
+      <span style="color:#888888">. . . living artists who inspire your work</span>
+      <br />
+      <input type="text" name="newProject.livingInspirations" id="livingInspirations" placeholder="Enter artists, separated by commas" value="${flash.livingInspirations}" maxlength="100">
+      <span class="error">#{error 'newProject.livingInspirations' /}</span>
+    </p>
+    <p>
+      Historical Inspirations 
+      <span style="color:#888888">. . . past artists who inspire your work</span>
+      <br />
+      <input type="text" name="newProject.pastInspirations" id="pastInspirations" placeholder="Enter artists, separated by commas" value="${flash.pastInspirations}" maxlength="100">
+      <span class="error">#{error 'newProject.pastInspirations' /}</span>
+    </p>
+    <p>
+      Non-Artist Inspirations 
+      <span style="color:#888888">. . . whoever or whatever inspires your work</span>
+      <br />
+      <input type="text" name="newProject.nonArtistInspirations" id="nonArtistInspirations" placeholder="Enter inspirations, separated by commas" value="${flash.nonArtistInspirations}" maxlength="100">
+      <span class="error">#{error 'newProject.nonArtistInspirations' /}</span>
+    <p>
+      <strong>Recommend artists for the archive!</strong>
+      <br />
+      Email this form to: 
+      <span style="color:#888888">(optional)</span>
+      <br />
+      <input type="text" name="newProject.emails" id="emails" placeholder="Enter email addresses, separated by commas" value="${flash.emails}" maxlength="100">
+      <span class="error">#{error 'newProject.emails' /}</span>
+    </p>
+    <p>
+      Add a message to the email 
+      <textarea name="newProject.message" cols="100" rows="2" id="message" placeholder="Add a short message to the email" maxlength="500">${flash.message}</textarea>
+      <span class="error">#{error 'newProject.message' /}</span>
+    </p>
+    <p>
+      <input type="submit" name="submit" id="submit" value="Submit">
+      <input type="submit" name="cancel" id="cancel" value="Cancel">
+    </p>
    #{/}
   <p>&nbsp;</p>
 </div>
 </body>
+
 </html>

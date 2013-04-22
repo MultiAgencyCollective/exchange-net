@@ -7,7 +7,7 @@ import play.mvc.Controller;
 
 public class Application extends Controller {
     
-    public static void index4() {
+    public static void index() {
         final int maxToReturn = 100;
         List<Project> projects = Project.find(
             "order by projectTitle asc"
@@ -23,7 +23,7 @@ public class Application extends Controller {
             newProject.initializeSets();
             newProject.save();
             flash.success("Thanks for posting");
-            index4();
+            index();
         } else {
             final int maxToReturn = 100;
             List<Project> projects = Project.find(
@@ -43,7 +43,7 @@ public class Application extends Controller {
             );
             flash.put("emails", newProject.emails);
             flash.put("message", newProject.message);
-            render("Application/index4.html", projects);
+            render("Application/index.html", projects);
         }
     }
     
