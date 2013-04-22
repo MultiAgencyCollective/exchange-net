@@ -73,7 +73,7 @@ public class Application extends Controller {
         renderBinary(project.myImage.get());
     }
     
-    private static void deleteImage(long id) {
+    private static void deleteImage(final long id) {
         Project project = Project.findById(id);
         if (project == null) {
             return;

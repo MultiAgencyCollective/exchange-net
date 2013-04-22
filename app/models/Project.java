@@ -76,7 +76,7 @@ public final class Project extends Model {
         this.nonArtistInspirationSet = new HashSet<Token>();
     }
     
-	public Project(
+    public Project(
         final String projectTitle,
         final String artist,
         final Blob myImage,
@@ -88,49 +88,49 @@ public final class Project extends Model {
         final String emails,
         final String message 
     ) {
-	    this.projectTitle = projectTitle;
-	    this.artist = artist;
-	    this.myImage = myImage;
-	    this.description = description;
-	    this.tags = tags;
-	    this.livingInspirations = livingInspirations;
-	    this.pastInspirations = pastInspirations;
-	    this.nonArtistInspirations = nonArtistInspirations;
-	    this.emails = emails;
-	    this.message = message;
-	    
-	    this.tagSet = new HashSet<Token>();
+        this.projectTitle = projectTitle;
+        this.artist = artist;
+        this.myImage = myImage;
+        this.description = description;
+        this.tags = tags;
+        this.livingInspirations = livingInspirations;
+        this.pastInspirations = pastInspirations;
+        this.nonArtistInspirations = nonArtistInspirations;
+        this.emails = emails;
+        this.message = message;
+        
+        this.tagSet = new HashSet<Token>();
         this.livingInspirationSet = new HashSet<Token>();
         this.pastInspirationSet = new HashSet<Token>();
         this.nonArtistInspirationSet = new HashSet<Token>();
-	}
-	
-	public void initializeSets() {
-	    initializeSet(tagSet, tags);
-	    initializeSet(livingInspirationSet, livingInspirations);
+    }
+    
+    public void initializeSets() {
+        initializeSet(tagSet, tags);
+        initializeSet(livingInspirationSet, livingInspirations);
         initializeSet(pastInspirationSet, pastInspirations);
         initializeSet(nonArtistInspirationSet, nonArtistInspirations);
-	}
-	
-	private void initializeSet(
+    }
+    
+    private void initializeSet(
         final Set<Token> targetSet,
         final String source
     ) {
-	    assert targetSet != null && source != null;
-	    targetSet.clear();
-	    for (final String commaToken: source.split(",")) {
-	        if (isValidToken(commaToken)) {
-	            final Token newToken = new Token();
-	            newToken.text = commaToken;
-	            targetSet.add(newToken);
-	        }
-	    }
-	}
-	
-	private boolean isValidToken(final String token) {
-	    // token must contain a word character: letter or digit
-	    return token.matches(".*\\w.*");
-	}
+        assert targetSet != null && source != null;
+        targetSet.clear();
+        for (final String commaToken: source.split(",")) {
+            if (isValidToken(commaToken)) {
+                final Token newToken = new Token();
+                newToken.text = commaToken;
+                targetSet.add(newToken);
+            }
+        }
+    }
+    
+    private boolean isValidToken(final String token) {
+        // token must contain a word character: letter or digit
+        return token.matches(".*\\w.*");
+    }
 
     @Override
     public String toString() {
