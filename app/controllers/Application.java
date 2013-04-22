@@ -25,6 +25,10 @@ public class Application extends Controller {
             flash.success("Thanks for posting");
             index();
         } else {
+            if (newProject != null && newProject.getId() != null) {
+                deleteImage(newProject.getId());
+            }
+            
             final int maxToReturn = 100;
             List<Project> projects = Project.find(
                 "order by projectTitle asc"
@@ -68,4 +72,17 @@ public class Application extends Controller {
         response.setContentTypeIfNotSet(project.myImage.type());
         renderBinary(project.myImage.get());
     }
+    
+    private static void deleteImage(long id) {
+        Project project = Project.findById(id);
+        if (project == null) {
+            return;
+        }
+
+        if (project.myImage == null) {
+            return;
+        }
+        
+        project.myImage.getFile().delete();
+     }
 }
