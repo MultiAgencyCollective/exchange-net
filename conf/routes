@@ -4,22 +4,16 @@
 
 # Home page
 *       /                                       Application.index
-GET     /data									Application.data
+GET     /data					Application.data
 
-*		/test									Application.setupTest
-*		/testJSON								Application.testJSON
-*		/image									Application.showIt
-* 		/inspirations							Application.getInspirations
-GET		/ins									Application.inspirednetwork
-
-*      /admin              						module:crud
+*      /admin              			module:crud
 
 # Ignore favicon requests
 GET     /favicon.ico                            404
 
 # Map static resources from the /app/public folder to the /public path
 GET     /public/                                staticDir:public
-GET	    /data/									staticDir:data
+GET	/data/					staticDir:data
 
 # Catch all
 *       /{controller}/{action}                  {controller}.{action}

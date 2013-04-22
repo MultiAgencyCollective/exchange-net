@@ -17,7 +17,7 @@ public class Application extends Controller {
     }
     
     
-    public static void addProject2(final Project newProject) {
+    public static void addProject(final Project newProject) {
         if (validation.valid(newProject).ok) {
             // load the Set<Token> sets from the input Strings
             newProject.initializeSets();
