@@ -11,7 +11,7 @@ public class Application extends Controller {
         final int maxToReturn = 100;
         List<Project> projects = Project.find(
             "order by projectTitle asc"
-        ).from(1).fetch(maxToReturn);
+        ).fetch(maxToReturn);
         
         render(projects);
     }
@@ -32,7 +32,7 @@ public class Application extends Controller {
             final int maxToReturn = 100;
             List<Project> projects = Project.find(
                 "order by projectTitle asc"
-            ).from(1).fetch(maxToReturn);
+            ).fetch(maxToReturn);
             flash.clear();
             flash.put("projectTitle", newProject.projectTitle);
             flash.put("artist", newProject.artist);
@@ -55,7 +55,8 @@ public class Application extends Controller {
         final int maxToReturn = 100;
         List<Project> projects = Project.find(
             "order by projectTitle asc"
-        ).from(1).fetch(maxToReturn);
+        ).fetch(maxToReturn);
+        System.out.println("list length found: " + projects.size());
         render(projects);
     }
     
