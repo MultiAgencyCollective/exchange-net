@@ -2,6 +2,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
+import models.GeneralData;
 import models.Project;
 import play.db.jpa.Blob;
 import play.jobs.Job;
@@ -48,6 +49,9 @@ public class Bootstrap extends Job {
                 
                 project.save();
             }
+            
+            final GeneralData generalData = new GeneralData();
+            generalData.save();
         }
     }
     

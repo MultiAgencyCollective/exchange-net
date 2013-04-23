@@ -121,6 +121,7 @@ public final class Project extends Model {
             // already initialized 
             return;  
         }
+        
         initializeSet(tagSet, tags);
         initializeSet(livingInspirationSet, livingInspirations);
         initializeSet(pastInspirationSet, pastInspirations);

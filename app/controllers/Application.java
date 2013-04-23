@@ -2,10 +2,14 @@ package controllers;
 
 import java.util.List;
 
+import models.GeneralData;
 import models.Project;
 import play.mvc.Controller;
 
+
 public class Application extends Controller {
+    
+    public static final int MAX_PROJECTS_PER_IP_ADDRESS = 1000;
     
     public static void index() {
         final int maxToReturn = 100;
@@ -16,39 +20,56 @@ public class Application extends Controller {
         render(projects);
     }
     
-    
-    public static void addProject(final Project newProject) {
+    public static void addProject(final Project newProject) {        
         if (validation.valid(newProject).ok) {
-            // load the Set<Token> sets from the input Strings
-            newProject.initializeSets();
-            newProject.save();
-            flash.success("Thanks for posting");
-            index();
-        } else {
-            if (newProject != null) {
-                deleteProject(newProject);
+            final String requestIPAddress = request.remoteAddress;
+            final GeneralData myGeneralData = (GeneralData) GeneralData.findAll().get(0);
+            final models.Number submissionCount = 
+                myGeneralData.ipToSubmissionCount.get(requestIPAddress);
+            if (submissionCount.value >= MAX_PROJECTS_PER_IP_ADDRESS) {
+                flash.error("Too many projects submitted.", (Object) null);
+                doCancelProject(newProject);
+                return;
             }
             
-            final int maxToReturn = 100;
-            List<Project> projects = Project.find(
-                "order by projectTitle asc"
-            ).fetch(maxToReturn);
-            flash.clear();
-            flash.put("projectTitle", newProject.projectTitle);
-            flash.put("artist", newProject.artist);
-            flash.put("myImage", newProject.myImage);
-            flash.put("description", newProject.description);
-            flash.put("tags", newProject.tags);
-            flash.put("livingInspirations", newProject.livingInspirations);
-            flash.put("pastInspirations", newProject.pastInspirations);
-            flash.put(
-                "nonArtistInspirations", 
-                newProject.nonArtistInspirations
-            );
-            flash.put("emails", newProject.emails);
-            flash.put("message", newProject.message);
-            render("Application/index.html", projects);
+            doAddProject(newProject);
+            submissionCount.value++;
+        } else {
+            doCancelProject(newProject);
         }
+    }
+    
+    private static void doAddProject(final Project toAdd) {
+        // load the Set<Token> sets from the input Strings
+        toAdd.initializeSets();
+        toAdd.save();
+        flash.success("Thanks for posting");
+        index();
+    }
+    
+    private static void doCancelProject(final Project toCancel) {
+        if (toCancel != null) {
+            deleteProject(toCancel);
+        }
+        
+        final int maxToReturn = 100;
+        List<Project> projects = Project.find(
+            "order by projectTitle asc"
+        ).fetch(maxToReturn);
+        flash.clear();
+        flash.put("projectTitle", toCancel.projectTitle);
+        flash.put("artist", toCancel.artist);
+        flash.put("description", toCancel.description);
+        flash.put("tags", toCancel.tags);
+        flash.put("livingInspirations", toCancel.livingInspirations);
+        flash.put("pastInspirations", toCancel.pastInspirations);
+        flash.put(
+            "nonArtistInspirations", 
+            toCancel.nonArtistInspirations
+        );
+        flash.put("emails", toCancel.emails);
+        flash.put("message", toCancel.message);
+        render("Application/index.html", projects);
     }
     
     public static void data() {
