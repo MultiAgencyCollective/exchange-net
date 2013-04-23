@@ -3,6 +3,8 @@ package controllers;
 import java.io.File;
 import java.io.IOException;
 
+import models.Project;
+
 import org.apache.tika.detect.DefaultDetector;
 import org.apache.tika.detect.Detector;
 import org.apache.tika.io.TikaInputStream;
@@ -11,9 +13,41 @@ import org.apache.tika.mime.MimeTypes;
 
 import play.data.validation.Check;
 import play.db.jpa.Blob;
+import play.db.jpa.JPABase;
 
 public final class MyChecks {
 
+    public final class ProjectTitleCheck extends Check {
+
+        @Override
+        public boolean isSatisfied(
+            final Object project, 
+            final Object title
+        ) {
+            setMessage("Please enter a title.");
+            if (title == null) {
+                return false;
+            }
+            if (!(title instanceof String)) {
+                return false;
+            }
+            final String titleString = (String) title;
+            if (titleString.length() == 0) {
+                return false;
+            }          
+            
+            for (JPABase existingProject: Project.findAll()) {
+                setMessage("That title is already used.");
+                if (titleString.equals(((Project) existingProject).projectTitle)) {
+                    return false;
+                }
+            }
+            
+            return true;
+        }
+        
+    }
+    
     public final class NameCheck extends Check {
         
         @Override

@@ -20,7 +20,7 @@ public final class Project extends Model {
     static final String PLEASE_ENTER_A = "Please enter a";
     
     @Required(message = PLEASE_ENTER_A + " title.")
-    @CheckWith(MyChecks.NameCheck.class)
+    @CheckWith(MyChecks.ProjectTitleCheck.class)
     public String projectTitle;
     
     @Required(message = PLEASE_ENTER_A + "n artist.")
