@@ -14,4 +14,13 @@ public class Token extends Model {
     public Token() {
         // do nothing
     }
+
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        builder.append("Token [text=");
+        builder.append(text);
+        builder.append("]");
+        return builder.toString();
+    }
 }

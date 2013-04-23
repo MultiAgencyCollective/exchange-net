@@ -34,17 +34,18 @@ public class Bootstrap extends Job {
                     e.printStackTrace();
                 }
                 Project project = new Project(
-                    randomWord(), 
-                    randomWord(), 
-                    imageBlob, 
-                    randomWord(), 
-                    randomWord(), 
-                    randomWord(), 
-                    randomWord(), 
-                    randomWord(), 
-                    randomWord(), 
-                    randomWord()
+                    randomWord(), // projectTitle
+                    randomWord(), // artist
+                    imageBlob, // myImage
+                    randomWord(), // description
+                    randomWordCommaList(), // tags
+                    randomWordCommaList(), // livingInspirations
+                    randomWordCommaList(), // pastInspirations
+                    randomWordCommaList(), // nonArtistInspirations
+                    randomWordCommaList(), // emails
+                    randomWord() // message
                 );
+                
                 project.save();
             }
         }
@@ -63,6 +64,20 @@ public class Bootstrap extends Job {
         final String choice = 
             imageFiles[(int) (Math.random() * imageFiles.length)];
         return new File(folder + choice);
+    }
+    
+    private String randomWordCommaList() {
+        final int maxWords = 5;
+        final int wordCount = 1 + (int) (Math.random() * maxWords);
+        final StringBuilder builder = new StringBuilder();
+        for (int i = 0; i < wordCount; i++) {
+            builder.append(randomWord());
+            if (i < wordCount - 1) {
+                builder.append(", ");
+            }
+        }
+        
+        return builder.toString();
     }
     
     private String randomWord() {

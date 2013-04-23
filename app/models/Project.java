@@ -66,6 +66,9 @@ public final class Project extends Model {
     @OneToMany(mappedBy="id", cascade=CascadeType.ALL)
     public Set<Token> nonArtistInspirationSet;
         
+    @OneToMany(mappedBy="id", cascade=CascadeType.ALL)
+    public Set<Token> emailSet;
+    
     @Lob
     public String message;
     
@@ -74,6 +77,7 @@ public final class Project extends Model {
         this.livingInspirationSet = new HashSet<Token>();
         this.pastInspirationSet = new HashSet<Token>();
         this.nonArtistInspirationSet = new HashSet<Token>();
+        this.emailSet = new HashSet<Token>();
     }
     
     public Project(
@@ -103,13 +107,27 @@ public final class Project extends Model {
         this.livingInspirationSet = new HashSet<Token>();
         this.pastInspirationSet = new HashSet<Token>();
         this.nonArtistInspirationSet = new HashSet<Token>();
+        this.emailSet = new HashSet<Token>();
     }
     
     public void initializeSets() {
+        if (!(
+            tagSet.isEmpty() 
+            && livingInspirationSet.isEmpty() 
+            && pastInspirationSet.isEmpty() 
+            && nonArtistInspirationSet.isEmpty() 
+            && emailSet.isEmpty()
+        )) {
+            // already initialized 
+            return;  
+        }
         initializeSet(tagSet, tags);
         initializeSet(livingInspirationSet, livingInspirations);
         initializeSet(pastInspirationSet, pastInspirations);
         initializeSet(nonArtistInspirationSet, nonArtistInspirations);
+        if (emails != null && emails.length() != 0) {
+            initializeSet(emailSet, emails);
+        }
     }
     
     private void initializeSet(
@@ -163,6 +181,8 @@ public final class Project extends Model {
         builder.append(pastInspirationSet);
         builder.append(", nonArtistInspirationSet=");
         builder.append(nonArtistInspirationSet);
+        builder.append(", emailSet=");
+        builder.append(emailSet);
         builder.append(", message=");
         builder.append(message);
         builder.append("]");

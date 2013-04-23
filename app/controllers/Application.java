@@ -56,7 +56,10 @@ public class Application extends Controller {
         List<Project> projects = Project.find(
             "order by projectTitle asc"
         ).fetch(maxToReturn);
-        System.out.println("list length found: " + projects.size());
+        for (Project project: projects) {
+            project.initializeSets();
+            System.out.println(project);
+        }
         render(projects);
     }
     
