@@ -12,7 +12,7 @@ echo $PATH
 start SQL server from System Preferences > MySQL
 
 mysql -uroot
-CREATE USER 'pratim'@'localhost' IDENTIFIED BY 'ghishu123';
+CREATE USER 'pratim'@'localhost' IDENTIFIED BY 'SOME_PASSWORD';
 CREATE DATABASE exchange_db DEFAULT CHARACTER SET utf8;
 GRANT ALL PRIVILEGES ON exchange_db.* TO 'pratim'@'localhost';
 exit;
