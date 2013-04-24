@@ -2,6 +2,7 @@
 
 require:
     - play -> crud
+    - mysql -> mysql-connector-java 5.1.24
     - provided -> tika-app 1.3
 
 repositories:

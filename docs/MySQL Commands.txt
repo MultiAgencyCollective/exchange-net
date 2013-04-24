@@ -1,0 +1,23 @@
+
+add to $PATH:
+/usr/local/mysql-5.6.11-osx10.7-x86_64/bin
+
+cd /etc
+sudo nano paths
+[ADD /usr/local/mysql-5.6.11-osx10.7-x86_64/bin THEN TYPE ^0 AND ^X]
+echo $PATH
+
+//////////////////////////////////////////////
+
+start SQL server from System Preferences > MySQL
+
+mysql -uroot
+CREATE USER 'pratim'@'localhost' IDENTIFIED BY 'ghishu123';
+CREATE DATABASE exchange_db DEFAULT CHARACTER SET utf8;
+GRANT ALL PRIVILEGES ON exchange_db.* TO 'pratim'@'localhost';
+exit;
+
+mysql -u pratim -p
+SHOW GRANTS;
+USE exchange_db;
+exit;
