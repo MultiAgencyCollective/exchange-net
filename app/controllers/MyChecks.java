@@ -38,7 +38,9 @@ public final class MyChecks {
             
             for (JPABase existingProject: Project.findAll()) {
                 setMessage("That title is already used.");
-                if (titleString.equals(((Project) existingProject).projectTitle)) {
+                if (titleString.equals(
+                    ((Project) existingProject).projectTitle)
+                ) {
                     return false;
                 }
             }
@@ -147,10 +149,14 @@ public final class MyChecks {
                     MimeTypes.getDefaultMimeTypes()
                 );
                 if (detector.detect(tikaIS, metadata) == null) {
+                    tikaIS.close();
                     return null;
                 }
                 
-                return detector.detect(tikaIS, metadata).toString();
+                final String result = 
+                    detector.detect(tikaIS, metadata).toString();
+                tikaIS.close();
+                return result;
             } finally {
                 if (tikaIS != null) {
                     tikaIS.close();

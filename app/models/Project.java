@@ -17,6 +17,8 @@ import controllers.MyChecks;
 @Entity
 public final class Project extends Model {
     
+    private static final long serialVersionUID = 1963079018764143458L;
+
     static final String PLEASE_ENTER_A = "Please enter a";
     
     @Required(message = PLEASE_ENTER_A + " title.")
@@ -112,26 +114,26 @@ public final class Project extends Model {
     
     public void initializeSets() {
         if (!(
-            tagSet.isEmpty() 
-            && livingInspirationSet.isEmpty() 
-            && pastInspirationSet.isEmpty() 
-            && nonArtistInspirationSet.isEmpty() 
-            && emailSet.isEmpty()
+            this.tagSet.isEmpty() 
+            && this.livingInspirationSet.isEmpty() 
+            && this.pastInspirationSet.isEmpty() 
+            && this.nonArtistInspirationSet.isEmpty() 
+            && this.emailSet.isEmpty()
         )) {
             // already initialized 
             return;  
         }
         
-        initializeSet(tagSet, tags);
-        initializeSet(livingInspirationSet, livingInspirations);
-        initializeSet(pastInspirationSet, pastInspirations);
-        initializeSet(nonArtistInspirationSet, nonArtistInspirations);
-        if (emails != null && emails.length() != 0) {
-            initializeSet(emailSet, emails);
+        initializeSet(this.tagSet, this.tags);
+        initializeSet(this.livingInspirationSet, this.livingInspirations);
+        initializeSet(this.pastInspirationSet, this.pastInspirations);
+        initializeSet(this.nonArtistInspirationSet, this.nonArtistInspirations);
+        if (this.emails != null && this.emails.length() != 0) {
+            initializeSet(this.emailSet, this.emails);
         }
     }
     
-    private void initializeSet(
+    private static void initializeSet(
         final Set<Token> targetSet,
         final String source
     ) {
@@ -146,7 +148,7 @@ public final class Project extends Model {
         }
     }
     
-    private boolean isValidToken(final String token) {
+    private static boolean isValidToken(final String token) {
         // token must contain a word character: letter or digit
         return token.matches(".*\\w.*");
     }
@@ -154,38 +156,26 @@ public final class Project extends Model {
     @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();
-        builder.append("Project [PLEASE_ENTER_A=");
-        builder.append(PLEASE_ENTER_A);
-        builder.append(", projectTitle=");
-        builder.append(projectTitle);
+        builder.append("Project [ProjectTitle=");
+        builder.append(this.projectTitle);
         builder.append(", artist=");
-        builder.append(artist);
+        builder.append(this.artist);
         builder.append(", myImage=");
-        builder.append(myImage);
+        builder.append(this.myImage);
         builder.append(", description=");
-        builder.append(description);
-        builder.append(", tags=");
-        builder.append(tags);
-        builder.append(", livingInspirations=");
-        builder.append(livingInspirations);
-        builder.append(", pastInspirations=");
-        builder.append(pastInspirations);
-        builder.append(", nonArtistInspirations=");
-        builder.append(nonArtistInspirations);
-        builder.append(", emails=");
-        builder.append(emails);
+        builder.append(this.description);
         builder.append(", tagSet=");
-        builder.append(tagSet);
+        builder.append(this.tagSet);
         builder.append(", livingInspirationSet=");
-        builder.append(livingInspirationSet);
+        builder.append(this.livingInspirationSet);
         builder.append(", pastInspirationSet=");
-        builder.append(pastInspirationSet);
+        builder.append(this.pastInspirationSet);
         builder.append(", nonArtistInspirationSet=");
-        builder.append(nonArtistInspirationSet);
+        builder.append(this.nonArtistInspirationSet);
         builder.append(", emailSet=");
-        builder.append(emailSet);
+        builder.append(this.emailSet);
         builder.append(", message=");
-        builder.append(message);
+        builder.append(this.message);
         builder.append("]");
         return builder.toString();
     }

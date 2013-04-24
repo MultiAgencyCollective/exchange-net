@@ -6,22 +6,22 @@ import play.data.validation.Required;
 import play.db.jpa.Model;
 
 @Entity
-public final class Token extends Model {
+public final class Number extends Model {
 
-    private static final long serialVersionUID = -2007799939305725772L;
-
+    private static final long serialVersionUID = -2729092743856602060L;
+   
     @Required
-    public String text;
+    public int value;
 
-    public Token() {
+    public Number() {
         // do nothing
     }
 
     @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();
-        builder.append("Token [text=");
-        builder.append(this.text);
+        builder.append("Number [value=");
+        builder.append(this.value);
         builder.append("]");
         return builder.toString();
     }

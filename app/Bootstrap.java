@@ -13,6 +13,7 @@ import play.test.Fixtures;
 @OnApplicationStart
 public class Bootstrap extends Job {
  
+    @Override
     public final void doJob() {
         //Check if the database is empty
         if (Project.count() == 0) {
@@ -55,7 +56,7 @@ public class Bootstrap extends Job {
         }
     }
     
-    private File randomImageFile() {
+    private static File randomImageFile() {
         final String folder = 
             "/Users/masonwright/dropbox/photos/badlands trip/";
         final String[] imageFiles = {
@@ -70,7 +71,7 @@ public class Bootstrap extends Job {
         return new File(folder + choice);
     }
     
-    private String randomWordCommaList() {
+    private static String randomWordCommaList() {
         final int maxWords = 5;
         final int wordCount = 1 + (int) (Math.random() * maxWords);
         final StringBuilder builder = new StringBuilder();
@@ -84,7 +85,7 @@ public class Bootstrap extends Job {
         return builder.toString();
     }
     
-    private String randomWord() {
+    private static String randomWord() {
         String[] words = {"foo", "bar", "baz", "bat", "qux", "quux"};
         return words[(int) (Math.random() * words.length)];
     }

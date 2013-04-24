@@ -23,26 +23,45 @@ public class Application extends Controller {
     public static void addProject(final Project newProject) {        
         if (validation.valid(newProject).ok) {
             final String requestIPAddress = request.remoteAddress;
-            final GeneralData myGeneralData = (GeneralData) GeneralData.findAll().get(0);
+            final GeneralData myGeneralData = 
+                (GeneralData) GeneralData.findAll().get(0);
             final models.Number submissionCount = 
                 myGeneralData.ipToSubmissionCount.get(requestIPAddress);
-            if (submissionCount.value >= MAX_PROJECTS_PER_IP_ADDRESS) {
-                flash.error("Too many projects submitted.", (Object) null);
+            if (
+                submissionCount != null 
+                && submissionCount.value >= MAX_PROJECTS_PER_IP_ADDRESS
+            ) {
+                MyLogger.logTooManyProjectsSubmitted(requestIPAddress);
+                flash.error("Too many projects submitted.");
                 doCancelProject(newProject);
                 return;
             }
             
-            doAddProject(newProject);
-            submissionCount.value++;
+            doAddProject(newProject, requestIPAddress);
+            if (submissionCount == null) {
+                final models.Number one = new models.Number();
+                one.value = 1;
+                myGeneralData.ipToSubmissionCount.put(requestIPAddress, one);
+            } else {
+                submissionCount.value++;
+            }
+            
+            myGeneralData.save();
         } else {
+            flash.error("Must complete all fields");
+            MyLogger.logIncompleteProjectSubmission(validation.errors());
             doCancelProject(newProject);
         }
     }
     
-    private static void doAddProject(final Project toAdd) {
+    private static void doAddProject(
+        final Project toAdd,
+        final String ipAddress
+    ) {
         // load the Set<Token> sets from the input Strings
         toAdd.initializeSets();
         toAdd.save();
+        MyLogger.logProjectAdded(toAdd, ipAddress, Project.count());
         flash.success("Thanks for posting");
         index();
     }
@@ -57,18 +76,21 @@ public class Application extends Controller {
             "order by projectTitle asc"
         ).fetch(maxToReturn);
         flash.clear();
-        flash.put("projectTitle", toCancel.projectTitle);
-        flash.put("artist", toCancel.artist);
-        flash.put("description", toCancel.description);
-        flash.put("tags", toCancel.tags);
-        flash.put("livingInspirations", toCancel.livingInspirations);
-        flash.put("pastInspirations", toCancel.pastInspirations);
-        flash.put(
-            "nonArtistInspirations", 
-            toCancel.nonArtistInspirations
-        );
-        flash.put("emails", toCancel.emails);
-        flash.put("message", toCancel.message);
+        if (toCancel != null) {
+            flash.put("projectTitle", toCancel.projectTitle);
+            flash.put("artist", toCancel.artist);
+            flash.put("description", toCancel.description);
+            flash.put("tags", toCancel.tags);
+            flash.put("livingInspirations", toCancel.livingInspirations);
+            flash.put("pastInspirations", toCancel.pastInspirations);
+            flash.put(
+                "nonArtistInspirations", 
+                toCancel.nonArtistInspirations
+            );
+            flash.put("emails", toCancel.emails);
+            flash.put("message", toCancel.message);
+        }
+        
         render("Application/index.html", projects);
     }
     
