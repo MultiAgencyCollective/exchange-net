@@ -1,28 +1,30 @@
 
-add to $PATH:
-/usr/local/mysql-5.6.11-osx10.7-x86_64/bin
+add to $PATH: /usr/local/mysql-5.6.11-osx10.7-x86_64/bin
 
-cd /etc
-sudo nano paths
+sudo nano /etc/paths
 [ADD /usr/local/mysql-5.6.11-osx10.7-x86_64/bin THEN TYPE ^0 AND ^X]
+
+check current path setting:
 echo $PATH
 
 //////////////////////////////////////////////
 
+start MySQL server on Mac:
 sudo /usr/local/mysql-5.6.11-osx10.7-x86_64/bin/mysqld_safe 
 
-[OR]
-
+stop MySQL server on Mac:
 sudo /usr/local/mysql-5.6.11-osx10.7-x86_64/bin/mysqladmin shutdown
 
 //////////////////////////////////////////////
 
+create MySQL database and user for MoMA database:
 mysql -uroot
 CREATE USER 'pratim'@'localhost' IDENTIFIED BY 'SOME_PASSWORD';
 CREATE DATABASE exchange_db DEFAULT CHARACTER SET utf8;
 GRANT ALL PRIVILEGES ON exchange_db.* TO 'pratim'@'localhost';
 exit;
 
+log in to MySQL database as a user:
 mysql -u pratim -p
 SHOW GRANTS;
 USE exchange_db;
