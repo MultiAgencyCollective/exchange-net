@@ -1,6 +1,7 @@
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.util.Random;
 
 import models.GeneralData;
 import models.Project;
@@ -13,6 +14,8 @@ import play.test.Fixtures;
 @OnApplicationStart
 public class Bootstrap extends Job {
  
+    public static final Random MY_RANDOM = new Random();
+    
     @Override
     public final void doJob() {
         //Check if the database is empty
@@ -73,7 +76,7 @@ public class Bootstrap extends Job {
     
     private static String randomWordCommaList() {
         final int maxWords = 5;
-        final int wordCount = 1 + (int) (Math.random() * maxWords);
+        final int wordCount = 1 + MY_RANDOM.nextInt() * maxWords;
         final StringBuilder builder = new StringBuilder();
         for (int i = 0; i < wordCount; i++) {
             builder.append(randomWord());

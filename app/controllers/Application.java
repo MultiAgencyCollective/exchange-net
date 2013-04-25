@@ -16,7 +16,11 @@ public class Application extends Controller {
     
     public static void captcha(final String id) {
         final Images.Captcha myCaptcha = Images.captcha();
+        
+        // display text in black color
         String code = myCaptcha.getText("#000000");
+        
+        // store in cache for 5 minutes
         Cache.set(id, code, "5mn");
         renderBinary(myCaptcha);
         try {
@@ -65,9 +69,12 @@ public class Application extends Controller {
                     return;
                 }
                 
+                // don't allow more than 10,000 15 MB 
+                // files (max file size), or about 150 GB
                 final long maxImageBytes = 157286400000L;
                 if (
-                    myGeneralData.totalImagesSize + newProject.myImage.getFile().length()
+                    myGeneralData.totalImagesSize 
+                    + newProject.myImage.getFile().length()
                     > maxImageBytes
                 ) {
                     MyLogger.logTooMuchImageDataStored(requestIPAddress);
@@ -94,7 +101,8 @@ public class Application extends Controller {
                     submissionCount.value++;
                 }
                 
-                myGeneralData.totalImagesSize += newProject.myImage.getFile().length();
+                myGeneralData.totalImagesSize 
+                    += newProject.myImage.getFile().length();
                 myGeneralData.save();
             } else {
                 MyLogger.logIncompleteProjectSubmission(validation.errors());

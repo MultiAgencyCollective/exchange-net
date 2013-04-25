@@ -15,7 +15,7 @@ import play.data.validation.Check;
 import play.db.jpa.Blob;
 import play.db.jpa.JPABase;
 
-public final class MyChecks {
+public abstract class MyChecks {
 
     static final int MAX_NAME_LENGTH = 50;
     static final int MAX_LIST_LENGTH = 100;
@@ -23,7 +23,7 @@ public final class MyChecks {
     static final int MAX_DESCRIPTION_LENGTH = 5000;
 
     
-    public final class ProjectTitleCheck extends Check {
+    public static final class ProjectTitleCheck extends Check {
 
         @Override
         public boolean isSatisfied(
@@ -59,7 +59,7 @@ public final class MyChecks {
         
     }
     
-    public final class NameCheck extends Check {
+    public static final class NameCheck extends Check {
         
         @Override
         public boolean isSatisfied(
@@ -84,7 +84,7 @@ public final class MyChecks {
         }
     }
     
-    public final class ListCheck extends Check {
+    public static final class ListCheck extends Check {
         
         @Override
         public boolean isSatisfied(
@@ -109,7 +109,7 @@ public final class MyChecks {
         }
     }
     
-    public final class MessageCheck extends Check {
+    public static final class MessageCheck extends Check {
         
         @Override
         public boolean isSatisfied(
@@ -134,7 +134,7 @@ public final class MyChecks {
         }
     }
     
-    public final class DescriptionCheck extends Check {
+    public static final class DescriptionCheck extends Check {
         
         @Override
         public boolean isSatisfied(
@@ -159,7 +159,7 @@ public final class MyChecks {
         }
     }
     
-    public final class PhotoCheck extends Check {
+    public static final class PhotoCheck extends Check {
         
         @Override
         public boolean isSatisfied(
@@ -192,7 +192,7 @@ public final class MyChecks {
             try {
                 mimeType = detectMimeType(blobFile);
                 if (mimeType == null) {
-                    System.out.println("not an image: " + mimeType);
+                    System.out.println("not an image: null");
                     return false;
                 }
                 if (!mimeType.contains("image")) {
@@ -216,7 +216,9 @@ public final class MyChecks {
             return true;
         }
         
-        private String detectMimeType(final File file) throws IOException {
+        private static String detectMimeType(
+            final File file
+        ) throws IOException {
             TikaInputStream tikaIS = null;
             try {
                 tikaIS = TikaInputStream.get(file);
