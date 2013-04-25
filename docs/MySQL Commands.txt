@@ -9,7 +9,13 @@ echo $PATH
 
 //////////////////////////////////////////////
 
-start SQL server from System Preferences > MySQL
+sudo /usr/local/mysql-5.6.11-osx10.7-x86_64/bin/mysqld_safe 
+
+[OR]
+
+sudo /usr/local/mysql-5.6.11-osx10.7-x86_64/bin/mysqladmin shutdown
+
+//////////////////////////////////////////////
 
 mysql -uroot
 CREATE USER 'pratim'@'localhost' IDENTIFIED BY 'SOME_PASSWORD';
