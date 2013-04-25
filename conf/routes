@@ -3,14 +3,13 @@
 # ~~~~
 
 # Home page
-*       /                                       Application.index
-GET     /data					Application.data
+*       /                       Application.index
 
-*      /admin              			module:crud
+*      /admin                   module:crud
 
 # Map static resources from the /app/public folder to the /public path
-GET     /public/                                staticDir:public
-GET	/data/					staticDir:data
+GET     /public/                staticDir:public
+GET	    /data/                  staticDir:data
 
 # Catch all
-*       /{controller}/{action}                  {controller}.{action}
+*       /{controller}/{action}          {controller}.{action}

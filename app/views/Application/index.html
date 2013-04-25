@@ -41,15 +41,6 @@ Do the following if using your customized build of modernizr (http://www.moderni
     <p class="error">${flash.error}</p>
 #{/if}
 
-#{if projects}
-  <div>    
-    <h1>Projects</h1>
-	#{list projects, as:'project'}
-      #{simpleProject project:project /}
-    #{/list}
-  </div>
-#{/if}
-
 <div class="gridContainer clearfix">
   <h2>
     EXCHANGE ARCHIVE
@@ -77,8 +68,8 @@ Do the following if using your customized build of modernizr (http://www.moderni
     * <a href="https://ourgoods.org/blog/warhol_put_an_add_in_the_village_voice_saying_i_will_trade_art_for_anything" target="_blank">Vacuums are for cleaning, not for divine inspiration</a>.
   </p>
   <hr />
-  <h2>Add a Project</h2>
   
+  <h2>Add a Project</h2>
   #{form @Application.addProject(), enctype:'multipart/form-data'}
     <p>
       Project Title
@@ -143,6 +134,7 @@ Do the following if using your customized build of modernizr (http://www.moderni
     </p>
     <p>
       Add a message to the email 
+      <span style="color:#888888">(optional)</span>
       <textarea name="newProject.message" cols="100" rows="2" id="message" placeholder="Add a short message to the email" maxlength="500">${flash.message}</textarea>
       <span class="error">#{error 'newProject.message' /}</span>
     </p>

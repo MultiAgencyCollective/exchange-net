@@ -1,7 +1,6 @@
 package controllers;
 
 import java.io.IOException;
-import java.util.List;
 
 import models.GeneralData;
 import models.Project;
@@ -27,6 +26,7 @@ public class Application extends Controller {
         }
     }
     
+    /*
     public static void index() {
         final int maxToReturn = 100;
         final List<Project> projects = Project.find(
@@ -35,6 +35,12 @@ public class Application extends Controller {
         
         final String randomId = Codec.UUID();
         render(projects, randomId);
+    }
+    */
+    
+    public static void index() {
+        final String randomId = Codec.UUID();
+        render(randomId);
     }
     
     public static void addProject(
@@ -75,7 +81,7 @@ public class Application extends Controller {
                 doCancelProject(newProject);
             }
         } else {
-            System.out.println("code: " + code + ". randomId: " + randomId);
+            flash.put("myCode", "Invalid code. Please try again.");
             doCancelProject(newProject);
         }
 
@@ -93,6 +99,33 @@ public class Application extends Controller {
         index();
     }
     
+    private static void doCancelProject(
+        final Project toCancel
+    ) {
+        if (toCancel != null) {
+            deleteProject(toCancel);
+        }
+        
+        if (toCancel != null) {
+            flash.put("projectTitle", toCancel.projectTitle);
+            flash.put("artist", toCancel.artist);
+            flash.put("description", toCancel.description);
+            flash.put("tags", toCancel.tags);
+            flash.put("livingInspirations", toCancel.livingInspirations);
+            flash.put("pastInspirations", toCancel.pastInspirations);
+            flash.put(
+                "nonArtistInspirations", 
+                toCancel.nonArtistInspirations
+            );
+            flash.put("emails", toCancel.emails);
+            flash.put("message", toCancel.message);
+        }
+        
+        final String randomId = Codec.UUID();
+        render("Application/index.html", randomId);
+    }
+    
+    /*
     private static void doCancelProject(final Project toCancel) {
         if (toCancel != null) {
             deleteProject(toCancel);
@@ -119,7 +152,9 @@ public class Application extends Controller {
         
         render("Application/index.html", projects);
     }
+    */
     
+    /*
     public static void data() {
         final int maxToReturn = 100;
         List<Project> projects = Project.find(
@@ -131,6 +166,7 @@ public class Application extends Controller {
         }
         render(projects);
     }
+    */
     
     public static void getImage(final long id) {
         Project project = Project.findById(id);
