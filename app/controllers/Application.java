@@ -1,9 +1,13 @@
 package controllers;
 
+import java.io.IOException;
 import java.util.List;
 
 import models.GeneralData;
 import models.Project;
+import play.cache.Cache;
+import play.libs.Codec;
+import play.libs.Images;
 import play.mvc.Controller;
 
 
@@ -11,47 +15,70 @@ public class Application extends Controller {
     
     public static final int MAX_PROJECTS_PER_IP_ADDRESS = 1000;
     
+    public static void captcha(final String id) {
+        final Images.Captcha myCaptcha = Images.captcha();
+        String code = myCaptcha.getText("#000000");
+        Cache.set(id, code, "5mn");
+        renderBinary(myCaptcha);
+        try {
+            myCaptcha.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    
     public static void index() {
         final int maxToReturn = 100;
-        List<Project> projects = Project.find(
+        final List<Project> projects = Project.find(
             "order by projectTitle asc"
         ).fetch(maxToReturn);
         
-        render(projects);
+        final String randomId = Codec.UUID();
+        render(projects, randomId);
     }
     
-    public static void addProject(final Project newProject) {        
-        if (validation.valid(newProject).ok) {
-            final String requestIPAddress = request.remoteAddress;
-            final GeneralData myGeneralData = 
-                (GeneralData) GeneralData.findAll().get(0);
-            final models.Number submissionCount = 
-                myGeneralData.ipToSubmissionCount.get(requestIPAddress);
-            if (
-                submissionCount != null 
-                && submissionCount.value >= MAX_PROJECTS_PER_IP_ADDRESS
-            ) {
-                MyLogger.logTooManyProjectsSubmitted(requestIPAddress);
-                flash.error("Too many projects submitted.");
-                doCancelProject(newProject);
-                return;
-            }
-            
-            doAddProject(newProject, requestIPAddress);
-            if (submissionCount == null) {
-                final models.Number one = new models.Number();
-                one.value = 1;
-                myGeneralData.ipToSubmissionCount.put(requestIPAddress, one);
+    public static void addProject(
+        final Project newProject,
+        final String code,
+        final String randomId
+    ) {        
+        if (validation.equals(code, Cache.get(randomId)).ok) {
+            if (validation.valid(newProject).ok) {
+                final String requestIPAddress = request.remoteAddress;
+                final GeneralData myGeneralData = 
+                    (GeneralData) GeneralData.findAll().get(0);
+                final models.Number submissionCount = 
+                    myGeneralData.ipToSubmissionCount.get(requestIPAddress);
+                if (
+                    submissionCount != null 
+                    && submissionCount.value >= MAX_PROJECTS_PER_IP_ADDRESS
+                ) {
+                    MyLogger.logTooManyProjectsSubmitted(requestIPAddress);
+                    flash.error("Too many projects submitted.");
+                    doCancelProject(newProject);
+                    return;
+                }
+                
+                doAddProject(newProject, requestIPAddress);
+                if (submissionCount == null) {
+                    final models.Number one = new models.Number();
+                    one.value = 1;
+                    myGeneralData.ipToSubmissionCount.
+                        put(requestIPAddress, one);
+                } else {
+                    submissionCount.value++;
+                }
+                
+                myGeneralData.save();
             } else {
-                submissionCount.value++;
+                MyLogger.logIncompleteProjectSubmission(validation.errors());
+                doCancelProject(newProject);
             }
-            
-            myGeneralData.save();
         } else {
-            flash.error("Must complete all fields");
-            MyLogger.logIncompleteProjectSubmission(validation.errors());
+            System.out.println("code: " + code + ". randomId: " + randomId);
             doCancelProject(newProject);
         }
+
     }
     
     private static void doAddProject(
@@ -75,7 +102,6 @@ public class Application extends Controller {
         List<Project> projects = Project.find(
             "order by projectTitle asc"
         ).fetch(maxToReturn);
-        flash.clear();
         if (toCancel != null) {
             flash.put("projectTitle", toCancel.projectTitle);
             flash.put("artist", toCancel.artist);

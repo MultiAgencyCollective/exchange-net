@@ -38,7 +38,7 @@ Do the following if using your customized build of modernizr (http://www.moderni
 #{/if}
 
 #{if flash.error}
-    <p class="error">${flash.success}</p>
+    <p class="error">${flash.error}</p>
 #{/if}
 
 #{if projects}
@@ -147,8 +147,16 @@ Do the following if using your customized build of modernizr (http://www.moderni
       <span class="error">#{error 'newProject.message' /}</span>
     </p>
     <p>
+      Please type the code below:
+      <br />
+      <img src="@{Application.captcha(randomId)}" />
+      <br />
+      <input type="text" name="code" id="code" size="18" value="" />
+      <input type="hidden" name="randomId" id="randomId" value="${randomId}" />
+      <span class="error">${flash.myCode}</span>
+    </p>
+    <p>
       <input type="submit" name="submit" id="submit" value="Submit">
-      <input type="submit" name="cancel" id="cancel" value="Cancel">
     </p>
    #{/}
   <p>&nbsp;</p>
