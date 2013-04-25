@@ -65,6 +65,25 @@ public class Application extends Controller {
                     return;
                 }
                 
+                final long maxImageBytes = 157286400000L;
+                if (
+                    myGeneralData.totalImagesSize + newProject.myImage.getFile().length()
+                    > maxImageBytes
+                ) {
+                    MyLogger.logTooMuchImageDataStored(requestIPAddress);
+                    flash.error("Too much image data already submitted.");
+                    doCancelProject(newProject);
+                    return;
+                }
+                
+                final int maxProjects = 10000;
+                if (Project.count() >= maxProjects) {
+                    MyLogger.logTooManyProjectsExist(requestIPAddress);
+                    flash.error("Too many projects exist.");
+                    doCancelProject(newProject);
+                    return;
+                }
+                
                 doAddProject(newProject, requestIPAddress);
                 if (submissionCount == null) {
                     final models.Number one = new models.Number();
@@ -75,6 +94,7 @@ public class Application extends Controller {
                     submissionCount.value++;
                 }
                 
+                myGeneralData.totalImagesSize += newProject.myImage.getFile().length();
                 myGeneralData.save();
             } else {
                 MyLogger.logIncompleteProjectSubmission(validation.errors());

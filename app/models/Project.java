@@ -34,7 +34,7 @@ public final class Project extends Model {
     public Blob myImage;
     
     @Required(message = PLEASE_ENTER_A + " description.")
-    @CheckWith(MyChecks.NameCheck.class)
+    @CheckWith(MyChecks.DescriptionCheck.class)
     @Lob 
     public String description;
     

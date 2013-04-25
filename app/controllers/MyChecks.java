@@ -17,6 +17,12 @@ import play.db.jpa.JPABase;
 
 public final class MyChecks {
 
+    static final int MAX_NAME_LENGTH = 50;
+    static final int MAX_LIST_LENGTH = 100;
+    static final int MAX_MESSAGE_LENGTH = 500;
+    static final int MAX_DESCRIPTION_LENGTH = 5000;
+
+    
     public final class ProjectTitleCheck extends Check {
 
         @Override
@@ -32,7 +38,10 @@ public final class MyChecks {
                 return false;
             }
             final String titleString = (String) title;
-            if (titleString.length() == 0) {
+            if (
+                titleString.length() == 0 
+                || titleString.length() > MAX_NAME_LENGTH
+            ) {
                 return false;
             }          
             
@@ -64,7 +73,85 @@ public final class MyChecks {
                 return false;
             }
             final String nameString = (String) name;
-            if (nameString.length() == 0) {
+            if (
+                nameString.length() == 0 
+                || nameString.length() > MAX_NAME_LENGTH
+            ) {
+                return false;
+            }
+            
+            return true;
+        }
+    }
+    
+    public final class ListCheck extends Check {
+        
+        @Override
+        public boolean isSatisfied(
+            final Object project,
+            final Object list
+        ) {
+            if (list == null) {
+                return false;
+            }
+            if (!(list instanceof String)) {
+                return false;
+            }
+            final String listString = (String) list;
+            if (
+                listString.length() == 0 
+                || listString.length() > MAX_LIST_LENGTH
+            ) {
+                return false;
+            }
+            
+            return true;
+        }
+    }
+    
+    public final class MessageCheck extends Check {
+        
+        @Override
+        public boolean isSatisfied(
+            final Object project,
+            final Object message
+        ) {
+            if (message == null) {
+                return false;
+            }
+            if (!(message instanceof String)) {
+                return false;
+            }
+            final String messageString = (String) message;
+            if (
+                messageString.length() == 0 
+                || messageString.length() > MAX_MESSAGE_LENGTH
+            ) {
+                return false;
+            }
+            
+            return true;
+        }
+    }
+    
+    public final class DescriptionCheck extends Check {
+        
+        @Override
+        public boolean isSatisfied(
+            final Object project,
+            final Object description
+        ) {
+            if (description == null) {
+                return false;
+            }
+            if (!(description instanceof String)) {
+                return false;
+            }
+            final String descriptionString = (String) description;
+            if (
+                descriptionString.length() == 0 
+                || descriptionString.length() > MAX_DESCRIPTION_LENGTH
+            ) {
                 return false;
             }
             

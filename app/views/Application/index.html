@@ -143,7 +143,7 @@ Do the following if using your customized build of modernizr (http://www.moderni
       <br />
       <img src="@{Application.captcha(randomId)}" />
       <br />
-      <input type="text" name="code" id="code" size="18" value="" />
+      <input type="text" name="code" id="code" size="18" value="" maxlength="50"/>
       <input type="hidden" name="randomId" id="randomId" value="${randomId}" />
       <span class="error">${flash.myCode}</span>
     </p>

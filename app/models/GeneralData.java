@@ -22,8 +22,11 @@ public class GeneralData extends Model {
     @OneToMany(cascade = CascadeType.ALL)
     public Set<Token> sentEmailAddresses;
     
+    public long totalImagesSize;
+    
     public GeneralData() {
         this.ipToSubmissionCount = new HashMap<String, Number>();
         this.sentEmailAddresses = new HashSet<Token>();
+        this.totalImagesSize = 0L;
     }
 }
