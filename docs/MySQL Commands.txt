@@ -1,5 +1,6 @@
 
 add to $PATH: /usr/local/mysql-5.6.11-osx10.7-x86_64/bin
+(also add for play: /applications/utilities/play-1.2.5)
 
 sudo nano /etc/paths
 [ADD /usr/local/mysql-5.6.11-osx10.7-x86_64/bin THEN TYPE ^0 AND ^X]
@@ -21,6 +22,7 @@ create MySQL database and user for MoMA database:
 mysql -uroot -p [enter password]
 CREATE USER 'pratim'@'localhost' IDENTIFIED BY 'SOME_PASSWORD';
 CREATE DATABASE exchange_db DEFAULT CHARACTER SET utf8;
+SHOW DATABASES;
 GRANT ALL PRIVILEGES ON exchange_db.* TO 'pratim'@'localhost';
 exit;
 
@@ -32,11 +34,15 @@ exit;
 
 delete default databases:
 SHOW DATABASES;
+DROP DATABASE TEST;
 
 delete default users:
 SELECT User FROM mysql.user;
+DELETE FROM mysql.user WHERE User='';
+flush privileges;
 
 update mysql.user set user="secret_root_username" where user="root";
+update mysql.user set password=PASSWORD("NEWPASSWORD") where user='secret_root_username';
 flush privileges;
 
 # you must now use "-u secret_root_username" instead of "-uroot"

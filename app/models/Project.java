@@ -56,30 +56,30 @@ public final class Project extends Model {
     
     public String emails;
     
-    @OneToMany(mappedBy="id", cascade=CascadeType.ALL)
-    public Set<Token> tagSet;
+    @OneToMany(mappedBy="project", cascade=CascadeType.ALL)
+    public Set<ProjectToken> tagSet;
     
-    @OneToMany(mappedBy="id", cascade=CascadeType.ALL)
-    public Set<Token> livingInspirationSet;
+    @OneToMany(mappedBy="project", cascade=CascadeType.ALL)
+    public Set<ProjectToken> livingInspirationSet;
     
-    @OneToMany(mappedBy="id", cascade=CascadeType.ALL)
-    public Set<Token> pastInspirationSet;
+    @OneToMany(mappedBy="project", cascade=CascadeType.ALL)
+    public Set<ProjectToken> pastInspirationSet;
     
-    @OneToMany(mappedBy="id", cascade=CascadeType.ALL)
-    public Set<Token> nonArtistInspirationSet;
+    @OneToMany(mappedBy="project", cascade=CascadeType.ALL)
+    public Set<ProjectToken> nonArtistInspirationSet;
         
-    @OneToMany(mappedBy="id", cascade=CascadeType.ALL)
-    public Set<Token> emailSet;
+    @OneToMany(mappedBy="project", cascade=CascadeType.ALL)
+    public Set<ProjectToken> emailSet;
     
     @Lob
     public String message;
     
     public Project() {
-        this.tagSet = new HashSet<Token>();
-        this.livingInspirationSet = new HashSet<Token>();
-        this.pastInspirationSet = new HashSet<Token>();
-        this.nonArtistInspirationSet = new HashSet<Token>();
-        this.emailSet = new HashSet<Token>();
+        this.tagSet = new HashSet<ProjectToken>();
+        this.livingInspirationSet = new HashSet<ProjectToken>();
+        this.pastInspirationSet = new HashSet<ProjectToken>();
+        this.nonArtistInspirationSet = new HashSet<ProjectToken>();
+        this.emailSet = new HashSet<ProjectToken>();
     }
     
     public Project(
@@ -105,11 +105,11 @@ public final class Project extends Model {
         this.emails = emails;
         this.message = message;
         
-        this.tagSet = new HashSet<Token>();
-        this.livingInspirationSet = new HashSet<Token>();
-        this.pastInspirationSet = new HashSet<Token>();
-        this.nonArtistInspirationSet = new HashSet<Token>();
-        this.emailSet = new HashSet<Token>();
+        this.tagSet = new HashSet<ProjectToken>();
+        this.livingInspirationSet = new HashSet<ProjectToken>();
+        this.pastInspirationSet = new HashSet<ProjectToken>();
+        this.nonArtistInspirationSet = new HashSet<ProjectToken>();
+        this.emailSet = new HashSet<ProjectToken>();
     }
     
     public void initializeSets() {
@@ -130,19 +130,23 @@ public final class Project extends Model {
         initializeSet(this.nonArtistInspirationSet, this.nonArtistInspirations);
         if (this.emails != null && this.emails.length() != 0) {
             initializeSet(this.emailSet, this.emails);
+        } else {
+            this.emailSet.clear();
         }
     }
     
     private static void initializeSet(
-        final Set<Token> targetSet,
+        final Set<ProjectToken> targetSet,
         final String source
     ) {
         assert targetSet != null && source != null;
         targetSet.clear();
         for (final String commaToken: source.split(",")) {
             if (isValidToken(commaToken)) {
-                final Token newToken = new Token();
-                newToken.text = commaToken;
+                if (commaToken == null || commaToken.length() == 0) {
+                    System.out.println("ERROR: invalid token");
+                }
+                final ProjectToken newToken = new ProjectToken(commaToken);
                 targetSet.add(newToken);
             }
         }

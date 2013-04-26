@@ -1,9 +1,14 @@
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.Random;
 
 import models.GeneralData;
 import models.Project;
+import play.db.jpa.Blob;
 import play.jobs.Job;
 import play.jobs.OnApplicationStart;
+import play.libs.MimeTypes;
 import play.test.Fixtures;
  
 @OnApplicationStart
@@ -18,12 +23,7 @@ public class Bootstrap extends Job {
             System.err.println("REMOVING ALL DATABASE ENTRIES....");
             Fixtures.deleteDatabase();
             
-            /*
-            System.err.println(
-                "About to create and add new seed data to database"
-            );
-                    
-            final int numberOfRecords = 20;
+            final int numberOfRecords = 0;
             for (int i = 0; i < numberOfRecords; i++) {
                 final Blob imageBlob = new Blob();
                 final File imageFile = randomImageFile();
@@ -51,13 +51,41 @@ public class Bootstrap extends Job {
                 project.save();
             }
             
-            */
+            
             final GeneralData generalData = new GeneralData();
             generalData.save();
         }
     }
     
-    /*
+    private static void addTestProject() {
+        final Blob imageBlob = new Blob();
+        final File imageFile =  new File("/Users/masonwright/dropbox/photos/badlands trip/95970001.jpg");
+        try {
+            imageBlob.set(
+                new FileInputStream(imageFile), 
+                MimeTypes.getContentType(imageFile.getName())
+            );
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        final String testString = "exchange_db_test";
+        Project project = new Project(
+            testString, // projectTitle
+            testString, // artist
+            imageBlob, // myImage
+            testString, // description
+            testString, // tags
+            testString, // livingInspirations
+            testString, // pastInspirations
+            testString, // nonArtistInspirations
+            testString, // emails
+            testString // message
+        );
+        
+        project.save();
+    }
+    
+    
     private static File randomImageFile() {
         final String folder = 
             "/Users/masonwright/dropbox/photos/badlands trip/";
@@ -75,7 +103,7 @@ public class Bootstrap extends Job {
     
     private static String randomWordCommaList() {
         final int maxWords = 5;
-        final int wordCount = 1 + MY_RANDOM.nextInt() * maxWords;
+        final int wordCount = 1 + MY_RANDOM.nextInt(maxWords);
         final StringBuilder builder = new StringBuilder();
         for (int i = 0; i < wordCount; i++) {
             builder.append(randomWord());
@@ -91,5 +119,5 @@ public class Bootstrap extends Job {
         String[] words = {"foo", "bar", "baz", "bat", "qux", "quux"};
         return words[(int) (Math.random() * words.length)];
     }
-    */
+    
 }
