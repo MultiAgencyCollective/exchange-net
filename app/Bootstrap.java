@@ -1,14 +1,9 @@
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.util.Random;
 
 import models.GeneralData;
 import models.Project;
-import play.db.jpa.Blob;
 import play.jobs.Job;
 import play.jobs.OnApplicationStart;
-import play.libs.MimeTypes;
 import play.test.Fixtures;
  
 @OnApplicationStart
@@ -22,6 +17,8 @@ public class Bootstrap extends Job {
         if (Project.count() == 0) {
             System.err.println("REMOVING ALL DATABASE ENTRIES....");
             Fixtures.deleteDatabase();
+            
+            /*
             System.err.println(
                 "About to create and add new seed data to database"
             );
@@ -54,11 +51,13 @@ public class Bootstrap extends Job {
                 project.save();
             }
             
+            */
             final GeneralData generalData = new GeneralData();
             generalData.save();
         }
     }
     
+    /*
     private static File randomImageFile() {
         final String folder = 
             "/Users/masonwright/dropbox/photos/badlands trip/";
@@ -92,4 +91,5 @@ public class Bootstrap extends Job {
         String[] words = {"foo", "bar", "baz", "bat", "qux", "quux"};
         return words[(int) (Math.random() * words.length)];
     }
+    */
 }

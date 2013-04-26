@@ -29,3 +29,31 @@ mysql -u pratim -p
 SHOW GRANTS;
 USE exchange_db;
 exit;
+
+delete default databases:
+SHOW DATABASES;
+
+delete default users:
+SELECT User FROM mysql.user;
+
+update mysql.user set user="secret_root_username" where user="root";
+flush privileges;
+
+# you must now use "-u secret_root_username" instead of "-uroot"
+# for example: sudo /usr/local/mysql-5.6.11-osx10.7-x86_64/bin/mysqladmin shutdown -u secret_root_username -p
+
+delete mysql history:
+cat /dev/null > ~/.mysql_history
+
+consider preventing mysql history file from ever updating:
+rm $HOME/.mysql_history
+$ ln -s /dev/null $HOME/.mysql_history
+
+//////////////////////////////////////////////
+
+sudo cp /usr/local/mysql/support-files/my-default.cnf /etc/my.cnf
+
+sudo nano /etc/my.cnf:
+
+[mysqld]
+skip-networking
