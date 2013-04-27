@@ -57,6 +57,10 @@ $ ln -s /dev/null $HOME/.mysql_history
 
 //////////////////////////////////////////////
 
+Mac firewall must be configured to allow connections on Java, or Play will not work except through localhost.
+
+//////////////////////////////////////////////
+
 sudo cp /usr/local/mysql/support-files/my-default.cnf /etc/my.cnf
 
 sudo nano /etc/my.cnf:
