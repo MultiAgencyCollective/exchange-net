@@ -56,24 +56,26 @@ public final class Project extends Model {
     
     public String emails;
     
-    @OneToMany(mappedBy="project", cascade=CascadeType.ALL)
-    public Set<ProjectToken> tagSet;
-    
-    @OneToMany(mappedBy="project", cascade=CascadeType.ALL)
-    public Set<ProjectToken> livingInspirationSet;
-    
-    @OneToMany(mappedBy="project", cascade=CascadeType.ALL)
-    public Set<ProjectToken> pastInspirationSet;
-    
-    @OneToMany(mappedBy="project", cascade=CascadeType.ALL)
-    public Set<ProjectToken> nonArtistInspirationSet;
-        
-    @OneToMany(mappedBy="project", cascade=CascadeType.ALL)
-    public Set<ProjectToken> emailSet;
+    public String sender;
     
     @Lob
     public String message;
     
+    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
+    public Set<ProjectToken> tagSet;
+    
+    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
+    public Set<ProjectToken> livingInspirationSet;
+    
+    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
+    public Set<ProjectToken> pastInspirationSet;
+    
+    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
+    public Set<ProjectToken> nonArtistInspirationSet;
+        
+    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
+    public Set<ProjectToken> emailSet;
+
     public Project() {
         this.tagSet = new HashSet<ProjectToken>();
         this.livingInspirationSet = new HashSet<ProjectToken>();
@@ -92,6 +94,7 @@ public final class Project extends Model {
         final String pastInspirations,
         final String nonArtistInspirations,
         final String emails,
+        final String sender,
         final String message 
     ) {
         this.projectTitle = projectTitle;
@@ -103,6 +106,7 @@ public final class Project extends Model {
         this.pastInspirations = pastInspirations;
         this.nonArtistInspirations = nonArtistInspirations;
         this.emails = emails;
+        this.sender = sender;
         this.message = message;
         
         this.tagSet = new HashSet<ProjectToken>();
@@ -178,6 +182,8 @@ public final class Project extends Model {
         builder.append(this.nonArtistInspirationSet);
         builder.append(", emailSet=");
         builder.append(this.emailSet);
+        builder.append(", sender=");
+        builder.append(this.sender);
         builder.append(", message=");
         builder.append(this.message);
         builder.append("]");

@@ -156,6 +156,7 @@ public class Application extends Controller {
                 toCancel.nonArtistInspirations
             );
             flash.put("emails", toCancel.emails);
+            flash.put("sender", toCancel.sender);
             flash.put("message", toCancel.message);
         }
         

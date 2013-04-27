@@ -11,7 +11,7 @@ public final class GeneralDataToken extends Model {
 
     private static final long serialVersionUID = -3394657858296880119L;
 
-    @ManyToOne(targetEntity=GeneralData.class)
+    @ManyToOne(targetEntity = GeneralData.class)
     public GeneralData generalData;
     
     @Required

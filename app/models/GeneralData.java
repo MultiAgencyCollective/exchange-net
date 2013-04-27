@@ -19,7 +19,7 @@ public class GeneralData extends Model {
     @OneToMany(cascade = CascadeType.ALL)
     public Map<String, Number> ipToSubmissionCount;
     
-    @OneToMany(mappedBy="generalData", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "generalData", cascade = CascadeType.ALL)
     public Set<GeneralDataToken> sentEmailAddresses;
     
     public long totalImagesSize;

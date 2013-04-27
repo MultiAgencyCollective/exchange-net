@@ -1,14 +1,9 @@
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.util.Random;
 
 import models.GeneralData;
 import models.Project;
-import play.db.jpa.Blob;
 import play.jobs.Job;
 import play.jobs.OnApplicationStart;
-import play.libs.MimeTypes;
 import play.test.Fixtures;
  
 @OnApplicationStart
@@ -18,48 +13,57 @@ public class Bootstrap extends Job {
     
     @Override
     public final void doJob() {
-        //Check if the database is empty
         if (Project.count() == 0) {
-            System.err.println("REMOVING ALL DATABASE ENTRIES....");
+            System.err.println("Removing all database entries.");
             Fixtures.deleteDatabase();
-            
-            final int numberOfRecords = 0;
-            for (int i = 0; i < numberOfRecords; i++) {
-                final Blob imageBlob = new Blob();
-                final File imageFile = randomImageFile();
-                try {
-                    imageBlob.set(
-                        new FileInputStream(imageFile), 
-                        MimeTypes.getContentType(imageFile.getName())
-                    );
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                }
-                Project project = new Project(
-                    randomWord(), // projectTitle
-                    randomWord(), // artist
-                    imageBlob, // myImage
-                    randomWord(), // description
-                    randomWordCommaList(), // tags
-                    randomWordCommaList(), // livingInspirations
-                    randomWordCommaList(), // pastInspirations
-                    randomWordCommaList(), // nonArtistInspirations
-                    randomWordCommaList(), // emails
-                    randomWord() // message
-                );
-                
-                project.save();
-            }
-            
-            
+        }
+        
+        if (GeneralData.count() == 0) {
             final GeneralData generalData = new GeneralData();
             generalData.save();
         }
     }
     
+    /*
+    private static void populateProjectDatabase() {
+        final int numberOfRecords = 0;
+        for (int i = 0; i < numberOfRecords; i++) {
+            final Blob imageBlob = new Blob();
+            final File imageFile = randomImageFile();
+            try {
+                imageBlob.set(
+                    new FileInputStream(imageFile), 
+                    MimeTypes.getContentType(imageFile.getName())
+                );
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+            Project project = new Project(
+                randomWord(), // projectTitle
+                randomWord(), // artist
+                imageBlob, // myImage
+                randomWord(), // description
+                randomWordCommaList(), // tags
+                randomWordCommaList(), // livingInspirations
+                randomWordCommaList(), // pastInspirations
+                randomWordCommaList(), // nonArtistInspirations
+                randomWordCommaList(), // emails
+                randomWord(), // sender
+                randomWord() // message
+            );
+            
+            project.save();
+        }
+    }
+    */
+    
+    /*
     private static void addTestProject() {
         final Blob imageBlob = new Blob();
-        final File imageFile =  new File("/Users/masonwright/dropbox/photos/badlands trip/95970001.jpg");
+        final File imageFile =  
+            new File(
+                "/Users/masonwright/dropbox/photos/badlands trip/95970001.jpg"
+            );
         try {
             imageBlob.set(
                 new FileInputStream(imageFile), 
@@ -79,13 +83,15 @@ public class Bootstrap extends Job {
             testString, // pastInspirations
             testString, // nonArtistInspirations
             testString, // emails
+            testString, // sender
             testString // message
         );
         
         project.save();
     }
+    */
     
-    
+    /*
     private static File randomImageFile() {
         final String folder = 
             "/Users/masonwright/dropbox/photos/badlands trip/";
@@ -119,5 +125,5 @@ public class Bootstrap extends Job {
         String[] words = {"foo", "bar", "baz", "bat", "qux", "quux"};
         return words[(int) (Math.random() * words.length)];
     }
-    
+    */
 }

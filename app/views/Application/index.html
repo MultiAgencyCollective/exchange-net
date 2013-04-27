@@ -132,6 +132,13 @@ Do the following if using your customized build of modernizr (http://www.moderni
       <span class="error">#{error 'newProject.emails' /}</span>
     </p>
     <p>
+      Sender name on the email
+      <span style="color:#888888">(optional)</span>
+      <br />
+      <input type="text" name="newProject.sender" id="sender" placeholder="Enter a sender's name for the email" value="${flash.sender}" maxlength="50">
+      <span class="error">#{error 'newProject.sender' /}</span>
+    </p>
+    <p>
       Add a message to the email 
       <span style="color:#888888">(optional)</span>
       <textarea name="newProject.message" cols="100" rows="2" id="message" placeholder="Add a short message to the email" maxlength="500">${flash.message}</textarea>

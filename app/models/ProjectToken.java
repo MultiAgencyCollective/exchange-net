@@ -11,7 +11,7 @@ public final class ProjectToken extends Model {
 
     private static final long serialVersionUID = -3394657858296880119L;
 
-    @ManyToOne(targetEntity=Project.class)
+    @ManyToOne(targetEntity = Project.class)
     public Project project;
     
     @Required
