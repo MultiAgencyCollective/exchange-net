@@ -9,8 +9,9 @@ cd to play project directory
 rm server.pid
 
 2. Start Play production server:
-play start
+sudo play start
 [note the pid of the server process. you'll use it to stop the server. it is also shown in the server.pid file in the play project directory.]
+[you must start as admin using sudo, if you want Play to listen on port 80, or any port below 1024.]
 
 ///////////////////////////////
 
@@ -21,7 +22,7 @@ Stopping Production:
 [or list the active processes:]
 ps aux | less
 [press 'q' to exit the list of active processes]
-kill [the ID you found]
+sudo kill [the ID you found]
 
 2. Stop MySQL server:
 sudo /usr/local/mysql-5.6.11-osx10.7-x86_64/bin/mysqladmin shutdown
