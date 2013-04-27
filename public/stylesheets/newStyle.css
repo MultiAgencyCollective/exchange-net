@@ -211,6 +211,10 @@ input:invalid, textarea:invalid { background-color: #f0dddd; }
 
 .error { color:#ff0000; }
 
+#successBox { border:2px solid; border-radius:25px; height:40px; width:550px; text-align: center; font-size: 32px; background-color:#00ff00; }
+
+#errorBox { border:2px solid; border-color: #000000; border-radius:25px; height:30px; width:550px; text-align: center; font-size: 24px; background-color:#ff0000; color: #ffffff; font-weight:bold; }
+
 /* =============================================================================
    Tables
    ========================================================================== */
@@ -222,21 +226,6 @@ td { vertical-align: top; }
 /* ==|== primary styles =====================================================
    Author: 
    ========================================================================== */
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 /* ==|== non-semantic helper classes ========================================
    Please define your styles before this section.

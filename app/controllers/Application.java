@@ -47,6 +47,10 @@ public class Application extends Controller {
         render(randomId);
     }
     
+    public static void projectAdded() {
+        render();
+    }
+    
     public static void addProject(
         final Project newProject,
         final String code,
@@ -106,13 +110,14 @@ public class Application extends Controller {
                 myGeneralData.save();
             } else {
                 MyLogger.logIncompleteProjectSubmission(validation.errors());
+                flash.error("Submission is not valid.");
                 doCancelProject(newProject);
             }
         } else {
             flash.put("myCode", "Invalid code. Please try again.");
+            flash.error("Code is not valid.");
             doCancelProject(newProject);
         }
-
     }
     
     private static void doAddProject(
@@ -123,8 +128,13 @@ public class Application extends Controller {
         toAdd.initializeSets();
         toAdd.save();
         MyLogger.logProjectAdded(toAdd, ipAddress, Project.count());
+        
+        /*
         flash.success("Thanks for posting");
         index();
+        */
+        
+        projectAdded();
     }
     
     private static void doCancelProject(

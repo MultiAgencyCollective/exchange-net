@@ -62,4 +62,6 @@ sudo cp /usr/local/mysql/support-files/my-default.cnf /etc/my.cnf
 sudo nano /etc/my.cnf:
 
 [mysqld]
-skip-networking
+
+[allow networking as usual; do NOT add the "skip-networking" command.]
+

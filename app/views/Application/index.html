@@ -33,36 +33,35 @@ Do the following if using your customized build of modernizr (http://www.moderni
 
 <body>
 
-#{if flash.success}
-    <p class="success">${flash.success}</p>
-#{/if}
-
-#{if flash.error}
-    <p class="error">${flash.error}</p>
-#{/if}
-
 <div class="gridContainer clearfix">
   <h2>
     EXCHANGE ARCHIVE
     <br />
     Artists do not create work in a vacuum.*
   </h2>
+  #{if flash.error}
+    <div id="errorBox">
+      Your form contains errors. Please try again.
+    </div>
+  #{/if}
+  #{if !flash.error}
+    <h3>
+      All artists work in a dialog with others. Exchange Archive supports
+      <br />
+      <strong>artistic dialog</strong> 
+      by showing the inspirations that flow between projects.
+    </h3>
+    <h3>
+      Please <strong>add your work</strong> to the archive.
+    </h3>
+    <h3>
+       <strong>Thank you!</strong>
+       <br />
+       -- Caroline Woolard, MultiAgency Collective, 
+       <a href="http://www.moma.org/learn/" target="_blank">MoMA LEARN</a>
+    </h3>
+  #{/if}
   <br />
-  <h3>
-    All artists work in a dialog with others. Exchange Archive supports
-    <br />
-    <strong>artistic dialog</strong> 
-    by showing the inspirations that flow between projects.
-  </h3>
-  <h3>
-    Please <strong>add your work</strong> to the archive.
-  </h3>
-  <h3>
-     <strong>Thank you!</strong>
-     <br />
-     -- Caroline Woolard, MultiAgency Collective, 
-     <a href="http://www.moma.org/learn/" target="_blank">MoMA LEARN</a>
-  </h3>
   <br />
   <p>
     * <a href="https://ourgoods.org/blog/warhol_put_an_add_in_the_village_voice_saying_i_will_trade_art_for_anything" target="_blank">Vacuums are for cleaning, not for divine inspiration</a>.
