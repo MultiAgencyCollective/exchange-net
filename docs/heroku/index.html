@@ -87,6 +87,9 @@ Do the following if using your customized build of modernizr (http://www.moderni
       <input type="file" name="newProject.myImage" id="myImage" value="${flash.myImage}">
       <br />
       <span class="error">#{error 'newProject.myImage' /}</span>
+      #{if flash.error}
+         <span class="error">RE-UPLOAD IMAGE</span>
+      #{/if}
     </p>
     <p>
       Description
@@ -144,7 +147,7 @@ Do the following if using your customized build of modernizr (http://www.moderni
       <span class="error">#{error 'newProject.message' /}</span>
     </p>
     <p>
-      Please type the code below:
+      Please type the code below. Code is case sensitive.
       <br />
       <img src="@{Application.captcha(randomId)}" />
       <br />

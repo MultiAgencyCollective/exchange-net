@@ -114,7 +114,7 @@ public class Application extends Controller {
                 doCancelProject(newProject);
             }
         } else {
-            flash.put("myCode", "Invalid code. Please try again.");
+            flash.put("myCode", "Invalid code. Re-upload your photo, and try again.");
             flash.error("Code is not valid.");
             doCancelProject(newProject);
         }
