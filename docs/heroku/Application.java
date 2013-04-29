@@ -1,6 +1,7 @@
 package controllers;
 
 import java.io.IOException;
+import java.util.List;
 
 import models.GeneralData;
 import models.Project;
@@ -19,7 +20,6 @@ public class Application extends Controller {
         
         // display text in black color
         String code = myCaptcha.getText("#000000");
-        
         // store in cache for 5 minutes
         Cache.set(id, code, "5mn");
         renderBinary(myCaptcha);
@@ -194,9 +194,9 @@ public class Application extends Controller {
     }
     */
     
-    /*
-    public static void data() {
-        final int maxToReturn = 100;
+    
+    public static void data123() {
+        final int maxToReturn = 10;
         List<Project> projects = Project.find(
             "order by projectTitle asc"
         ).fetch(maxToReturn);
@@ -206,7 +206,7 @@ public class Application extends Controller {
         }
         render(projects);
     }
-    */
+    
     
     public static void getAnyImage() {
         if (Project.count() == 0) {
@@ -225,7 +225,7 @@ public class Application extends Controller {
         renderBinary(project.myImage.get());
     }
     
-    /*
+    
     public static void getImage(final long id) {
         Project project = Project.findById(id);
         if (project == null) {
@@ -239,7 +239,7 @@ public class Application extends Controller {
         response.setContentTypeIfNotSet(project.myImage.type());
         renderBinary(project.myImage.get());
     }
-    */
+    
     
     private static void deleteProject(final Project project) {
         if (project == null) {
