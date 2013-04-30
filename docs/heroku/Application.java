@@ -1,5 +1,6 @@
 package controllers;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.List;
 
@@ -207,7 +208,7 @@ public class Application extends Controller {
         render(projects);
     }
     
-    
+    /*
     public static void getAnyImage() {
         if (Project.count() == 0) {
             return;
@@ -224,20 +225,34 @@ public class Application extends Controller {
         response.setContentTypeIfNotSet(project.myImage.type());
         renderBinary(project.myImage.get());
     }
+    */
     
-    
+    /*
     public static void getImage(final long id) {
         Project project = Project.findById(id);
         if (project == null) {
             return;
         }
-
-        if (project.myImage == null) {
-            return;
+        
+        if (project.myImage == null || project.myImage.getFile() == null) {
+            project.myImage = new Blob();
+            project.myImage.set(new BufferedInputStream(new ByteArrayInputStream(project.imageBytes)), project.imageMimeType);
         }
         
         response.setContentTypeIfNotSet(project.myImage.type());
         renderBinary(project.myImage.get());
+    }
+    */
+    
+    public static void getImage2(final long id) {
+        Project project = Project.findById(id);
+        if (project == null) {
+            return;
+        }
+        
+        ByteArrayInputStream inputStream = new ByteArrayInputStream(project.imageBytes);
+        response.current().contentType = project.imageMimeType;
+        renderBinary(inputStream);
     }
     
     
