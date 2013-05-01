@@ -108,7 +108,7 @@ public class Bootstrap extends Job {
             builder.append(randomWord());
             if (i < wordCount - 1) {
                 builder.append(", ");
-            }
+            } 
         }
         
         return builder.toString();

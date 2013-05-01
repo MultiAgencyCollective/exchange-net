@@ -31,18 +31,6 @@ public class Application extends Controller {
         }
     }
     
-    /*
-    public static void index() {
-        final int maxToReturn = 100;
-        final List<Project> projects = Project.find(
-            "order by projectTitle asc"
-        ).fetch(maxToReturn);
-        
-        final String randomId = Codec.UUID();
-        render(projects, randomId);
-    }
-    */
-    
     public static void index() {
         final String randomId = Codec.UUID();
         render(randomId);
@@ -52,12 +40,25 @@ public class Application extends Controller {
         render();
     }
     
+    private static boolean captchaSuccess(
+        final String code,
+        final String randomId
+    ) {
+        Object input = Cache.get(randomId);
+        if (input == null || !(input instanceof String)) {
+            return false;
+        }
+        
+        final String stringInput = (String) input;
+        return code.equalsIgnoreCase(stringInput);
+    }
+    
     public static void addProject(
         final Project newProject,
         final String code,
         final String randomId
     ) {        
-        if (validation.equals(code, Cache.get(randomId)).ok) {
+        if (captchaSuccess(code, randomId)) {
             if (validation.valid(newProject).ok) {
                 final String requestIPAddress = request.remoteAddress;
                 final GeneralData myGeneralData = 
@@ -114,6 +115,8 @@ public class Application extends Controller {
                 flash.error("Submission is not valid.");
                 doCancelProject(newProject);
             }
+            
+            Cache.delete(randomId);
         } else {
             flash.put("myCode", "Invalid code. Re-upload your photo, and try again.");
             flash.error("Code is not valid.");
@@ -130,11 +133,6 @@ public class Application extends Controller {
         toAdd.initializeImage();
         toAdd.save();
         MyLogger.logProjectAdded(toAdd, ipAddress, Project.count());
-        
-        /*
-        flash.success("Thanks for posting");
-        index();
-        */
         
         projectAdded();
     }
@@ -166,35 +164,6 @@ public class Application extends Controller {
         render("Application/index.html", randomId);
     }
     
-    /*
-    private static void doCancelProject(final Project toCancel) {
-        if (toCancel != null) {
-            deleteProject(toCancel);
-        }
-        
-        final int maxToReturn = 100;
-        List<Project> projects = Project.find(
-            "order by projectTitle asc"
-        ).fetch(maxToReturn);
-        if (toCancel != null) {
-            flash.put("projectTitle", toCancel.projectTitle);
-            flash.put("artist", toCancel.artist);
-            flash.put("description", toCancel.description);
-            flash.put("tags", toCancel.tags);
-            flash.put("livingInspirations", toCancel.livingInspirations);
-            flash.put("pastInspirations", toCancel.pastInspirations);
-            flash.put(
-                "nonArtistInspirations", 
-                toCancel.nonArtistInspirations
-            );
-            flash.put("emails", toCancel.emails);
-            flash.put("message", toCancel.message);
-        }
-        
-        render("Application/index.html", projects);
-    }
-    */
-    
     
     public static void data123() {
         final int maxToReturn = 10;
@@ -208,41 +177,6 @@ public class Application extends Controller {
         render(projects);
     }
     
-    /*
-    public static void getAnyImage() {
-        if (Project.count() == 0) {
-            return;
-        }
-        Project project = (Project) Project.findAll().get(0);
-        if (project == null) {
-            return;
-        }
-
-        if (project.myImage == null) {
-            return;
-        }
-        
-        response.setContentTypeIfNotSet(project.myImage.type());
-        renderBinary(project.myImage.get());
-    }
-    */
-    
-    /*
-    public static void getImage(final long id) {
-        Project project = Project.findById(id);
-        if (project == null) {
-            return;
-        }
-        
-        if (project.myImage == null || project.myImage.getFile() == null) {
-            project.myImage = new Blob();
-            project.myImage.set(new BufferedInputStream(new ByteArrayInputStream(project.imageBytes)), project.imageMimeType);
-        }
-        
-        response.setContentTypeIfNotSet(project.myImage.type());
-        renderBinary(project.myImage.get());
-    }
-    */
     
     public static void getImage2(final long id) {
         Project project = Project.findById(id);
