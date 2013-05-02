@@ -120,8 +120,12 @@ function init() {
  
   // add a node for each project
   for (var i = 0; i < projectNameArray.length; i++) {
-     sigInst.addNode(
-        projectNameArray[i], 
+     var name = projectNameArray[i];
+     if (name.length > 20) {
+        name = name.substring(0, 20);
+     }
+     var sigSelf = sigInst.addNode(
+        name, 
        {
           'x': Math.random() * 5,
           'y': Math.random() * 5,
@@ -129,7 +133,9 @@ function init() {
           'color': 'rgb(206,253,56)',
         }
      );
+     alert(sigSelf.p.nodesPowRatio);
   }
+
   
   // linkByArtist();
   

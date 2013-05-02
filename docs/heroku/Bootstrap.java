@@ -51,7 +51,7 @@ public class Bootstrap extends Job {
                 e.printStackTrace();
             }
             
-            String title = randomWord();
+            String title = randomMultiWord();
             while (isNameTaken(title)) {
                 title = randomWord();
             }
@@ -133,6 +133,20 @@ public class Bootstrap extends Job {
             builder.append(randomWord());
             if (i < wordCount - 1) {
                 builder.append(", ");
+            } 
+        }
+        
+        return builder.toString();
+    }
+    
+    private static String randomMultiWord() {
+        final int maxWords = 4;
+        final int wordCount = 1 + MY_RANDOM.nextInt(maxWords);
+        final StringBuilder builder = new StringBuilder();
+        for (int i = 0; i < wordCount; i++) {
+            builder.append(randomWord());
+            if (i < wordCount - 1) {
+                builder.append(" ");
             } 
         }
         
