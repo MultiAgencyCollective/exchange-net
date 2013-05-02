@@ -7,6 +7,7 @@ import java.util.List;
 
 import models.GeneralData;
 import models.Project;
+import models.ProjectForJson;
 import play.cache.Cache;
 import play.libs.Codec;
 import play.libs.Images;
@@ -59,19 +60,6 @@ public class Application extends Controller {
         }
     }
     
-    public static void getProjectNames() {
-        List<Project> projects = Project.findAll();
-        ArrayList<String> projectNames = new ArrayList<String>();
-        
-        for (Project project: projects) {
-            projectNames.add(project.projectTitle);
-        }
-        
-        com.google.gson.Gson gson = new Gson();
-        String projectNamesJson = gson.toJson(projectNames);
-        renderJSON(projectNamesJson);
-    }
-    
     public static void graph() {
         List<Project> projects = Project.findAll();
         ArrayList<String> projectNames = new ArrayList<String>();
@@ -82,7 +70,18 @@ public class Application extends Controller {
         
         com.google.gson.Gson gson = new Gson();
         String projectNamesJson = gson.toJson(projectNames);
-        render(projectNamesJson);
+        
+        List<ProjectForJson> projectsForJson = new ArrayList<ProjectForJson>();
+        
+        for (Project project: projects) {
+            projectsForJson.add(new ProjectForJson(project));
+        }
+        
+        com.google.gson.Gson gson2 = new Gson();
+        String projectsJson = gson2.toJson(projectsForJson);
+        
+        
+        render(projectNamesJson, projectsJson);
     }
     
     public static void index() {

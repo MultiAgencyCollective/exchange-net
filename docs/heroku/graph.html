@@ -19,10 +19,11 @@
   </script>
 
 <script type="text/javascript">
-function init() {
-  var jsonText = document.getElementById("data").innerHTML;
-  var projectNameArray = JSON.parse(jsonText);
-  var sigInst = sigma.init(document.getElementById('sigma-example-parent')).drawingProperties({
+var sigInst;
+var edgeIndex = 0;
+
+function setupSigInst() {
+  sigInst = sigma.init(document.getElementById('sigma-example-parent')).drawingProperties({
     defaultLabelColor: '#fff',
     defaultLabelSize: 14,
     defaultLabelBGColor: '#fff',
@@ -37,21 +38,103 @@ function init() {
   }).mouseProperties({
     maxRatio: 4
   });
+}
+
+function linkByArrays(arrayName) {
+  if (sigInst == null) {
+    setupSigInst();
+  }
+  
+  var projectsJson = JSON.parse(document.getElementById("projectData").innerHTML);
+  
+  while (edgeIndex > 0) {
+     edgeIndex--;
+     sigInst.dropEdge(edgeIndex);
+  }
+  
+  edgeIndex = 0;
+  // add a link between any projects with same tags
+  for (var i = 0; i < projectsJson.length; i++) {
+      var currentProject = projectsJson[i];
+      var items = currentProject[arrayName];
+      for (var j = i + 1; j < projectsJson.length; j++) {
+        var otherProject = projectsJson[j];
+        var otherItems = otherProject[arrayName];
+        var foundMatch = false;
+        for (var k = 0; !foundMatch && k < items.length; k++) {
+            for (m = 0; !foundMatch && m < otherItems.length; m++) {
+                if (items[k] == otherItems[m]) {
+                    foundMatch = true;
+                }
+            }
+        }
+        
+        if (foundMatch) {
+            sigInst.addEdge(edgeIndex, currentProject.projectTitle, otherProject.projectTitle);
+            edgeIndex++; 
+        }
+      }
+   }
+   
+   sigInst.draw();
+}
+
+function linkByArtist() {
+  if (sigInst == null) {
+    setupSigInst();
+  }
+  
+  var projectsJson = JSON.parse(document.getElementById("projectData").innerHTML);
+
+  while (edgeIndex > 0) {
+     edgeIndex--;
+     sigInst.dropEdge(edgeIndex);
+  }
+  
+  // add a link between any projects with same artist
+  for (var i = 0; i < projectsJson.length; i++) {
+      var currentProject = projectsJson[i];
+      var artist = currentProject.artist;
+      for (var j = i + 1; j < projectsJson.length; j++) {
+        var otherProject = projectsJson[j];
+        var otherArtist = otherProject.artist;
+        if (artist == otherArtist) {
+            sigInst.addEdge(edgeIndex, currentProject.projectTitle, otherProject.projectTitle);
+            edgeIndex++; 
+        }
+      }
+   }
+   
+   sigInst.draw();
+}
+
+function init() {
+  var projectsJson = JSON.parse(document.getElementById("projectData").innerHTML);
+  var projectNameArray = JSON.parse(document.getElementById("data").innerHTML);
+  
+  if (sigInst == null) {
+    setupSigInst();
+  }
  
+ edgeIndex = 0;
+ 
+  // add a node for each project
   for (var i = 0; i < projectNameArray.length; i++) {
      sigInst.addNode(
         projectNameArray[i], 
        {
-          'x': Math.random() * 10,
-          'y': Math.random() * 10,
+          'x': Math.random() * 5,
+          'y': Math.random() * 5,
           'size': 4,
           'color': 'rgb(206,253,56)',
         }
      );
-  }    
- 
-  sigInst.addEdge(1, "foo", "bar");
- 
+  }
+  
+  // linkByArtist();
+  
+  linkByArrays("tags");
+   
   // Bind events :
   var greyColor = '#666';
   sigInst.bind('overnodes',function(event){
@@ -131,11 +214,22 @@ if (document.addEventListener) {
 </head>
 <body>
   <div id="data" style="display:none;">${projectNamesJson}</div>
+  <div id="projectData" style="display:none">${projectsJson}</div>
   <div class="container">
     <div class="span12 sigma-parent" id="sigma-example-parent">
       <span class="sigma-expand" id="node-demo"></span>
       <span id="status" class="status-area"></span>
     </div>
+</div>
+<div>
+<h3>Link By:</h3>
+<form action="">
+  <input type="radio" name="links" value="tags" onclick="linkByArrays('tags')" checked>Tags<br>
+  <input type="radio" name="links" value="livingInspirations" onclick="linkByArrays('livingInspirations')">Living Inspirations<br>
+  <input type="radio" name="links" value="pastInspirations" onclick="linkByArrays('pastInspirations')">Past Inspirations<br>
+  <input type="radio" name="links" value="nonArtistInspirations" onclick="linkByArrays('nonArtistInspirations')">Non-Artist Inspirations<br>
+  <input type="radio" name="links" value="artist" onclick="linkByArtist()">Artist<br>
+</form>
 </div>
 
 </body>

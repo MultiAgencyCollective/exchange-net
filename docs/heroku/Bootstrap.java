@@ -1,8 +1,15 @@
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.util.List;
 import java.util.Random;
 
 import models.GeneralData;
+import models.Project;
+import play.db.jpa.Blob;
 import play.jobs.Job;
 import play.jobs.OnApplicationStart;
+import play.libs.MimeTypes;
  
 @OnApplicationStart
 public class Bootstrap extends Job {
@@ -14,12 +21,24 @@ public class Bootstrap extends Job {
         if (GeneralData.count() == 0) {
             final GeneralData generalData = new GeneralData();
             generalData.save();
-        }
+        }      
+
+        populateProjectDatabase();
     }
     
-    /*
+    private static boolean isNameTaken(final String name) {
+        List<Project> projects = Project.findAll();
+        for (Project project: projects) {
+            if (project.projectTitle.equals(name)) {
+                return true;
+            }
+        }
+        
+        return false;
+    }
+    
     private static void populateProjectDatabase() {
-        final int numberOfRecords = 0;
+        final int numberOfRecords = 20;
         for (int i = 0; i < numberOfRecords; i++) {
             final Blob imageBlob = new Blob();
             final File imageFile = randomImageFile();
@@ -31,8 +50,14 @@ public class Bootstrap extends Job {
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }
+            
+            String title = randomWord();
+            while (isNameTaken(title)) {
+                title = randomWord();
+            }
+            
             Project project = new Project(
-                randomWord(), // projectTitle
+                title, // projectTitle
                 randomWord(), // artist
                 imageBlob, // myImage
                 randomWord(), // description
@@ -48,9 +73,9 @@ public class Bootstrap extends Job {
             project.save();
         }
     }
-    */
     
-    /*
+    
+    
     private static void addTestProject() {
         final Blob imageBlob = new Blob();
         final File imageFile =  
@@ -82,9 +107,9 @@ public class Bootstrap extends Job {
         
         project.save();
     }
-    */
     
-    /*
+    
+    
     private static File randomImageFile() {
         final String folder = 
             "/Users/masonwright/dropbox/photos/badlands trip/";
@@ -115,8 +140,15 @@ public class Bootstrap extends Job {
     }
     
     private static String randomWord() {
-        String[] words = {"foo", "bar", "baz", "bat", "qux", "quux"};
-        return words[(int) (Math.random() * words.length)];
+        String[] names = {"Muoi", "Bobbi", "Leoma", "Whitley", "Carolina", 
+            "Sanora", "Helene", "Lakesha", "Patrick", "Ross", "Tawanda", "Josiah", "Chandra", 
+            "Vivan", "Zachariah", "Margart", "Mariella", "Lan", "Winifred", "Kira", "Tianna", 
+            "Lea", "Monty", "Ben", "Galina", "Karlene", "Reagan", "Libby", "Signe", "Nina", 
+            "Gregoria", "Sherrie", "Liana", "Margret", "Donita", "Crystle", "Jamila", "Preston", 
+            "Josue", "Meggan", "Marcy", "Larry", "Consuelo", "Beatriz", "Annabel", "Benito", 
+            "Amiee", "Jackelyn", "Rodolfo", "Britni"
+        };
+        return names[(int) (Math.random() * names.length)];
     }
-    */
+    
 }
