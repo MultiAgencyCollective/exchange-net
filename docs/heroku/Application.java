@@ -2,6 +2,7 @@ package controllers;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import models.GeneralData;
@@ -12,19 +13,24 @@ import play.libs.Images;
 import play.mvc.Controller;
 import play.mvc.Http;
 
+import com.google.gson.Gson;
+
 
 public class Application extends Controller {
     
     public static final int MAX_PROJECTS_PER_IP_ADDRESS = 1000;
-   
     
-    public static boolean isFalse() {
-        return false;
-    }
-    
+    /*
+     * Works only if testMobile() has run previously on a call from Java code, 
+     * otherwise always returns false.
+     */
     public static boolean isMobile() {
         String isMobile = flash.get("isMobile");
         return isMobile != null && isMobile.equals("true");
+    }
+    
+    public static void foo() {
+        render("foobar");
     }
     
     private static void testMobile() {
@@ -51,6 +57,32 @@ public class Application extends Controller {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+    
+    public static void getProjectNames() {
+        List<Project> projects = Project.findAll();
+        ArrayList<String> projectNames = new ArrayList<String>();
+        
+        for (Project project: projects) {
+            projectNames.add(project.projectTitle);
+        }
+        
+        com.google.gson.Gson gson = new Gson();
+        String projectNamesJson = gson.toJson(projectNames);
+        renderJSON(projectNamesJson);
+    }
+    
+    public static void graph() {
+        List<Project> projects = Project.findAll();
+        ArrayList<String> projectNames = new ArrayList<String>();
+        
+        for (Project project: projects) {
+            projectNames.add(project.projectTitle);
+        }
+        
+        com.google.gson.Gson gson = new Gson();
+        String projectNamesJson = gson.toJson(projectNames);
+        render(projectNamesJson);
     }
     
     public static void index() {

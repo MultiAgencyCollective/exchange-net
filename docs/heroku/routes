@@ -5,6 +5,7 @@
 # Home page
 *       /                       Application.index
 *       /data123                Application.data123
+*       /graph                  Application.graph
 
 # Map static resources from the /app/public folder to the /public path
 GET     /public/                staticDir:public
