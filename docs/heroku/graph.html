@@ -24,7 +24,7 @@ var edgeIndex = 0;
 
 function setupSigInst() {
   sigInst = sigma.init(document.getElementById('sigma-example-parent')).drawingProperties({
-    defaultLabelColor: '#fff',
+    defaultLabelColor: '#000',
     defaultLabelSize: 14,
     defaultLabelBGColor: '#fff',
     defaultLabelHoverColor: '#000',
@@ -106,18 +106,6 @@ function linkByArtist() {
    }
    
    sigInst.draw();
-}
-
-function onClick(event) {
-    var nodes = event.content;
-    var clickedNode = nodes[0];
-    sigInst.iterNodes(function(currentNode) {
-          currentNode.attr['true_color'] = currentNode.color;
-          currentNode.color = GRAY;
-          currentNode.attr['grey'] = 1;
-    });
-    clickedNode.color = RED;
-    clickedNode.attr['grey'] = 0;
 }
 
 var GRAY = '#666';
@@ -235,6 +223,11 @@ if (document.addEventListener) {
 
 </head>
 <body>
+  #{if project}
+  <div>    
+    Project available
+  </div>
+  #{/if}
   <div id="projectData" style="display:none">${projectsJson}</div>
   <div class="container">
     <div class="span12 sigma-parent" id="sigma-example-parent">
