@@ -108,6 +108,22 @@ function linkByArtist() {
    sigInst.draw();
 }
 
+function onClick(event) {
+    var nodes = event.content;
+    var clickedNode = nodes[0];
+    sigInst.iterNodes(function(currentNode) {
+          currentNode.attr['true_color'] = currentNode.color;
+          currentNode.color = GRAY;
+          currentNode.attr['grey'] = 1;
+    });
+    clickedNode.color = RED;
+    clickedNode.attr['grey'] = 0;
+}
+
+var GRAY = '#666';
+var RED = '#f00';
+var YELLOW = 'CEFD38';
+
 function init() {
   var projectsJson = JSON.parse(document.getElementById("projectData").innerHTML);
     
@@ -126,7 +142,7 @@ function init() {
           'x': Math.random() * 5,
           'y': Math.random() * 5,
           'size': 4,
-          'color': 'rgb(206,253,56)',
+          'color': YELLOW,
         }
      );
   }
@@ -138,50 +154,46 @@ function init() {
     });
 
   
-  // linkByArtist();
+  linkByArtist();
   
-  linkByArrays("tags");
+  // linkByArrays("tags");
    
   // Bind events :
-  var greyColor = '#666';
   sigInst.bind('overnodes',function(event){
     var nodes = event.content;
     var neighbors = {};
     sigInst.iterEdges(function(e){
       if(nodes.indexOf(e.source)<0 && nodes.indexOf(e.target)<0){
-        if(!e.attr['grey']){
-          e.attr['true_color'] = e.color;
-          e.color = greyColor;
-          e.attr['grey'] = 1;
-        }
-      }else{
-        e.color = e.attr['grey'] ? e.attr['true_color'] : e.color;
-        e.attr['grey'] = 0;
- 
+        e.color = GRAY;
+      } else {
+        e.color = YELLOW; 
         neighbors[e.source] = 1;
         neighbors[e.target] = 1;
       }
     }).iterNodes(function(n){
       if(!neighbors[n.id]){
-        if(!n.attr['grey']){
-          n.attr['true_color'] = n.color;
-          n.color = greyColor;
-          n.attr['grey'] = 1;
-        }
+          if (n.color != RED) {
+            n.color = GRAY;
+          }
       }else{
-        n.color = n.attr['grey'] ? n.attr['true_color'] : n.color;
-        n.attr['grey'] = 0;
+        if (n.color != RED) {
+           n.color = YELLOW;
+        }
       }
     }).draw(2,2,2);
-  }).bind('outnodes',function(){
-    sigInst.iterEdges(function(e){
-      e.color = e.attr['grey'] ? e.attr['true_color'] : e.color;
-      e.attr['grey'] = 0;
-    }).iterNodes(function(n){
-      n.color = n.attr['grey'] ? n.attr['true_color'] : n.color;
-      n.attr['grey'] = 0;
-    }).draw(2,2,2);
-  });
+  }).bind('downnodes',function(e) {
+      var nodes = e.content;
+      var clickedNodeId = nodes[0];
+      sigInst.iterNodes(function(currentNode) {
+         if (currentNode.id == clickedNodeId) {
+            currentNode.color = RED;
+            currentNode.active = true;
+         } else {
+            currentNode.color = GRAY;
+            currentNode.active = false;
+         }
+      });
+    }).draw();
  
   // Draw the graph :
   sigInst.draw();
