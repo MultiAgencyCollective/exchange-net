@@ -62,14 +62,6 @@ public class Application extends Controller {
     
     public static void graph() {
         List<Project> projects = Project.findAll();
-        ArrayList<String> projectNames = new ArrayList<String>();
-        
-        for (Project project: projects) {
-            projectNames.add(project.projectTitle);
-        }
-        
-        com.google.gson.Gson gson = new Gson();
-        String projectNamesJson = gson.toJson(projectNames);
         
         List<ProjectForJson> projectsForJson = new ArrayList<ProjectForJson>();
         
@@ -81,7 +73,7 @@ public class Application extends Controller {
         String projectsJson = gson2.toJson(projectsForJson);
         
         
-        render(projectNamesJson, projectsJson);
+        render(projectsJson);
     }
     
     public static void index() {
