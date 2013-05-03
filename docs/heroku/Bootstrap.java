@@ -60,7 +60,7 @@ public class Bootstrap extends Job {
                 title, // projectTitle
                 randomWord(), // artist
                 imageBlob, // myImage
-                randomWord(), // description
+                randomDescription(), // description
                 randomWordCommaList(), // tags
                 randomWordCommaList(), // livingInspirations
                 randomWordCommaList(), // pastInspirations
@@ -133,6 +133,20 @@ public class Bootstrap extends Job {
             builder.append(randomWord());
             if (i < wordCount - 1) {
                 builder.append(", ");
+            } 
+        }
+        
+        return builder.toString();
+    }
+    
+    private static String randomDescription() {
+        final int maxWords = 150;
+        final int wordCount = 1 + MY_RANDOM.nextInt(maxWords);
+        final StringBuilder builder = new StringBuilder();
+        for (int i = 0; i < wordCount; i++) {
+            builder.append(randomWord());
+            if (i < wordCount - 1) {
+                builder.append(" ");
             } 
         }
         

@@ -210,6 +210,30 @@ public class Application extends Controller {
         render("Application/index.html", randomId);
     }
     
+    public static void fullProjects() {
+        final int maxToReturn = 10;
+        List<Project> projects = Project.find(
+            "order by projectTitle asc"
+        ).fetch(maxToReturn);
+        for (Project project: projects) {
+            project.initializeSets();
+            System.out.println(project);
+        }
+        render(projects);
+    }
+    
+    public static void listProjects() {
+        final int maxToReturn = 10;
+        List<Project> projects = Project.find(
+            "order by projectTitle asc"
+        ).fetch(maxToReturn);
+        for (Project project: projects) {
+            project.initializeSets();
+            System.out.println(project);
+        }
+        render(projects);
+    }
+    
     
     public static void data123() {
         final int maxToReturn = 10;

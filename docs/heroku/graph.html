@@ -122,7 +122,7 @@ function onClick(event) {
 
 var GRAY = '#666';
 var RED = '#f00';
-var YELLOW = 'CEFD38';
+var GREEN = '00aa00';
 
 function init() {
   var projectsJson = JSON.parse(document.getElementById("projectData").innerHTML);
@@ -142,7 +142,7 @@ function init() {
           'x': Math.random() * 5,
           'y': Math.random() * 5,
           'size': 4,
-          'color': YELLOW,
+          'color': GREEN,
         }
      );
   }
@@ -166,7 +166,7 @@ function init() {
       if(nodes.indexOf(e.source)<0 && nodes.indexOf(e.target)<0){
         e.color = GRAY;
       } else {
-        e.color = YELLOW; 
+        e.color = GREEN; 
         neighbors[e.source] = 1;
         neighbors[e.target] = 1;
       }
@@ -177,7 +177,7 @@ function init() {
           }
       }else{
         if (n.color != RED) {
-           n.color = YELLOW;
+           n.color = GREEN;
         }
       }
     }).draw(2,2,2);
@@ -212,9 +212,12 @@ if (document.addEventListener) {
     border-radius: 4px;
     -moz-border-radius: 4px;
     -webkit-border-radius: 4px;
-    background: #222;
+    background: #fff;
     height: 500px;
-    width: 852px;
+    width: 600px;
+    border-style: solid;
+    border-width:2px;
+    border-color:black;
   }  
   .status-area {
     position: absolute;
@@ -239,15 +242,17 @@ if (document.addEventListener) {
       <span id="status" class="status-area"></span>
     </div>
 </div>
+<br />
 <div>
-<h3>Link By:</h3>
-<form action="">
-  <input type="radio" name="links" value="tags" onclick="linkByArrays('tags')" checked>Tags<br>
-  <input type="radio" name="links" value="livingInspirations" onclick="linkByArrays('livingInspirations')">Living Inspirations<br>
-  <input type="radio" name="links" value="pastInspirations" onclick="linkByArrays('pastInspirations')">Past Inspirations<br>
-  <input type="radio" name="links" value="nonArtistInspirations" onclick="linkByArrays('nonArtistInspirations')">Non-Artist Inspirations<br>
-  <input type="radio" name="links" value="artist" onclick="linkByArtist()">Artist<br>
-</form>
+  <div style="font-weight:bold">
+    Link By:
+  </div>
+  <form action="">
+    <input type="radio" name="links" value="tags" onclick="linkByArrays('tags')" checked>Tags&nbsp;&nbsp;
+    <input type="radio" name="links" value="livingInspirations" onclick="linkByArrays('livingInspirations')">Living Inspirations&nbsp;&nbsp;
+    <input type="radio" name="links" value="pastInspirations" onclick="linkByArrays('pastInspirations')">Past Inspirations&nbsp;&nbsp;
+    <input type="radio" name="links" value="nonArtistInspirations" onclick="linkByArrays('nonArtistInspirations')">Non-Artist Inspirations&nbsp;&nbsp;
+    <input type="radio" name="links" value="artist" onclick="linkByArtist()">Artist
+  </form>
 </div>
-
 </body>
