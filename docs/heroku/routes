@@ -6,6 +6,8 @@
 *       /                       Application.index
 *       /data123                Application.data123
 *       /graph                  Application.graph
+*       /fullProjects           Application.fullProjects
+*       /listProjects           Application.listProjects
 
 # Map static resources from the /app/public folder to the /public path
 GET     /public/                staticDir:public

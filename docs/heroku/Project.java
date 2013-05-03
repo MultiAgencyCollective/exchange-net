@@ -41,6 +41,8 @@ public final class Project extends Model {
     @Lob 
     public String description;
     
+    public String briefDescription;
+    
     @Required(message = PLEASE_ENTER_A + " tag.")
     @CheckWith(MyChecks.NameCheck.class)
     public String tags;
@@ -165,6 +167,13 @@ public final class Project extends Model {
             initializeSet(this.emailSet, this.emails);
         } else {
             this.emailSet.clear();
+        }
+        
+        final int maxCharsForBriefDescription = 200;
+        if (this.description.length() >= maxCharsForBriefDescription) {
+            this.briefDescription = this.description.substring(0, maxCharsForBriefDescription) + "...";
+        } else {
+            this.briefDescription = this.description;
         }
     }
     
