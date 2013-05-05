@@ -185,6 +185,7 @@ function init() {
                 currentNode.active = false;
             }
         }).draw();
+        $('#projectView').load('@{fullProject()}', {'name': clickedNodeId});
     }).draw();
  
   // Draw the graph :
@@ -251,5 +252,7 @@ if (document.addEventListener) {
     <input type="radio" name="links" value="nonArtistInspirations" onclick="linkByArrays('nonArtistInspirations')">Non-Artist Inspirations&nbsp;&nbsp;
     <input type="radio" name="links" value="artist" onclick="linkByArtist()">Artist
   </form>
+</div>
+<div id="projectView" style="height:500px;width:500px;">
 </div>
 </body>

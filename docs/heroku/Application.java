@@ -30,10 +30,6 @@ public class Application extends Controller {
         return isMobile != null && isMobile.equals("true");
     }
     
-    public static void foo() {
-        render("foobar");
-    }
-    
     private static void testMobile() {
         Http.Header uaHeader = request.headers.get("user-agent");
         String ua = uaHeader.toString();
@@ -71,7 +67,6 @@ public class Application extends Controller {
         
         com.google.gson.Gson gson2 = new Gson();
         String projectsJson = gson2.toJson(projectsForJson);
-        
         
         render(projectsJson);
     }
@@ -210,6 +205,19 @@ public class Application extends Controller {
         render("Application/index.html", randomId);
     }
     
+    public static void fullProject(final String name) {
+        Project target = null;
+        List<Project> projects = Project.findAll();
+        for (Project project: projects) {
+            if (project.projectTitle.equals(name)) {
+                target = project;
+                break;
+            }
+        }
+        
+        render(target);
+    }
+    
     public static void fullProjects() {
         final int maxToReturn = 10;
         List<Project> projects = Project.find(
@@ -217,7 +225,6 @@ public class Application extends Controller {
         ).fetch(maxToReturn);
         for (Project project: projects) {
             project.initializeSets();
-            System.out.println(project);
         }
         render(projects);
     }
@@ -229,7 +236,6 @@ public class Application extends Controller {
         ).fetch(maxToReturn);
         for (Project project: projects) {
             project.initializeSets();
-            System.out.println(project);
         }
         render(projects);
     }
@@ -242,11 +248,24 @@ public class Application extends Controller {
         ).fetch(maxToReturn);
         for (Project project: projects) {
             project.initializeSets();
-            System.out.println(project);
         }
         render(projects);
     }
     
+    public static void getProjectByTitle(final String projectTitle) {
+        List<Project> projects = Project.findAll();
+        Project project = null;
+        for (Project currentProject: projects) {
+            if (currentProject.projectTitle.equals(projectTitle)) {
+                project = currentProject;
+                break;
+            }
+        }
+        
+        if (project != null) {
+            render(project);
+        }
+    }
     
     public static void getImage2(final long id) {
         Project project = Project.findById(id);
@@ -258,7 +277,6 @@ public class Application extends Controller {
         response.current().contentType = project.imageMimeType;
         renderBinary(inputStream);
     }
-    
     
     private static void deleteProject(final Project project) {
         if (project == null) {
