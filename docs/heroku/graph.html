@@ -3,109 +3,113 @@
 
 <head>
 
-  <script src="http://sigmajs.org/js/prettify.js"></script>
-  <script src="http://sigmajs.org/js/sigma.min.js"></script>
+<script src="http://sigmajs.org/js/prettify.js"></script>
+<script src="http://sigmajs.org/js/sigma.min.js"></script>
 
-  <script type="text/javascript">
-     var _gaq = _gaq || [];
-      _gaq.push(['_setAccount', 'UA-29798319-1']);
-      _gaq.push(['_trackPageview']);
+<script type="text/javascript">
+var _gaq = _gaq || [];
+_gaq.push(['_setAccount', 'UA-29798319-1']);
+_gaq.push(['_trackPageview']);
 
-      (function() {
-        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-      })();
-  </script>
+(function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+})();
+</script>
 
 <script type="text/javascript">
 var sigInst;
 var edgeIndex = 0;
 
 function setupSigInst() {
-  sigInst = sigma.init(document.getElementById('sigma-example-parent')).drawingProperties({
-    defaultLabelColor: '#000',
-    defaultLabelSize: 14,
-    defaultLabelBGColor: '#fff',
-    defaultLabelHoverColor: '#000',
-    labelThreshold: 6,
-    defaultEdgeType: 'curve'
-  }).graphProperties({
-    minNodeSize: 0.5,
-    maxNodeSize: 5,
-    minEdgeSize: 1,
-    maxEdgeSize: 1
-  }).mouseProperties({
-    maxRatio: 4
-  });
+    sigInst = sigma.init(document.getElementById('sigma-example-parent')).drawingProperties({
+        defaultLabelColor: '#000',
+        defaultLabelSize: 14,
+        defaultLabelBGColor: '#fff',
+        defaultLabelHoverColor: '#000',
+        labelThreshold: 6,
+        defaultEdgeType: 'curve'
+    }).graphProperties({
+        minNodeSize: 0.5,
+        maxNodeSize: 5,
+        minEdgeSize: 1,
+        maxEdgeSize: 1
+    }).mouseProperties({
+        maxRatio: 4
+    });
 }
 
 function linkByArrays(arrayName) {
-  if (sigInst == null) {
-    setupSigInst();
-  }
+    if (sigInst == null) {
+        setupSigInst();
+    }
   
-  var projectsJson = JSON.parse(document.getElementById("projectData").innerHTML);
+    var projectsJson = JSON.parse(document.getElementById("projectData").innerHTML);
   
-  while (edgeIndex > 0) {
-     edgeIndex--;
-     sigInst.dropEdge(edgeIndex);
-  }
+    while (edgeIndex > 0) {
+        edgeIndex--;
+        sigInst.dropEdge(edgeIndex);
+    }
   
-  edgeIndex = 0;
-  // add a link between any projects with same tags
-  for (var i = 0; i < projectsJson.length; i++) {
-      var currentProject = projectsJson[i];
-      var items = currentProject[arrayName];
-      for (var j = i + 1; j < projectsJson.length; j++) {
-        var otherProject = projectsJson[j];
-        var otherItems = otherProject[arrayName];
-        var foundMatch = false;
-        for (var k = 0; !foundMatch && k < items.length; k++) {
-            for (m = 0; !foundMatch && m < otherItems.length; m++) {
-                if (items[k] == otherItems[m]) {
-                    foundMatch = true;
+    edgeIndex = 0;
+    // add a link between any projects with same tags
+    for (var i = 0; i < projectsJson.length; i++) {
+        var currentProject = projectsJson[i];
+        var items = currentProject[arrayName];
+        
+        for (var j = i + 1; j < projectsJson.length; j++) {
+            var otherProject = projectsJson[j];
+            var otherItems = otherProject[arrayName];
+            var foundMatch = false;
+            
+            for (var k = 0; !foundMatch && k < items.length; k++) {
+                for (m = 0; !foundMatch && m < otherItems.length; m++) {
+                    if (items[k] == otherItems[m]) {
+                        foundMatch = true;
+                    }
                 }
             }
-        }
         
-        if (foundMatch) {
-            sigInst.addEdge(edgeIndex, currentProject.projectTitle, otherProject.projectTitle);
-            edgeIndex++; 
+            if (foundMatch) {
+                sigInst.addEdge(edgeIndex, currentProject.projectTitle, otherProject.projectTitle);
+                edgeIndex++; 
+            }
         }
-      }
-   }
+    }
    
-   sigInst.draw();
+    sigInst.draw();
 }
 
 function linkByArtist() {
-  if (sigInst == null) {
-    setupSigInst();
-  }
+    if (sigInst == null) {
+        setupSigInst();
+    }
   
-  var projectsJson = JSON.parse(document.getElementById("projectData").innerHTML);
+    var projectsJson = JSON.parse(document.getElementById("projectData").innerHTML);
 
-  while (edgeIndex > 0) {
-     edgeIndex--;
-     sigInst.dropEdge(edgeIndex);
-  }
+    while (edgeIndex > 0) {
+        edgeIndex--;
+        sigInst.dropEdge(edgeIndex);
+    }
   
   // add a link between any projects with same artist
-  for (var i = 0; i < projectsJson.length; i++) {
-      var currentProject = projectsJson[i];
-      var artist = currentProject.artist;
-      for (var j = i + 1; j < projectsJson.length; j++) {
-        var otherProject = projectsJson[j];
-        var otherArtist = otherProject.artist;
-        if (artist == otherArtist) {
-            sigInst.addEdge(edgeIndex, currentProject.projectTitle, otherProject.projectTitle);
-            edgeIndex++; 
+    for (var i = 0; i < projectsJson.length; i++) {
+        var currentProject = projectsJson[i];
+        var artist = currentProject.artist;
+      
+        for (var j = i + 1; j < projectsJson.length; j++) {
+            var otherProject = projectsJson[j];
+            var otherArtist = otherProject.artist;
+            
+            if (artist == otherArtist) {
+                sigInst.addEdge(edgeIndex, currentProject.projectTitle, otherProject.projectTitle);
+                edgeIndex++; 
+            }
         }
-      }
-   }
+    }
    
-   sigInst.draw();
+    sigInst.draw();
 }
 
 var GRAY = '#666';
@@ -113,74 +117,74 @@ var RED = '#f00';
 var GREEN = '00aa00';
 
 function init() {
-  var projectsJson = JSON.parse(document.getElementById("projectData").innerHTML);
+    var projectsJson = JSON.parse(document.getElementById("projectData").innerHTML);
     
-  if (sigInst == null) {
-    setupSigInst();
-  }
+    if (sigInst == null) {
+        setupSigInst();
+    }
  
- edgeIndex = 0;
+    edgeIndex = 0;
  
-  // add a node for each project
-  for (var i = 0; i < projectsJson.length; i++) {
-     var name = projectsJson[i].projectTitle;
-     sigInst.addNode(
-        name, 
-       {
-          'x': Math.random() * 5,
-          'y': Math.random() * 5,
-          'size': 4,
-          'color': GRAY,
-        }
-     );
-  }
+    // add a node for each project
+    for (var i = 0; i < projectsJson.length; i++) {
+        var name = projectsJson[i].projectTitle;
+        sigInst.addNode(
+            name, 
+            {
+                'x': Math.random() * 5,
+                'y': Math.random() * 5,
+                'size': 4,
+                'color': GRAY,
+            }
+        );
+    }
 
     sigInst.iterNodes(function(currentNode) {
         if (currentNode.id.length > 20) {
-           currentNode.label = currentNode.id.substring(0, 20) + "...";
+            currentNode.label = currentNode.id.substring(0, 20) + "...";
         }
     });
 
   
-  linkByArtist();
+    linkByArtist();
   
-  // linkByArrays("tags");
+    // linkByArrays("tags");
    
-  // Bind events :
-  sigInst.bind('overnodes',function(event){
-    var nodes = event.content;
-    var neighbors = {};
-    sigInst.iterEdges(function(e){
-      if (nodes.indexOf(e.source) < 0 && nodes.indexOf(e.target) < 0) {
-        e.color = GRAY;
-      } else {
-        e.color = GREEN; 
-        neighbors[e.source] = 1;
-        neighbors[e.target] = 1;
-      }
-    }).iterNodes(function(n) {
-      if (!neighbors[n.id] && nodes.indexOf(n.id) < 0) {
-          if (n.color != RED) {
-            n.color = GRAY;
-          }
-      } else {
-        if (n.color != RED) {
-           n.color = GREEN;
-        }
-      }
-    }).draw(2,2,2);
-  }).bind('downnodes',function(e) {
-      var nodes = e.content;
-      var clickedNodeId = nodes[0];
-      sigInst.iterNodes(function(currentNode) {
-         if (currentNode.id == clickedNodeId) {
-            currentNode.color = RED;
-            currentNode.active = true;
-         } else {
-            currentNode.color = GRAY;
-            currentNode.active = false;
-         }
-      });
+    // Bind events :
+    sigInst.bind('overnodes',function(event) {
+        var nodes = event.content;
+        var neighbors = {};
+        sigInst.iterEdges(function(e) {
+            if (nodes.indexOf(e.source) < 0 && nodes.indexOf(e.target) < 0) {
+                e.color = GRAY;
+            } else {
+                e.color = GREEN; 
+                neighbors[e.source] = 1;
+                neighbors[e.target] = 1;
+            }
+        }).iterNodes(function(n) {
+            if (!neighbors[n.id] && nodes.indexOf(n.id) < 0) {
+                if (n.color != RED) {
+                    n.color = GRAY;
+                }
+            } else {
+                if (n.color != RED) {
+                    n.color = GREEN;
+                }
+            }
+        }).draw();
+    }).bind('downnodes',function(e) {
+        var nodes = e.content;
+        var clickedNodeId = nodes[0];
+        sigInst.iterNodes(function(currentNode) {
+            if (currentNode.id == clickedNodeId) {
+                currentNode.color = RED;
+                currentNode.active = true;
+            } else {
+                currentNode.color = GRAY;
+                currentNode.active = false;
+            }
+        }).draw();
     }).draw();
  
   // Draw the graph :
@@ -188,9 +192,9 @@ function init() {
 }
  
 if (document.addEventListener) {
-  document.addEventListener("DOMContentLoaded", init, false);
+    document.addEventListener("DOMContentLoaded", init, false);
 } else {
-  window.onready = init;
+    window.onready = init;
 }
 </script>
 
