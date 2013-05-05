@@ -1,5 +1,5 @@
 #{extends 'main.html' /}
-#{set title:'inspirednetwork.html' /}
+#{set title:'EXCHANGE ARCHIVE - Projects Graph View' /}
 
 <head>
 
@@ -130,7 +130,7 @@ function init() {
           'x': Math.random() * 5,
           'y': Math.random() * 5,
           'size': 4,
-          'color': GREEN,
+          'color': GRAY,
         }
      );
   }
@@ -151,19 +151,19 @@ function init() {
     var nodes = event.content;
     var neighbors = {};
     sigInst.iterEdges(function(e){
-      if(nodes.indexOf(e.source)<0 && nodes.indexOf(e.target)<0){
+      if (nodes.indexOf(e.source) < 0 && nodes.indexOf(e.target) < 0) {
         e.color = GRAY;
       } else {
         e.color = GREEN; 
         neighbors[e.source] = 1;
         neighbors[e.target] = 1;
       }
-    }).iterNodes(function(n){
-      if(!neighbors[n.id]){
+    }).iterNodes(function(n) {
+      if (!neighbors[n.id] && nodes.indexOf(n.id) < 0) {
           if (n.color != RED) {
             n.color = GRAY;
           }
-      }else{
+      } else {
         if (n.color != RED) {
            n.color = GREEN;
         }
