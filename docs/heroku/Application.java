@@ -220,6 +220,39 @@ public class Application extends Controller {
         render(target);
     }
     
+    private static List<Project> getArtistProjects(final String artist) {
+        final List<Project> result = new ArrayList<Project>();
+        final List<Project> allProjects = Project.find(
+            "order by projectTitle asc"
+        ).fetch();
+        
+        for (Project project: allProjects) {
+            if (project.artist.equals(artist)) {
+                result.add(project);
+            }
+        }
+        
+        return result;
+    }
+    
+    public static void artist(final String artist, int offset) {
+        if (offset < 0 || offset >= Project.count()) {
+            offset = 0;
+        }
+        
+        List<Project> allProjects = getArtistProjects(artist);
+        
+        List<Project> projects = new ArrayList<Project>();
+        for (int i = offset; i < allProjects.size() && i - offset < MAX_TO_RETURN; i++) {
+            Project currentProject = allProjects.get(i);
+            currentProject.initializeSets();
+            projects.add(currentProject);
+        }
+        
+        final boolean hasNext = allProjects.size() > offset + MAX_TO_RETURN;
+        render(projects, offset, hasNext, artist);
+    }
+    
     public static void fullProjects(int offset) {
         if (offset < 0 || offset >= Project.count()) {
             offset = 0;

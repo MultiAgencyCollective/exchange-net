@@ -7,7 +7,7 @@
        ${_project.projectTitle}
     </div>
     <div style="color:#888888;font-size:14px;width:inherit">
-      ${_project.artist}
+      <a style="color:#888888" href="@{Application.artist(_project.artist, 0)}">${_project.artist}</a>
     </div>
     <div sytle="font-size:12px;width:inherit">
       ${_project.briefDescription}
