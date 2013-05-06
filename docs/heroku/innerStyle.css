@@ -209,6 +209,9 @@ input:invalid, textarea:invalid { background-color: #f0dddd; }
 
 .error { color:#ff0000; }
 
+#addProjectButton { float:right; border:2px solid; border-radius:25px; height:25px; width:150px; text-align: center; font-size: 20px; background-color:#00aa00; cursor:pointer; }
+#addProjectButton:hover { background-color:#00ff00; }
+
 /* =============================================================================
    Tables
    ========================================================================== */

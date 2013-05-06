@@ -5,6 +5,8 @@
 
 <script src="http://sigmajs.org/js/prettify.js"></script>
 <script src="http://sigmajs.org/js/sigma.min.js"></script>
+<link rel="stylesheet" media="screen" href="@{'/public/stylesheets/innerStyle.css'}">
+<link rel="stylesheet" media="screen" href="@{'/public/stylesheets/main.css'}">
 
 <script type="text/javascript">
 var _gaq = _gaq || [];
@@ -152,6 +154,7 @@ function init() {
    
     // Bind events :
     sigInst.bind('overnodes',function(event) {
+        document.body.style.cursor = "pointer";
         var nodes = event.content;
         var neighbors = {};
         sigInst.iterEdges(function(e) {
@@ -187,7 +190,10 @@ function init() {
         }).draw();
         $('#projectView').load('@{fullProject()}', {'name': clickedNodeId});
     }).draw();
- 
+    
+    sigInst.bind('outnodes',function(event) {
+        document.body.style.cursor = "default";
+    });
   // Draw the graph :
   sigInst.draw();
 }
@@ -207,7 +213,7 @@ if (document.addEventListener) {
     -webkit-border-radius: 4px;
     background: #fff;
     height: 500px;
-    width: 600px;
+    width: 500px;
     border-style: solid;
     border-width:2px;
     border-color:black;
@@ -227,9 +233,18 @@ if (document.addEventListener) {
 </style>
 
 </head>
-<body>
+<body style="width:1030px;">
   <div id="projectData" style="display:none">${projectsJson}</div>
-  
+  <div>
+    <div style="font-size:24px;font-family:sans-serif;font-weight:bold;float:left">
+      EXCHANGE ARCHIVE
+    </div>
+    <div id="addProjectButton">
+      Add a Project
+    </div>
+  </div>
+  <br style="clear:both" />
+  <hr />
   <div style="float:left">
     <div class="container">
       <div class="span12 sigma-parent" id="sigma-example-parent">
@@ -250,6 +265,8 @@ if (document.addEventListener) {
         <input type="radio" name="links" value="artist" onclick="linkByArtist()">Artist
       </form>
     </div>
+  <br />
+  <br />
   </div>
   <div id="projectView" style="height:500px;width:500px;float:left">
 </div>
