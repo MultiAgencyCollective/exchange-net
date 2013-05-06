@@ -3,9 +3,9 @@
 # ~~~~
 
 # Home page
-*       /                       Application.index
+*       /                       Application.graph
+*       /form                   Application.form
 *       /data123                Application.data123
-*       /graph                  Application.graph
 *       /fullProjects           Application.fullProjects
 *       /listProjects           Application.listProjects
 

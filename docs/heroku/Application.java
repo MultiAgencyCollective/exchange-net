@@ -71,7 +71,7 @@ public class Application extends Controller {
         render(projectsJson);
     }
     
-    public static void index() {
+    public static void form() {
         testMobile();
         final String randomId = Codec.UUID();
         render(randomId);
@@ -202,7 +202,7 @@ public class Application extends Controller {
         }
         
         final String randomId = Codec.UUID();
-        render("Application/index.html", randomId);
+        render("Application/form.html", randomId);
     }
     
     public static void fullProject(final String name) {
