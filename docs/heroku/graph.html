@@ -228,31 +228,29 @@ if (document.addEventListener) {
 
 </head>
 <body>
-  #{if project}
-  <div>    
-    Project available
-  </div>
-  #{/if}
   <div id="projectData" style="display:none">${projectsJson}</div>
-  <div class="container">
-    <div class="span12 sigma-parent" id="sigma-example-parent">
-      <span class="sigma-expand" id="node-demo"></span>
-      <span id="status" class="status-area"></span>
+  
+  <div style="float:left">
+    <div class="container">
+      <div class="span12 sigma-parent" id="sigma-example-parent">
+        <span class="sigma-expand" id="node-demo"></span>
+        <span id="status" class="status-area"></span>
+      </div>
     </div>
-</div>
-<br />
-<div>
-  <div style="font-weight:bold">
-    Link By:
+    <br />
+    <div>
+      <div style="font-weight:bold">
+        Link By:
+      </div>
+      <form action="">
+        <input type="radio" name="links" value="tags" onclick="linkByArrays('tags')" checked>Tags&nbsp;&nbsp;
+        <input type="radio" name="links" value="livingInspirations" onclick="linkByArrays('livingInspirations')">Living Inspirations&nbsp;&nbsp;
+        <input type="radio" name="links" value="pastInspirations" onclick="linkByArrays('pastInspirations')">Past Inspirations&nbsp;&nbsp;
+        <input type="radio" name="links" value="nonArtistInspirations" onclick="linkByArrays('nonArtistInspirations')">Non-Artist Inspirations&nbsp;&nbsp;
+        <input type="radio" name="links" value="artist" onclick="linkByArtist()">Artist
+      </form>
+    </div>
   </div>
-  <form action="">
-    <input type="radio" name="links" value="tags" onclick="linkByArrays('tags')" checked>Tags&nbsp;&nbsp;
-    <input type="radio" name="links" value="livingInspirations" onclick="linkByArrays('livingInspirations')">Living Inspirations&nbsp;&nbsp;
-    <input type="radio" name="links" value="pastInspirations" onclick="linkByArrays('pastInspirations')">Past Inspirations&nbsp;&nbsp;
-    <input type="radio" name="links" value="nonArtistInspirations" onclick="linkByArrays('nonArtistInspirations')">Non-Artist Inspirations&nbsp;&nbsp;
-    <input type="radio" name="links" value="artist" onclick="linkByArtist()">Artist
-  </form>
-</div>
-<div id="projectView" style="height:500px;width:500px;">
+  <div id="projectView" style="height:500px;width:500px;float:left">
 </div>
 </body>
