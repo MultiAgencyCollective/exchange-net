@@ -1,5 +1,5 @@
 #{extends 'main.html' /}
-#{set title:'EXCHANGE ARCHIVE - Full Projects View' /}
+#{set title:'EXCHANGE ARCHIVE - Full Projects' /}
 
 <!DOCTYPE html>
 <!--[if lt IE 7]> <html class="ie6 oldie"> <![endif]-->
@@ -34,12 +34,23 @@ Do the following if using your customized build of modernizr (http://www.moderni
 <body>
 <div class="gridContainer clearfix">
   #{if projects}
-  <div>    
     <h1>Projects</h1>
-    #{list projects, as:'project'}
-      #{fullProject project:project /}
-    #{/list}
-  </div>
+  
+    <div>    
+      #{list projects, as:'project'}
+        #{fullProject project:project /}
+      #{/list}
+    </div>
+  
+    <div style="clear:both">
+      #{if offset > 0}
+        <a style="font-size:20px" href="@{Application.fullProjects(offset - 10)}">Previous</a>
+      #{/if}
+      &nbsp; 
+      #{if hasNext}
+        <a style="font-size:20px" href="@{Application.fullProjects(offset + 10)}">Next</a>
+      #{/if}
+    </div>
   #{/if}
 </div>
 </body>

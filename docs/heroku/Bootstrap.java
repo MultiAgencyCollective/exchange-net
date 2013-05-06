@@ -41,6 +41,7 @@ public class Bootstrap extends Job {
         final int numberOfRecords = 20;
         for (int i = 0; i < numberOfRecords; i++) {
             final Blob imageBlob = new Blob();
+           /*
             final File imageFile = randomImageFile();
             try {
                 imageBlob.set(
@@ -50,7 +51,7 @@ public class Bootstrap extends Job {
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }
-            
+            */
             String title = randomMultiWord();
             while (isNameTaken(title)) {
                 title = randomWord();

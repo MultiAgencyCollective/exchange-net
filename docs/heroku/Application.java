@@ -21,6 +21,8 @@ public class Application extends Controller {
     
     public static final int MAX_PROJECTS_PER_IP_ADDRESS = 1000;
     
+    private static final int MAX_TO_RETURN = 10;
+    
     /*
      * Works only if testMobile() has run previously on a call from Java code, 
      * otherwise always returns false.
@@ -218,34 +220,57 @@ public class Application extends Controller {
         render(target);
     }
     
-    public static void fullProjects() {
-        final int maxToReturn = 10;
-        List<Project> projects = Project.find(
-            "order by projectTitle asc"
-        ).fetch(maxToReturn);
-        for (Project project: projects) {
-            project.initializeSets();
+    public static void fullProjects(int offset) {
+        if (offset < 0 || offset >= Project.count()) {
+            offset = 0;
         }
-        render(projects);
+        
+        List<Project> allProjects = Project.find(
+            "order by projectTitle asc"
+        ).fetch();
+        List<Project> projects = new ArrayList<Project>();
+        for (int i = offset; i < allProjects.size() && i - offset < MAX_TO_RETURN; i++) {
+            Project currentProject = allProjects.get(i);
+            currentProject.initializeSets();
+            projects.add(currentProject);
+        }
+        
+        final boolean hasNext = allProjects.size() > offset + MAX_TO_RETURN;
+        render(projects, offset, hasNext);
     }
     
-    public static void listProjects() {
-        final int maxToReturn = 10;
-        List<Project> projects = Project.find(
-            "order by projectTitle asc"
-        ).fetch(maxToReturn);
-        for (Project project: projects) {
-            project.initializeSets();
+    public static boolean previous(final int offset) {
+        return offset > 0;
+    }
+    
+    public static boolean next(final int offset) {
+        return Project.count() > offset + MAX_TO_RETURN;
+    }
+    
+    public static void listProjects(int offset) {
+        if (offset < 0 || offset >= Project.count()) {
+            offset = 0;
         }
-        render(projects);
+        
+        List<Project> allProjects = Project.find(
+            "order by projectTitle asc"
+        ).fetch();
+        List<Project> projects = new ArrayList<Project>();
+        for (int i = offset; i < allProjects.size() && i - offset < MAX_TO_RETURN; i++) {
+            Project currentProject = allProjects.get(i);
+            currentProject.initializeSets();
+            projects.add(currentProject);
+        }
+        
+        final boolean hasNext = allProjects.size() > offset + MAX_TO_RETURN;
+        render(projects, offset, hasNext);
     }
     
     
     public static void data123() {
-        final int maxToReturn = 10;
         List<Project> projects = Project.find(
             "order by projectTitle asc"
-        ).fetch(maxToReturn);
+        ).fetch(MAX_TO_RETURN);
         for (Project project: projects) {
             project.initializeSets();
         }
