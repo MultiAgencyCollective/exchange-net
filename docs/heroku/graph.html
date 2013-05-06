@@ -236,11 +236,11 @@ if (document.addEventListener) {
 <body style="width:1030px;">
   <div id="projectData" style="display:none">${projectsJson}</div>
   <div>
-    <div style="font-size:24px;font-family:sans-serif;font-weight:bold;float:left">
+    <div id="titleHeader">
       EXCHANGE ARCHIVE
     </div>
     <div id="addProjectButton">
-      Add a Project
+      <a href="@{Application.index()}" id="buttonLink">Add a Project</a>
     </div>
   </div>
   <br style="clear:both" />
