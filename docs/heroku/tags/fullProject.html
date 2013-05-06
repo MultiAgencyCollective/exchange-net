@@ -11,13 +11,36 @@
     </div>
     <br />
     <div style="font-size:12px;width:inherit">
-      <span style="font-weight:bold">Tags:</span> ${_project.tags}
+      <span style="font-weight:bold">Tags: </span>
+      <span>    
+        #{list _project.tagSet, as:'tag'}
+          <a style="color:#000000" href="@{Application.tag(tag.text, 0)}">${tag.text}</a> &middot;
+        #{/list}
+      </span>
       <br />
-      <span style="font-weight:bold">Living Inspirations:</span> ${_project.livingInspirations}
+      
+      <span style="font-weight:bold">Living Inspirations:</span>
+      <span>    
+        #{list _project.livingInspirationSet, as:'livingInspiration'}
+          ${livingInspiration.text} &middot;
+        #{/list}
+      </span>
       <br />
-      <span style="font-weight:bold">Past Inspirations:</span> ${_project.pastInspirations}
+      
+      <span style="font-weight:bold">Past Inspirations:</span>
+      <span>    
+        #{list _project.pastInspirationSet, as:'pastInspiration'}
+          ${pastInspiration.text} &middot;
+        #{/list}
+      </span>
       <br />
-      <span style="font-weight:bold">Non-Artist Inspirations:</span> ${_project.nonArtistInspirations}
+      
+      <span style="font-weight:bold">Non-Artist Inspirations:</span>
+      <span>    
+        #{list _project.nonArtistInspirationSet, as:'nonArtistInspiration'}
+          ${nonArtistInspiration.text} &middot;
+        #{/list}
+      </span>
     </div>
   </div>
 </div>

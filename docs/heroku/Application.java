@@ -8,6 +8,7 @@ import java.util.List;
 import models.GeneralData;
 import models.Project;
 import models.ProjectForJson;
+import models.ProjectToken;
 import play.cache.Cache;
 import play.libs.Codec;
 import play.libs.Images;
@@ -213,11 +214,49 @@ public class Application extends Controller {
         for (Project project: projects) {
             if (project.projectTitle.equals(name)) {
                 target = project;
+                target.initializeSets();
                 break;
             }
         }
         
         render(target);
+    }
+    
+    private static List<Project> getTagProjects(final String tag) {
+        final List<Project> result = new ArrayList<Project>();
+        final List<Project> allProjects = Project.find(
+            "order by projectTitle asc"
+        ).fetch();
+        
+        for (Project project: allProjects) {
+            project.initializeSets();
+            for (ProjectToken currentTag: project.tagSet) {
+                if (currentTag.text.equals(tag)) {
+                    result.add(project);
+                    break;
+                }
+            }
+        }
+        
+        return result;
+    }
+    
+    public static void tag(final String tag, int offset) {
+        if (offset < 0 || offset >= Project.count()) {
+            offset = 0;
+        }
+        
+        List<Project> allProjects = getTagProjects(tag);
+        
+        List<Project> projects = new ArrayList<Project>();
+        for (int i = offset; i < allProjects.size() && i - offset < MAX_TO_RETURN; i++) {
+            Project currentProject = allProjects.get(i);
+            currentProject.initializeSets();
+            projects.add(currentProject);
+        }
+        
+        final boolean hasNext = allProjects.size() > offset + MAX_TO_RETURN;
+        render(projects, offset, hasNext, tag);
     }
     
     private static List<Project> getArtistProjects(final String artist) {
