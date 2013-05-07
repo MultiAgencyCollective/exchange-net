@@ -228,17 +228,56 @@ public class Application extends Controller {
             "order by projectTitle asc"
         ).fetch();
         
+        ProjectToken target = new ProjectToken(tag);
+        
         for (Project project: allProjects) {
             project.initializeSets();
-            for (ProjectToken currentTag: project.tagSet) {
-                if (currentTag.text.equals(tag)) {
-                    result.add(project);
-                    break;
-                }
+            if (project.tagSet.contains(target)) {
+                result.add(project);
             }
         }
         
         return result;
+    }
+    
+    private static List<Project> getInspirationProjects(final String inspiration) {
+        final List<Project> result = new ArrayList<Project>();
+        final List<Project> allProjects = Project.find(
+            "order by projectTitle asc"
+        ).fetch();
+        
+        ProjectToken target = new ProjectToken(inspiration);
+        
+        for (Project project: allProjects) {
+            project.initializeSets();
+            if (
+                project.livingInspirationSet.contains(target)
+                || project.pastInspirationSet.contains(target)
+                || project.nonArtistInspirationSet.contains(target)
+            ) {
+                result.add(project);
+            }
+        }
+        
+        return result;
+    }
+    
+    public static void inspiration(final String inspiration, int offset) {
+        if (offset < 0 || offset >= Project.count()) {
+            offset = 0;
+        }
+        
+        List<Project> allProjects = getInspirationProjects(inspiration);
+        
+        List<Project> projects = new ArrayList<Project>();
+        for (int i = offset; i < allProjects.size() && i - offset < MAX_TO_RETURN; i++) {
+            Project currentProject = allProjects.get(i);
+            currentProject.initializeSets();
+            projects.add(currentProject);
+        }
+        
+        final boolean hasNext = allProjects.size() > offset + MAX_TO_RETURN;
+        render(projects, offset, hasNext, inspiration);
     }
     
     public static void tag(final String tag, int offset) {

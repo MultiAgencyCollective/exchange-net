@@ -22,7 +22,7 @@
       <span style="font-weight:bold">Living Inspirations:</span>
       <span>    
         #{list _project.livingInspirationSet, as:'livingInspiration'}
-          ${livingInspiration.text} &middot;
+          <a style="color:#000000" href="@{Application.inspiration(livingInspiration.text, 0)}">${livingInspiration.text}</a> &middot;
         #{/list}
       </span>
       <br />
@@ -30,7 +30,7 @@
       <span style="font-weight:bold">Past Inspirations:</span>
       <span>    
         #{list _project.pastInspirationSet, as:'pastInspiration'}
-          ${pastInspiration.text} &middot;
+          <a style="color:#000000" href="@{Application.inspiration(pastInspiration.text, 0)}">${pastInspiration.text}</a> &middot;
         #{/list}
       </span>
       <br />
@@ -38,7 +38,7 @@
       <span style="font-weight:bold">Non-Artist Inspirations:</span>
       <span>    
         #{list _project.nonArtistInspirationSet, as:'nonArtistInspiration'}
-          ${nonArtistInspiration.text} &middot;
+          <a style="color:#000000" href="@{Application.inspiration(nonArtistInspiration.text, 0)}">${nonArtistInspiration.text}</a> &middot;
         #{/list}
       </span>
     </div>

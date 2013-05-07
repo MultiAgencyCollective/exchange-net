@@ -59,7 +59,7 @@ public class Bootstrap extends Job {
             
             Project project = new Project(
                 title, // projectTitle
-                randomWord(), // artist
+                randomName(), // artist
                 imageBlob, // myImage
                 randomDescription(), // description
                 randomWordCommaList(), // tags
@@ -67,7 +67,7 @@ public class Bootstrap extends Job {
                 randomWordCommaList(), // pastInspirations
                 randomWordCommaList(), // nonArtistInspirations
                 randomWordCommaList(), // emails
-                randomWord(), // sender
+                randomName(), // sender
                 randomWord() // message
             );
             
@@ -131,7 +131,7 @@ public class Bootstrap extends Job {
         final int wordCount = 1 + MY_RANDOM.nextInt(maxWords);
         final StringBuilder builder = new StringBuilder();
         for (int i = 0; i < wordCount; i++) {
-            builder.append(randomWord());
+            builder.append(randomName());
             if (i < wordCount - 1) {
                 builder.append(", ");
             } 
@@ -157,6 +157,19 @@ public class Bootstrap extends Job {
     private static String randomMultiWord() {
         final int maxWords = 4;
         final int wordCount = 1 + MY_RANDOM.nextInt(maxWords);
+        final StringBuilder builder = new StringBuilder();
+        for (int i = 0; i < wordCount; i++) {
+            builder.append(randomWord());
+            if (i < wordCount - 1) {
+                builder.append(" ");
+            } 
+        }
+        
+        return builder.toString();
+    }
+    
+    private static String randomName() {
+        final int wordCount = 1 + MY_RANDOM.nextInt(3);
         final StringBuilder builder = new StringBuilder();
         for (int i = 0; i < wordCount; i++) {
             builder.append(randomWord());
