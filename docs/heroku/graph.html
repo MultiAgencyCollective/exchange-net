@@ -234,7 +234,11 @@ if (document.addEventListener) {
 
 </head>
 <body style="width:1030px;">
-  <div id="projectData" style="display:none">${projectsJson}</div>
+  <div id="projectData" style="display:none;">
+    ${projectsJson}
+  </div>
+<div id="wrap">
+<div id="main">
   <div>
     <div id="titleHeader">
       EXCHANGE ARCHIVE
@@ -243,8 +247,10 @@ if (document.addEventListener) {
       <a href="@{Application.form()}" id="buttonLink">Add a Project</a>
     </div>
   </div>
+  
   <br style="clear:both" />
   <hr />
+  
   <div style="float:left">
     <div class="container">
       <div class="span12 sigma-parent" id="sigma-example-parent">
@@ -265,9 +271,28 @@ if (document.addEventListener) {
         <input type="radio" name="links" value="artist" onclick="linkByArtist()"> Artist
       </form>
     </div>
-  <br />
-  <br />
+    <br />
+    <br />
+    <div>
+       <div style="font-weight:bold">
+          Search:
+       </div>
+       #{form @Application.search(), enctype:'multipart/form-data'}
+         <input type="text" name="target" id="target" maxlength="50">
+         <input type="submit" name="search" id="search" value="Search">
+       #{/}
+    </div>
   </div>
+  
   <div id="projectView" style="height:500px;width:500px;float:left">
+  </div>
 </div>
+</div>
+  <div id="footer" style="text-align:center">
+    <hr />
+      <a style="color:#000000" href="@{Application.about()}">About</a> 
+      &nbsp;|&nbsp;
+      <a style="color:#000000" href="@{Application.contact()}">Contact</a>
+  </div>
+
 </body>

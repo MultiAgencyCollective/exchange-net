@@ -1,5 +1,5 @@
 #{extends 'main.html' /}
-#{set title:'EXCHANGE ARCHIVE - ' + inspiration /}
+#{set title:'EXCHANGE ARCHIVE - ' + target /}
 
 <!DOCTYPE html>
 <!--[if lt IE 7]> <html class="ie6 oldie"> <![endif]-->
@@ -39,9 +39,9 @@ Do the following if using your customized build of modernizr (http://www.moderni
   <div style="float:right; margin-top:20px; font-size:16px">
     <a href="@{Application.graph()}">HOME</a>
   </div>
-
+  
   #{if projects}
-    <h1 style="clear:both">Inspired by: ${inspiration}</h1>
+    <h1 style="clear:both">Search for: ${target}</h1>
   
     <div>    
       #{list projects, as:'project'}
@@ -51,14 +51,19 @@ Do the following if using your customized build of modernizr (http://www.moderni
   
     <div style="clear:both">
       #{if offset > 0}
-        <a style="font-size:20px" href="@{Application.inspiration(inspiration, offset - 10)}">Previous</a>
+        <a style="font-size:20px" href="@{Application.searchResult(target, offset - 10)}">Previous</a>
       #{/if}
       &nbsp; 
       #{if hasNext}
-        <a style="font-size:20px" href="@{Application.inspiration(inspiration, offset + 10)}">Next</a>
+        <a style="font-size:20px" href="@{Application.searchResult(target, offset + 10)}">Next</a>
       #{/if}
     </div>
   #{/if}
+  #{else}
+    <h3 style="clear:both">
+      No results found.
+    </h3>
+  #{/else}
 </div>
 </body>
 

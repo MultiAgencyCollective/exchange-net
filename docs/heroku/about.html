@@ -1,5 +1,5 @@
 #{extends 'main.html' /}
-#{set title:'EXCHANGE ARCHIVE - ' + inspiration /}
+#{set title:'EXCHANGE ARCHIVE - About' /}
 
 <!DOCTYPE html>
 <!--[if lt IE 7]> <html class="ie6 oldie"> <![endif]-->
@@ -32,34 +32,39 @@ Do the following if using your customized build of modernizr (http://www.moderni
 </head>
 
 <body>
-<div class="gridContainer clearfix">
-  <h2 style="float:left">
-    <a style="color:#000000" href="@{Application.graph()}">EXCHANGE ARCHIVE</a>
-  </h2>
-  <div style="float:right; margin-top:20px; font-size:16px">
-    <a href="@{Application.graph()}">HOME</a>
+  <div class="gridContainer clearfix">
+    <h2 style="float:left">
+      <a style="color:#000000" href="@{Application.graph()}">EXCHANGE ARCHIVE</a>
+    </h2>
+    <div style="float:right; margin-top:20px; font-size:16px">
+      <a href="@{Application.graph()}">HOME</a>
+    </div>
+    <div style="clear:both">
+      <br />
+      <h2>
+        About:
+      </h2>
+      <h3>
+        All artists work in a dialog with others. Exchange Archive supports
+        <br />
+        <strong>artistic dialog</strong> 
+        by showing the inspirations that flow between projects.
+      </h3>
+    </div>
+    
+    <br />
+    <h2>
+      Contributors:
+    </h2>  
+    <h3>
+      Corey Brady <br />
+      Pratim Sengupta <br />
+      Amelia Winger-Bearskin <br />
+      Caroline Woolard <br />
+      Mason Wright <br />
+    </h3>
   </div>
 
-  #{if projects}
-    <h1 style="clear:both">Inspired by: ${inspiration}</h1>
-  
-    <div>    
-      #{list projects, as:'project'}
-        #{fullProject project:project /}
-      #{/list}
-    </div>
-  
-    <div style="clear:both">
-      #{if offset > 0}
-        <a style="font-size:20px" href="@{Application.inspiration(inspiration, offset - 10)}">Previous</a>
-      #{/if}
-      &nbsp; 
-      #{if hasNext}
-        <a style="font-size:20px" href="@{Application.inspiration(inspiration, offset + 10)}">Next</a>
-      #{/if}
-    </div>
-  #{/if}
-</div>
 </body>
 
 </html>

@@ -74,6 +74,14 @@ public class Application extends Controller {
         render(projectsJson);
     }
     
+    public static void contact() {
+        render();
+    }
+    
+    public static void about() {
+        render();
+    }
+    
     public static void form() {
         testMobile();
         final String randomId = Codec.UUID();
@@ -206,6 +214,97 @@ public class Application extends Controller {
         
         final String randomId = Codec.UUID();
         render("Application/form.html", randomId);
+    }
+    
+    public static void search(final String target) {
+        final int offset = 0;
+        List<Project> allProjects = getMatchingProjects(target);
+        List<Project> projects = new ArrayList<Project>();
+        for (int i = offset; i < allProjects.size() && i - offset < MAX_TO_RETURN; i++) {
+            Project currentProject = allProjects.get(i);
+            currentProject.initializeSets();
+            projects.add(currentProject);
+        }
+        
+        final boolean hasNext = allProjects.size() > offset + MAX_TO_RETURN;
+        render(projects, offset, hasNext, target);
+    }
+    
+    public static void searchResult(final String target, int offset) {
+        if (offset < 0 || offset >= Project.count()) {
+            offset = 0;
+        }
+        
+        List<Project> allProjects = getMatchingProjects(target);
+        
+        List<Project> projects = new ArrayList<Project>();
+        for (int i = offset; i < allProjects.size() && i - offset < MAX_TO_RETURN; i++) {
+            Project currentProject = allProjects.get(i);
+            currentProject.initializeSets();
+            projects.add(currentProject);
+        }
+        
+        final boolean hasNext = allProjects.size() > offset + MAX_TO_RETURN;
+        render(projects, offset, hasNext, target);
+    }
+    
+    private static List<Project> getMatchingProjects(final String target) {
+        final List<Project> result = new ArrayList<Project>();
+        final List<Project> allProjects = Project.find(
+            "order by projectTitle asc"
+        ).fetch();
+                
+        for (Project project: allProjects) {
+            project.initializeSets();
+            
+            if (
+                project.projectTitle.contains(target)
+                || project.artist.contains(target)
+            ) {
+                result.add(project);
+            } else {
+                boolean found = false;
+                for (ProjectToken token: project.tagSet) {
+                    if (token.text.contains(target)) {
+                        found = true;
+                        result.add(project);
+                        break;
+                    }
+                }
+                if (found) {
+                    continue;
+                }
+                for (ProjectToken token: project.livingInspirationSet) {
+                    if (token.text.contains(target)) {
+                        found = true;
+                        result.add(project);
+                        break;
+                    }
+                }
+                if (found) {
+                    continue;
+                }
+                for (ProjectToken token: project.pastInspirationSet) {
+                    if (token.text.contains(target)) {
+                        found = true;
+                        result.add(project);
+                        break;
+                    }
+                }
+                if (found) {
+                    continue;
+                }
+                for (ProjectToken token: project.nonArtistInspirationSet) {
+                    if (token.text.contains(target)) {
+                        found = true;
+                        result.add(project);
+                        break;
+                    }
+                }
+            }
+        }
+        
+        return result;
     }
     
     public static void fullProject(final String name) {
