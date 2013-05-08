@@ -5,9 +5,10 @@
 # Home page
 *       /                       Application.graph
 *       /form                   Application.form
-*       /data123                Application.data123
-*       /fullProjects           Application.fullProjects
-*       /listProjects           Application.listProjects
+*       /contact                Application.contact
+*       /about                  Application.about
+*       /fullProjects           Application.fullProjects(0)
+*       /listProjects           Application.listProjects(0)
 
 # Map static resources from the /app/public folder to the /public path
 GET     /public/                staticDir:public

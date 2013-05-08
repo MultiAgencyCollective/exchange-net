@@ -32,34 +32,42 @@ Do the following if using your customized build of modernizr (http://www.moderni
 </head>
 
 <body>
-<div class="gridContainer clearfix">
-  <h2 style="float:left">
-    <a style="color:#000000" href="@{Application.graph()}">EXCHANGE ARCHIVE</a>
-  </h2>
-  <div style="float:right; margin-top:20px; font-size:16px">
-    <a href="@{Application.graph()}">HOME</a>
+  <div id="wrap">
+  <div id="main">
+    <h2 style="float:left">
+      <a style="color:#000000" href="@{Application.graph()}">EXCHANGE ARCHIVE</a>
+    </h2>
+    <div style="float:right; margin-top:20px; font-size:16px">
+      <a href="@{Application.graph()}">HOME</a>
+    </div>
+  
+      #{if projects}
+        <h1 style="clear:both">Artist: ${artist}</h1>
+  
+        <div>    
+          #{list projects, as:'project'}
+            #{fullProject project:project /}
+          #{/list}
+        </div>
+  
+        <div style="clear:both">
+          #{if offset > 0}
+            <a style="font-size:20px" href="@{Application.artist(artist, offset - 10)}">Previous</a>
+          #{/if}
+          &nbsp; 
+          #{if hasNext}
+            <a style="font-size:20px" href="@{Application.artist(artist, offset + 10)}">Next</a>
+          #{/if}
+        </div>
+      #{/if}
+    </div>
   </div>
-  
-  #{if projects}
-    <h1 style="clear:both">Artist: ${artist}</h1>
-  
-    <div>    
-      #{list projects, as:'project'}
-        #{fullProject project:project /}
-      #{/list}
-    </div>
-  
-    <div style="clear:both">
-      #{if offset > 0}
-        <a style="font-size:20px" href="@{Application.artist(artist, offset - 10)}">Previous</a>
-      #{/if}
-      &nbsp; 
-      #{if hasNext}
-        <a style="font-size:20px" href="@{Application.artist(artist, offset + 10)}">Next</a>
-      #{/if}
-    </div>
-  #{/if}
-</div>
+  <div id="footer" style="text-align:center">
+    <hr />
+    <a style="color:#000000" href="@{Application.about()}">About</a> 
+    &nbsp;|&nbsp;
+    <a style="color:#000000" href="@{Application.contact()}">Contact</a>
+  </div>
 </body>
 
 </html>

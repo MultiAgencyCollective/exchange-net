@@ -4,6 +4,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import models.GeneralData;
 import models.Project;
@@ -254,18 +255,20 @@ public class Application extends Controller {
             "order by projectTitle asc"
         ).fetch();
                 
+        final Pattern pattern = Pattern.compile(Pattern.quote(target), Pattern.CASE_INSENSITIVE);
+        
         for (Project project: allProjects) {
             project.initializeSets();
             
             if (
-                project.projectTitle.contains(target)
-                || project.artist.contains(target)
+                pattern.matcher(project.projectTitle).find()
+                || pattern.matcher(project.artist).find()
             ) {
                 result.add(project);
             } else {
                 boolean found = false;
                 for (ProjectToken token: project.tagSet) {
-                    if (token.text.contains(target)) {
+                    if (pattern.matcher(token.text).find()) {
                         found = true;
                         result.add(project);
                         break;
@@ -275,7 +278,7 @@ public class Application extends Controller {
                     continue;
                 }
                 for (ProjectToken token: project.livingInspirationSet) {
-                    if (token.text.contains(target)) {
+                    if (pattern.matcher(token.text).find()) {
                         found = true;
                         result.add(project);
                         break;
@@ -285,7 +288,7 @@ public class Application extends Controller {
                     continue;
                 }
                 for (ProjectToken token: project.pastInspirationSet) {
-                    if (token.text.contains(target)) {
+                    if (pattern.matcher(token.text).find()) {
                         found = true;
                         result.add(project);
                         break;
@@ -295,7 +298,7 @@ public class Application extends Controller {
                     continue;
                 }
                 for (ProjectToken token: project.nonArtistInspirationSet) {
-                    if (token.text.contains(target)) {
+                    if (pattern.matcher(token.text).find()) {
                         found = true;
                         result.add(project);
                         break;

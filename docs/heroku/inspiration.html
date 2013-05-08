@@ -32,7 +32,8 @@ Do the following if using your customized build of modernizr (http://www.moderni
 </head>
 
 <body>
-<div class="gridContainer clearfix">
+<div id="wrap">
+<div id="main">
   <h2 style="float:left">
     <a style="color:#000000" href="@{Application.graph()}">EXCHANGE ARCHIVE</a>
   </h2>
@@ -59,6 +60,13 @@ Do the following if using your customized build of modernizr (http://www.moderni
       #{/if}
     </div>
   #{/if}
+</div>
+</div>
+<div id="footer" style="text-align:center">
+  <hr />
+  <a style="color:#000000" href="@{Application.about()}">About</a> 
+  &nbsp;|&nbsp;
+  <a style="color:#000000" href="@{Application.contact()}">Contact</a>
 </div>
 </body>
 
