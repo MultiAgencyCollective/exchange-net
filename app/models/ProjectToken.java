@@ -38,6 +38,9 @@ public final class ProjectToken extends Model {
 
     @Override
     public boolean equals(final Object obj) {
+        if (obj == null) {
+            return false;
+        }
         if (this == obj) {
             return true;
         }
@@ -49,7 +52,9 @@ public final class ProjectToken extends Model {
         if (this.text == null) {
             if (other.text != null) {
                 return false;
-            }
+            } 
+            
+            return true;
         }
         
         if (!this.text.equals(other.text)) {
