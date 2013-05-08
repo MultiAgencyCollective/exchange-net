@@ -23,10 +23,11 @@ public class ProjectForJson {
         this.tags = getStringArray(project.tagSet);
         this.livingInspirations = getStringArray(project.livingInspirationSet);
         this.pastInspirations = getStringArray(project.pastInspirationSet);
-        this.nonArtistInspirations = getStringArray(project.nonArtistInspirationSet);
+        this.nonArtistInspirations = 
+            getStringArray(project.nonArtistInspirationSet);
     }
     
-    private String[] getStringArray(final Set<ProjectToken> tokenSet) {
+    private static String[] getStringArray(final Set<ProjectToken> tokenSet) {
         String[] result = new String[tokenSet.size()];
         int i = 0;
         for (ProjectToken token: tokenSet) {

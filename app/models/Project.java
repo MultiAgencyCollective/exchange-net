@@ -171,7 +171,9 @@ public final class Project extends Model {
         
         final int maxCharsForBriefDescription = 200;
         if (this.description.length() >= maxCharsForBriefDescription) {
-            this.briefDescription = this.description.substring(0, maxCharsForBriefDescription) + "...";
+            this.briefDescription = 
+                this.description.substring(0, maxCharsForBriefDescription) 
+                    + "...";
         } else {
             this.briefDescription = this.description;
         }

@@ -31,7 +31,8 @@ public final class ProjectToken extends Model {
     public int hashCode() {
         final int prime = 31;
         int result = super.hashCode();
-        result = prime * result + ((text == null) ? 0 : text.hashCode());
+        result = prime * result 
+            + ((this.text == null) ? 0 : this.text.hashCode());
         return result;
     }
 
@@ -45,13 +46,13 @@ public final class ProjectToken extends Model {
         }
         
         ProjectToken other = (ProjectToken) obj;
-        if (text == null) {
+        if (this.text == null) {
             if (other.text != null) {
                 return false;
             }
         }
         
-        if (!text.equals(other.text)) {
+        if (!this.text.equals(other.text)) {
             return false;
         }
         

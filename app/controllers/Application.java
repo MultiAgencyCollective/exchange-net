@@ -171,7 +171,10 @@ public class Application extends Controller {
             
             Cache.delete(randomId);
         } else {
-            flash.put("myCode", "Invalid code. Re-upload your photo, and try again.");
+            flash.put(
+                "myCode", 
+                "Invalid code. Re-upload your photo, and try again."
+            );
             flash.error("Code is not valid.");
             doCancelProject(newProject);
         }
@@ -221,7 +224,11 @@ public class Application extends Controller {
         final int offset = 0;
         List<Project> allProjects = getMatchingProjects(target);
         List<Project> projects = new ArrayList<Project>();
-        for (int i = offset; i < allProjects.size() && i - offset < MAX_TO_RETURN; i++) {
+        for (
+            int i = offset; 
+            i < allProjects.size() && i - offset < MAX_TO_RETURN; 
+            i++
+        ) {
             Project currentProject = allProjects.get(i);
             currentProject.initializeSets();
             projects.add(currentProject);
@@ -239,7 +246,11 @@ public class Application extends Controller {
         List<Project> allProjects = getMatchingProjects(target);
         
         List<Project> projects = new ArrayList<Project>();
-        for (int i = offset; i < allProjects.size() && i - offset < MAX_TO_RETURN; i++) {
+        for (
+            int i = offset; 
+            i < allProjects.size() && i - offset < MAX_TO_RETURN; 
+            i++
+        ) {
             Project currentProject = allProjects.get(i);
             currentProject.initializeSets();
             projects.add(currentProject);
@@ -255,7 +266,8 @@ public class Application extends Controller {
             "order by projectTitle asc"
         ).fetch();
                 
-        final Pattern pattern = Pattern.compile(Pattern.quote(target), Pattern.CASE_INSENSITIVE);
+        final Pattern pattern = 
+            Pattern.compile(Pattern.quote(target), Pattern.CASE_INSENSITIVE);
         
         for (Project project: allProjects) {
             project.initializeSets();
@@ -342,7 +354,9 @@ public class Application extends Controller {
         return result;
     }
     
-    private static List<Project> getInspirationProjects(final String inspiration) {
+    private static List<Project> getInspirationProjects(
+        final String inspiration
+    ) {
         final List<Project> result = new ArrayList<Project>();
         final List<Project> allProjects = Project.find(
             "order by projectTitle asc"
@@ -372,7 +386,11 @@ public class Application extends Controller {
         List<Project> allProjects = getInspirationProjects(inspiration);
         
         List<Project> projects = new ArrayList<Project>();
-        for (int i = offset; i < allProjects.size() && i - offset < MAX_TO_RETURN; i++) {
+        for (
+            int i = offset; 
+            i < allProjects.size() && i - offset < MAX_TO_RETURN; 
+            i++
+        ) {
             Project currentProject = allProjects.get(i);
             currentProject.initializeSets();
             projects.add(currentProject);
@@ -390,7 +408,11 @@ public class Application extends Controller {
         List<Project> allProjects = getTagProjects(tag);
         
         List<Project> projects = new ArrayList<Project>();
-        for (int i = offset; i < allProjects.size() && i - offset < MAX_TO_RETURN; i++) {
+        for (
+            int i = offset; 
+            i < allProjects.size() && i - offset < MAX_TO_RETURN; 
+            i++
+        ) {
             Project currentProject = allProjects.get(i);
             currentProject.initializeSets();
             projects.add(currentProject);
@@ -423,7 +445,11 @@ public class Application extends Controller {
         List<Project> allProjects = getArtistProjects(artist);
         
         List<Project> projects = new ArrayList<Project>();
-        for (int i = offset; i < allProjects.size() && i - offset < MAX_TO_RETURN; i++) {
+        for (
+            int i = offset; 
+            i < allProjects.size() && i - offset < MAX_TO_RETURN; 
+            i++
+        ) {
             Project currentProject = allProjects.get(i);
             currentProject.initializeSets();
             projects.add(currentProject);
@@ -442,7 +468,11 @@ public class Application extends Controller {
             "order by projectTitle asc"
         ).fetch();
         List<Project> projects = new ArrayList<Project>();
-        for (int i = offset; i < allProjects.size() && i - offset < MAX_TO_RETURN; i++) {
+        for (
+            int i = offset; 
+            i < allProjects.size() && i - offset < MAX_TO_RETURN; 
+            i++
+        ) {
             Project currentProject = allProjects.get(i);
             currentProject.initializeSets();
             projects.add(currentProject);
@@ -469,7 +499,11 @@ public class Application extends Controller {
             "order by projectTitle asc"
         ).fetch();
         List<Project> projects = new ArrayList<Project>();
-        for (int i = offset; i < allProjects.size() && i - offset < MAX_TO_RETURN; i++) {
+        for (
+            int i = offset; 
+            i < allProjects.size() && i - offset < MAX_TO_RETURN;
+            i++
+        ) {
             Project currentProject = allProjects.get(i);
             currentProject.initializeSets();
             projects.add(currentProject);
@@ -512,7 +546,8 @@ public class Application extends Controller {
             return;
         }
         
-        ByteArrayInputStream inputStream = new ByteArrayInputStream(project.imageBytes);
+        ByteArrayInputStream inputStream = 
+            new ByteArrayInputStream(project.imageBytes);
         response.current().contentType = project.imageMimeType;
         renderBinary(inputStream);
     }
