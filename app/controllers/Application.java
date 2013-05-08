@@ -221,12 +221,11 @@ public class Application extends Controller {
     }
     
     public static void search(final String target) {
-        final int offset = 0;
         List<Project> allProjects = getMatchingProjects(target);
         List<Project> projects = new ArrayList<Project>();
         for (
-            int i = offset; 
-            i < allProjects.size() && i - offset < MAX_TO_RETURN; 
+            int i = 0; 
+            i < allProjects.size() && i < MAX_TO_RETURN; 
             i++
         ) {
             Project currentProject = allProjects.get(i);
@@ -234,7 +233,8 @@ public class Application extends Controller {
             projects.add(currentProject);
         }
         
-        final boolean hasNext = allProjects.size() > offset + MAX_TO_RETURN;
+        final int offset = 0;
+        final boolean hasNext = allProjects.size() > MAX_TO_RETURN;
         render(projects, offset, hasNext, target);
     }
     
@@ -449,6 +449,77 @@ public class Application extends Controller {
         }
         
         return result;
+    }
+    
+    public static void images(int offset) {
+        if (offset < 0 || offset >= Project.count()) {
+            offset = 0;
+        }
+        
+        List<Project> allProjects = Project.findAll();
+        
+        int index = 0;
+        Project project0 = null, 
+            project1 = null, 
+            project2 = null, 
+            project3 = null, 
+            project4 = null, 
+            project5 = null, 
+            project6 = null, 
+            project7 = null, 
+            project8 = null;
+        if (allProjects.size() > offset + index) {
+            project0 = allProjects.get(offset + index);
+            index++;
+            if (allProjects.size() > offset + index) {
+                project1 = allProjects.get(offset + index);
+                index++;
+                if (allProjects.size() > offset + index) {
+                    project2 = allProjects.get(offset + index);
+                    index++;
+                    if (allProjects.size() > offset + index) {
+                        project3 = allProjects.get(offset + index);
+                        index++;
+                        if (allProjects.size() > offset + index) {
+                            project4 = allProjects.get(offset + index);
+                            index++;
+                            if (allProjects.size() > offset + index) {
+                                project5 = allProjects.get(offset + index);
+                                index++;
+                                if (allProjects.size() > offset + index) {
+                                    project6 = allProjects.get(offset + index);
+                                    index++;
+                                    if (allProjects.size() > offset + index) {
+                                        project7 = allProjects.get(offset + index);
+                                        index++;
+                                        if (allProjects.size() > offset + index) {
+                                            project8 = allProjects.get(offset + index);
+                                            index++;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        final int imageCount = index;
+        final boolean hasNext = allProjects.size() > offset + imageCount;
+        render(
+            project0,
+            project1,
+            project2,
+            project3,
+            project4,
+            project5,
+            project6,
+            project7,
+            project8,
+            offset, 
+            hasNext
+        );
     }
     
     public static void artist(final String artist, int offset) {

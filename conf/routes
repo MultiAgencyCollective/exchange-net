@@ -9,6 +9,7 @@
 *       /about                  Application.about
 *       /fullProjects           Application.fullProjects(0)
 *       /listProjects           Application.listProjects(0)
+*       /images                 Application.images(0)
 
 # Map static resources from the /app/public folder to the /public path
 GET     /public/                staticDir:public
