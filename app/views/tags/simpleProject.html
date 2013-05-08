@@ -13,11 +13,9 @@
   <br />
   Non-Artist Inspirations: ${_project.nonArtistInspirations}
   <br />
-  Emails: ${_project.emails}
-  <br />
-  Message: ${_project.message}
-  <br />
   Image:
   <br />
-  <img src="@{Application.getImage(_project.id)}" />
+  ${_project.imageMimeType}
+  <br />
+  <img src="@{Application.getImage2(_project.id)}" />
 </div>

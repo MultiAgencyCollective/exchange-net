@@ -24,6 +24,39 @@ public final class ProjectToken extends Model {
     public ProjectToken(final String someText) {
         this.text = someText;
     }
+    
+    
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = super.hashCode();
+        result = prime * result + ((text == null) ? 0 : text.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(final Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        
+        ProjectToken other = (ProjectToken) obj;
+        if (text == null) {
+            if (other.text != null) {
+                return false;
+            }
+        }
+        
+        if (!text.equals(other.text)) {
+            return false;
+        }
+        
+        return true;
+    }
 
     @Override
     public String toString() {

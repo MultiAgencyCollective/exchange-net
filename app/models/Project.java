@@ -1,5 +1,6 @@
 package models;
 
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -7,6 +8,8 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Lob;
 import javax.persistence.OneToMany;
+
+import org.apache.commons.io.IOUtils;
 
 import play.data.validation.CheckWith;
 import play.data.validation.Required;
@@ -38,6 +41,8 @@ public final class Project extends Model {
     @Lob 
     public String description;
     
+    public String briefDescription;
+    
     @Required(message = PLEASE_ENTER_A + " tag.")
     @CheckWith(MyChecks.NameCheck.class)
     public String tags;
@@ -60,6 +65,12 @@ public final class Project extends Model {
     
     @Lob
     public String message;
+    
+    @Lob
+    public byte[] imageBytes;
+
+    public String imageMimeType;
+    public String imageFileName;  
     
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
     public Set<ProjectToken> tagSet;
@@ -109,11 +120,31 @@ public final class Project extends Model {
         this.sender = sender;
         this.message = message;
         
+        this.imageBytes = null;
         this.tagSet = new HashSet<ProjectToken>();
         this.livingInspirationSet = new HashSet<ProjectToken>();
         this.pastInspirationSet = new HashSet<ProjectToken>();
         this.nonArtistInspirationSet = new HashSet<ProjectToken>();
         this.emailSet = new HashSet<ProjectToken>();
+    }
+    
+    public void initializeImage() {
+        if (!(
+            this.imageBytes == null
+            && this.imageMimeType == null
+            && this.imageFileName == null
+        )) {
+            return;
+        }
+        
+        try {
+            this.imageBytes = IOUtils.toByteArray(this.myImage.get());
+            this.imageMimeType = 
+                MyChecks.PhotoCheck.detectMimeType(this.myImage.getFile());
+            this.imageFileName = this.myImage.getFile().getName();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
     
     public void initializeSets() {
@@ -136,6 +167,13 @@ public final class Project extends Model {
             initializeSet(this.emailSet, this.emails);
         } else {
             this.emailSet.clear();
+        }
+        
+        final int maxCharsForBriefDescription = 200;
+        if (this.description.length() >= maxCharsForBriefDescription) {
+            this.briefDescription = this.description.substring(0, maxCharsForBriefDescription) + "...";
+        } else {
+            this.briefDescription = this.description;
         }
     }
     

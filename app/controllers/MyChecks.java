@@ -216,7 +216,7 @@ public abstract class MyChecks {
             return true;
         }
         
-        private static String detectMimeType(
+        public static String detectMimeType(
             final File file
         ) throws IOException {
             TikaInputStream tikaIS = null;

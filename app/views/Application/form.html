@@ -1,0 +1,173 @@
+#{extends 'main.html' /}
+#{set title:'EXCHANGE ARCHIVE - Add a Project' /}
+
+<!DOCTYPE html>
+<!--[if lt IE 7]> <html class="ie6 oldie"> <![endif]-->
+<!--[if IE 7]>    <html class="ie7 oldie"> <![endif]-->
+<!--[if IE 8]>    <html class="ie8 oldie"> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html class="">
+<!--<![endif]-->
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" media="screen" href="@{'/public/stylesheets/newStyle.css'}">
+<link rel="stylesheet" media="screen" href="@{'/public/stylesheets/main.css'}">
+<script src="@{'/public/javascripts/respond.min.js'}" type="text/javascript" ></script>
+        
+<!-- 
+To learn more about the conditional comments around the html tags at the top of the file:
+paulirish.com/2008/conditional-stylesheets-vs-css-hacks-answer-neither/
+
+Do the following if using your customized build of modernizr (http://www.modernizr.com/):
+* insert the link to your js here
+* remove the link below to the html5shiv
+* add the "no-js" class to the html tags at the top
+* you can also remove the link to respond.min.js if you included the MQ Polyfill in your modernizr build 
+-->
+<!--[if lt IE 9]>
+<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+</head>
+
+<body>
+<div class="gridContainer clearfix">
+#{if flash.get("isMobile") == "true" }
+#{/if}
+#{else}
+#{/else}
+
+  <h2 style="float:left">
+    EXCHANGE ARCHIVE
+    <br />
+    Artists do not create work in a vacuum.*
+  </h2>
+  <div style="float:right; margin-top:20px; font-size:16px">
+    <a href="@{Application.graph()}">HOME</a>
+  </div>
+  #{if flash.error}
+    <div id="errorBox" style="clear:both">
+      Your form contains errors. Please try again.
+    </div>
+  #{/if}
+  #{if !flash.error}
+    <h3 style="clear:both">
+      All artists work in a dialog with others. Exchange Archive supports
+      <br />
+      <strong>artistic dialog</strong> 
+      by showing the inspirations that flow between projects.
+    </h3>
+    <h3>
+      Please <strong>add your work</strong> to the archive.
+    </h3>
+    <h3>
+       <strong>Thank you!</strong>
+       <br />
+       -- Caroline Woolard, MultiAgency Collective
+    </h3>
+  #{/if}
+  <br />
+  <p>
+    * <a href="https://ourgoods.org/blog/warhol_put_an_add_in_the_village_voice_saying_i_will_trade_art_for_anything" target="_blank">Vacuums are for cleaning, not for divine inspiration</a>.
+  </p>
+  <hr />
+  
+  <h2>Add a Project</h2>
+  #{form @Application.addProject(), enctype:'multipart/form-data'}
+    <p>
+      Project Title
+      <br />
+      <input type="text" name="newProject.projectTitle" id="projectTitle" placeholder="Project title" value="${flash.projectTitle}" maxlength="50">
+      <span class="error">#{error 'newProject.projectTitle' /}</span>
+    </p>
+    <p>
+      Artist
+      <br />
+      <input type="text" name="newProject.artist" id="artist" placeholder="Artist and/or collective's name" value="${flash.artist}" maxlength="50">
+      <span class="error">#{error 'newProject.artist' /}</span>
+    </p>
+    <p>
+      Photo of Project
+      <br />
+      <input type="file" name="newProject.myImage" id="myImage" value="${flash.myImage}">
+      <br />
+      <span class="error">#{error 'newProject.myImage' /}</span>
+      #{if flash.error}
+         <span class="error">RE-UPLOAD IMAGE</span>
+      #{/if}
+    </p>
+    <p>
+      Description
+      <br />
+      <textarea name="newProject.description" cols="100" rows="4" id="description" placeholder="Add a short description of your project" maxlength="5000">${flash.description}</textarea>
+      <span class="error">#{error 'newProject.description' /}</span>
+    </p>
+    <p>
+      Tags 
+      <span style="color:#888888">. . . words that describe your work</span>
+      <br />
+      <input type="text" name="newProject.tags" id="tags" placeholder="Enter tags, separated by commas" value="${flash.tags}" maxlength="100">
+      <span class="error">#{error 'newProject.tags' /}</span>
+    </p>
+    <p>
+      Contemporary Inspirations 
+      <span style="color:#888888">. . . living artists who inspire your work</span>
+      <br />
+      <input type="text" name="newProject.livingInspirations" id="livingInspirations" placeholder="Enter artists, separated by commas" value="${flash.livingInspirations}" maxlength="100">
+      <span class="error">#{error 'newProject.livingInspirations' /}</span>
+    </p>
+    <p>
+      Historical Inspirations 
+      <span style="color:#888888">. . . past artists who inspire your work</span>
+      <br />
+      <input type="text" name="newProject.pastInspirations" id="pastInspirations" placeholder="Enter artists, separated by commas" value="${flash.pastInspirations}" maxlength="100">
+      <span class="error">#{error 'newProject.pastInspirations' /}</span>
+    </p>
+    <p>
+      Non-Artist Inspirations 
+      <span style="color:#888888">. . . whoever or whatever inspires your work</span>
+      <br />
+      <input type="text" name="newProject.nonArtistInspirations" id="nonArtistInspirations" placeholder="Enter inspirations, separated by commas" value="${flash.nonArtistInspirations}" maxlength="100">
+      <span class="error">#{error 'newProject.nonArtistInspirations' /}</span>
+    <p>
+      <strong>Recommend artists for the archive!</strong>
+      <br />
+      Email this form to: 
+      <span style="color:#888888">(optional)</span>
+      <br />
+      <input type="text" name="newProject.emails" id="emails" placeholder="Enter email addresses, separated by commas" value="${flash.emails}" maxlength="100">
+      <span class="error">#{error 'newProject.emails' /}</span>
+    </p>
+    <p>
+      Sender name on the email
+      <span style="color:#888888">(optional)</span>
+      <br />
+      <input type="text" name="newProject.sender" id="sender" placeholder="Enter a sender's name for the email" value="${flash.sender}" maxlength="50">
+      <span class="error">#{error 'newProject.sender' /}</span>
+    </p>
+    <p>
+      Add a message to the email 
+      <span style="color:#888888">(optional)</span>
+      <textarea name="newProject.message" cols="100" rows="2" id="message" placeholder="Add a short message to the email" maxlength="500">${flash.message}</textarea>
+      <span class="error">#{error 'newProject.message' /}</span>
+    </p>
+    <p>
+      Please type the code below.
+      <br />
+      <img src="@{Application.captcha(randomId)}" />
+      <br />
+      <input type="text" name="code" id="code" size="18" value="" maxlength="50"/>
+      <input type="hidden" name="randomId" id="randomId" value="${randomId}" />
+      <span class="error">${flash.myCode}</span>
+    </p>
+    <p>
+      <input type="submit" name="submit" id="submit" value="Submit">
+      <button type="button" onclick='window.location = "@{Application.graph()}";');">Cancel</button>
+    </p>
+   #{/}
+  <p>&nbsp;</p>
+</div>
+</body>
+
+</html>
