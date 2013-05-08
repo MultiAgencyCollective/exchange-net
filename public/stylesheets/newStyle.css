@@ -16,6 +16,32 @@
  * ==|== normalize ==========================================================
  */
 
+html, body {height: 100%;}
+
+#wrap {min-height: 100%;}
+
+#main {overflow:auto;
+    padding-bottom: 60px;}  /* must be same height as the footer */
+
+#footer {position: relative;
+    margin-top: -60px; /* negative value of footer height */
+    height: 60px;
+    clear:both;} 
+
+/*Opera Fix*/
+body:before {
+    content:"";
+    height:100%;
+    float:left;
+    width:0;
+    margin-top:-32767px;/
+}
+And on your html page you will need this conditional style for IE6 and earlier and for IE8 (!IE7 means not 7, but all others);
+<!--[if !IE 7]>
+    <style type="text/css">
+        #wrap {display:table;height:100%}
+    </style>
+<![endif]-->
 
 /* =============================================================================
    HTML5 display definitions
@@ -67,6 +93,7 @@ a:focus { outline: thin dotted; }
 /* Improve readability when focused and hovered in all browsers: h5bp.com/h */
 a:hover, a:active { outline: 0; }
 
+ #buttonLink { color:#000; text-decoration:none; outline:0; }
 
 /* =============================================================================
    Typography
@@ -189,6 +216,8 @@ button, input[type="button"], input[type="reset"], input[type="submit"] { cursor
 input[type="checkbox"], input[type="radio"] { box-sizing: border-box; }
 input[type="search"] { -webkit-appearance: textfield; -moz-box-sizing: content-box; -webkit-box-sizing: content-box; box-sizing: content-box; }
 input[type="search"]::-webkit-search-decoration { -webkit-appearance: none; }
+
+input[type="checkbox"], input[type="radio"], input[type="button"]:hover { cursor:pointer; }
 
 /* 
  * Remove inner padding and border in FF3/4: h5bp.com/l 

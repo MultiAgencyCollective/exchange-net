@@ -1,5 +1,5 @@
 #{extends 'main.html' /}
-#{set title:'EXCHANGE ARCHIVE - About' /}
+#{set title:'EXCHANGE ARCHIVE - ' + name /}
 
 <!DOCTYPE html>
 <!--[if lt IE 7]> <html class="ie6 oldie"> <![endif]-->
@@ -32,53 +32,31 @@ Do the following if using your customized build of modernizr (http://www.moderni
 </head>
 
 <body>
-  <div class="gridContainer clearfix">
-    <h2 style="float:left">
-      <a style="color:#000000" href="@{Application.graph()}">EXCHANGE ARCHIVE</a>
-    </h2>
-    <div style="float:right; margin-top:20px; font-size:16px">
-      <a href="@{Application.graph()}">HOME</a>
-    </div>
-    <div style="clear:both">
-      <br />
-      <h2>
-        About:
-      </h2>
-      <h3>
-        All artists work in a dialog with others. Exchange Archive supports
-        <br />
-        <strong>artistic dialog</strong> 
-        by showing the inspirations that flow between projects.
-      </h3>
-    </div>
-    
-    <br />
-    <h2>
-      Contributors:
-    </h2>  
-    <h3>
-      Caroline Woolard <br />
-      <br />
-      <em>MultiAgency Collective</em> <br />
-      Corey Brady <br />
-      Pratim Sengupta <br />
-      Amelia Winger-Bearskin <br />
-    </h3>
-    
-    <br />
-    <h2>
-      Developer:
-    </h2>  
-    <h3>
-      Mason Wright
-    </h3>
-    
-    <br />
-    <h2>
-      <a href="@{Application.contact()}">Contact Us</a>
-    </h2>
+<div id="wrap">
+<div id="main">
+  <h2 style="float:left">
+    <a style="color:#000000" href="@{Application.graph()}">EXCHANGE ARCHIVE</a>
+  </h2>
+  <div style="float:right; margin-top:20px; font-size:16px">
+    <a href="@{Application.graph()}">HOME</a>
   </div>
 
+  <div>
+    #{if project}
+      <div>
+        #{fullProject project:project /}
+      </div>
+    #{/if}
+  </div>
+</div>
+</div>
+
+  <div id="footer" style="text-align:center">
+    <hr />
+    <a style="color:#000000" href="@{Application.about()}">About</a> 
+    &nbsp;|&nbsp;
+    <a style="color:#000000" href="@{Application.contact()}">Contact</a>
+  </div>
 </body>
 
 </html>

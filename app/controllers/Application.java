@@ -322,7 +322,21 @@ public class Application extends Controller {
         return result;
     }
     
-    public static void fullProject(final String name) {
+    public static void project(final String name) {
+        Project target = null;
+        List<Project> projects = Project.findAll();
+        for (Project project: projects) {
+            if (project.projectTitle.equals(name)) {
+                target = project;
+                target.initializeSets();
+                break;
+            }
+        }
+        
+        render(target, name);
+    }
+    
+    public static void fullProjectInset(final String name) {
         Project target = null;
         List<Project> projects = Project.findAll();
         for (Project project: projects) {
@@ -501,7 +515,7 @@ public class Application extends Controller {
         List<Project> projects = new ArrayList<Project>();
         for (
             int i = offset; 
-            i < allProjects.size() && i - offset < MAX_TO_RETURN;
+            i < allProjects.size() && i - offset < MAX_TO_RETURN; 
             i++
         ) {
             Project currentProject = allProjects.get(i);

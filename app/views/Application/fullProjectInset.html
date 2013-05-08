@@ -1,5 +1,5 @@
 #{extends 'main.html' /}
-#{set title:'EXCHANGE ARCHIVE - About' /}
+#{set title:'EXCHANGE ARCHIVE - Full Project' /}
 
 <!DOCTYPE html>
 <!--[if lt IE 7]> <html class="ie6 oldie"> <![endif]-->
@@ -12,7 +12,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" media="screen" href="@{'/public/stylesheets/newStyle.css'}">
+<link rel="stylesheet" media="screen" href="@{'/public/stylesheets/innerStyle.css'}">
 <link rel="stylesheet" media="screen" href="@{'/public/stylesheets/main.css'}">
 <script src="@{'/public/javascripts/respond.min.js'}" type="text/javascript" ></script>
         
@@ -32,53 +32,13 @@ Do the following if using your customized build of modernizr (http://www.moderni
 </head>
 
 <body>
-  <div class="gridContainer clearfix">
-    <h2 style="float:left">
-      <a style="color:#000000" href="@{Application.graph()}">EXCHANGE ARCHIVE</a>
-    </h2>
-    <div style="float:right; margin-top:20px; font-size:16px">
-      <a href="@{Application.graph()}">HOME</a>
-    </div>
-    <div style="clear:both">
-      <br />
-      <h2>
-        About:
-      </h2>
-      <h3>
-        All artists work in a dialog with others. Exchange Archive supports
-        <br />
-        <strong>artistic dialog</strong> 
-        by showing the inspirations that flow between projects.
-      </h3>
-    </div>
-    
-    <br />
-    <h2>
-      Contributors:
-    </h2>  
-    <h3>
-      Caroline Woolard <br />
-      <br />
-      <em>MultiAgency Collective</em> <br />
-      Corey Brady <br />
-      Pratim Sengupta <br />
-      Amelia Winger-Bearskin <br />
-    </h3>
-    
-    <br />
-    <h2>
-      Developer:
-    </h2>  
-    <h3>
-      Mason Wright
-    </h3>
-    
-    <br />
-    <h2>
-      <a href="@{Application.contact()}">Contact Us</a>
-    </h2>
+<div class="gridContainer clearfix">
+  #{if project}
+  <div>
+      #{fullProjectBrief project:project /}
   </div>
-
+  #{/if}
+</div>
 </body>
 
 </html>

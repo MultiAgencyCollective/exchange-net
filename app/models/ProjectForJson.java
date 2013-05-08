@@ -16,7 +16,7 @@ public class ProjectForJson {
     
     public String[] nonArtistInspirations;
             
-    public ProjectForJson(Project project) {
+    public ProjectForJson(final Project project) {
         project.initializeSets();
         this.projectTitle = project.projectTitle;
         this.artist = project.artist;
@@ -27,7 +27,7 @@ public class ProjectForJson {
             getStringArray(project.nonArtistInspirationSet);
     }
     
-    private static String[] getStringArray(final Set<ProjectToken> tokenSet) {
+    private String[] getStringArray(final Set<ProjectToken> tokenSet) {
         String[] result = new String[tokenSet.size()];
         int i = 0;
         for (ProjectToken token: tokenSet) {

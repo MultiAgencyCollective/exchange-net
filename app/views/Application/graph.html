@@ -188,7 +188,7 @@ function init() {
                 currentNode.active = false;
             }
         }).draw();
-        $('#projectView').load('@{fullProject()}', {'name': clickedNodeId});
+        $('#projectView').load('@{fullProjectInset()}', {'name': clickedNodeId});
     }).draw();
     
     sigInst.bind('outnodes',function(event) {

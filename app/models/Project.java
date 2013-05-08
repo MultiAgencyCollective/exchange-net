@@ -171,9 +171,7 @@ public final class Project extends Model {
         
         final int maxCharsForBriefDescription = 200;
         if (this.description.length() >= maxCharsForBriefDescription) {
-            this.briefDescription = 
-                this.description.substring(0, maxCharsForBriefDescription) 
-                    + "...";
+            this.briefDescription = this.description.substring(0, maxCharsForBriefDescription) + "...";
         } else {
             this.briefDescription = this.description;
         }
@@ -185,6 +183,10 @@ public final class Project extends Model {
     ) {
         assert targetSet != null && source != null;
         targetSet.clear();
+        
+        final int maxTokens = 10;
+        int tokenCount = 0;
+        
         for (final String commaToken: source.split(",")) {
             if (isValidToken(commaToken)) {
                 if (commaToken == null || commaToken.length() == 0) {
@@ -192,6 +194,10 @@ public final class Project extends Model {
                 }
                 final ProjectToken newToken = new ProjectToken(commaToken);
                 targetSet.add(newToken);
+                tokenCount++;
+                if (tokenCount >= maxTokens) {
+                    return;
+                }
             }
         }
     }
