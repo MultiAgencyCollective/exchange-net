@@ -38,7 +38,7 @@ public class Bootstrap extends Job {
     }
     
     private static void populateProjectDatabase() {
-        final int numberOfRecords = 20;
+        final int numberOfRecords = 10; 
         for (int i = 0; i < numberOfRecords; i++) {
             final Blob imageBlob = new Blob();
            /*
@@ -52,9 +52,9 @@ public class Bootstrap extends Job {
                 e.printStackTrace();
             }
             */
-            String title = randomWord();
+            String title = randomWords(30);
             while (isNameTaken(title)) {
-                title = randomWord();
+                title = randomWords(30);
             }
             
             Project project = randomLengthProject(title, imageBlob);

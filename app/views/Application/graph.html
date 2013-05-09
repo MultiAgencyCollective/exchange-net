@@ -21,6 +21,37 @@ _gaq.push(['_trackPageview']);
 </script>
 
 <script type="text/javascript">
+
+var selectedButton = "button1";
+var buttonList = [ "button1", "button2", "button3", "button4", "button5" ];
+
+function radioButtonClick(clickedName) {
+    selectedButton = clickedName;
+    
+    for (var i = 0; i < buttonList.length; i++) {
+        var buttonName = buttonList[i];
+        if (buttonName == clickedName) {
+           document.getElementById(buttonName).style.background = '#666666';
+           document.getElementById(buttonName).style.color = '#dddddd';
+        } else {
+           document.getElementById(buttonName).style.background = '#dddddd';
+           document.getElementById(buttonName).style.color = '#000000';
+        }
+    }
+}
+
+function radioButtonOver(clickedName) {
+    if (clickedName != selectedButton) {
+      document.getElementById(clickedName).style.background = '#ffffff';
+    }
+}
+
+function radioButtonOut(clickedName) {
+    if (clickedName != selectedButton) {
+      document.getElementById(clickedName).style.background = '#cccccc';
+    }
+}
+
 var sigInst;
 var edgeIndex = 0;
 
@@ -115,6 +146,7 @@ function linkByArtist() {
 }
 
 var GRAY = '#666';
+var LIGHT_GRAY = '#ccc';
 var RED = '#f00';
 var GREEN = '00aa00';
 
@@ -168,7 +200,7 @@ function init() {
         }).iterNodes(function(n) {
             if (!neighbors[n.id] && nodes.indexOf(n.id) < 0) {
                 if (n.color != RED) {
-                    n.color = GRAY;
+                    n.color = LIGHT_GRAY;
                 }
             } else {
                 if (n.color != RED) {
@@ -184,7 +216,7 @@ function init() {
                 currentNode.color = RED;
                 currentNode.active = true;
             } else {
-                currentNode.color = GRAY;
+                currentNode.color = LIGHT_GRAY;
                 currentNode.active = false;
             }
         }).draw();
@@ -208,15 +240,15 @@ if (document.addEventListener) {
 <style type="text/css">
   .sigma-parent {
     position: relative;
-    border-radius: 4px;
-    -moz-border-radius: 4px;
-    -webkit-border-radius: 4px;
+    border-radius: 2px;
+    -moz-border-radius: 2px;
+    -webkit-border-radius: 2px;
     background: #fff;
     height: 500px;
     width: 500px;
     border-style: solid;
     border-width:2px;
-    border-color:black;
+    border-color: #ccc;
   }  
   .status-area {
     position: absolute;
@@ -263,14 +295,19 @@ if (document.addEventListener) {
       <div style="font-weight:bold">
         Link By:
       </div>
-      <form action="">
-        <input type="radio" name="links" value="tags" onclick="linkByArrays('tags')" checked> Tags&nbsp;&nbsp;
-        <input type="radio" name="links" value="livingInspirations" onclick="linkByArrays('livingInspirations')"> Living Inspirations&nbsp;&nbsp;
-        <input type="radio" name="links" value="pastInspirations" onclick="linkByArrays('pastInspirations')"> Past Inspirations&nbsp;&nbsp;
-        <input type="radio" name="links" value="nonArtistInspirations" onclick="linkByArrays('nonArtistInspirations')"> Non-Artist Inspirations&nbsp;&nbsp;
-        <input type="radio" name="links" value="artist" onclick="linkByArtist()"> Artist
-      </form>
+      <div>
+        <table border="1" style="border-collapse:collapse;">
+          <tr>
+            <td class="buttonCell" id="button1" onmouseout="radioButtonOut('button1')" onmouseover="radioButtonOver('button1')" onclick="linkByArrays('tags');radioButtonClick('button1');">&nbsp;Tags&nbsp;</td>
+            <td class="buttonCell" id="button2" onmouseout="radioButtonOut('button2')" onmouseover="radioButtonOver('button2')" onclick="linkByArrays('livingInspirations');radioButtonClick('button2');">&nbsp;Living Inspirations&nbsp;</td>
+            <td class="buttonCell" id="button3" onmouseout="radioButtonOut('button3')" onmouseover="radioButtonOver('button3')" onclick="linkByArrays('pastInspirations');radioButtonClick('button3');">&nbsp;Past Inspirations&nbsp;</td>
+            <td class="buttonCell" id="button4" onmouseout="radioButtonOut('button4')" onmouseover="radioButtonOver('button4')" onclick="linkByArrays('nonArtistInspirations');radioButtonClick('button4');">&nbsp;Non-Artist Inspirations&nbsp;</td>
+            <td class="buttonCell" id="button5" onmouseout="radioButtonOut('button5')" onmouseover="radioButtonOver('button5')" onclick="linkByArtist();radioButtonClick('button5');">&nbsp;Artist&nbsp;</td>
+          </tr>
+        </table>
+      </div>
     </div>
+    
     <br />
     <br />
     <div style="padding-left:2px">
