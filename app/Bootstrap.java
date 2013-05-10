@@ -64,6 +64,13 @@ public class Bootstrap extends Job {
         }
     }
     
+    private static String randomURL() {
+        String[] urls = {
+            "www.google.com", "www.yahoo.com", "www.msn.com", "www.whitehouse.gov"
+        };
+        return urls[(int) (Math.random() * urls.length)];
+    }
+    
     private static Project maxLengthProject(
         final String title, 
         final Blob imageBlob
@@ -77,6 +84,7 @@ public class Bootstrap extends Job {
             randomWordsList(100), // tags
             randomWordsList(100), // peers
             randomWordsList(100), // otherInspirations
+            randomURL(), // url
             randomWordsList(100), // emails
             randomName(), // sender
             randomWord() // message
@@ -98,6 +106,7 @@ public class Bootstrap extends Job {
             randomWordCommaList(), // tags
             randomWordCommaList(), // peers
             randomWordCommaList(), // otherInspirations
+            randomURL(), // url
             randomWordCommaList(), // emails
             randomName(), // sender
             randomWord() // message
@@ -132,6 +141,7 @@ public class Bootstrap extends Job {
             testString, // tags
             testString, // peers
             testString, // otherInspirations
+            randomURL(), // url
             testString, // emails
             testString, // sender
             testString // message

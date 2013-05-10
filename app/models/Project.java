@@ -59,6 +59,9 @@ public final class Project extends Model {
     @Required(message = PLEASE_ENTER_A + " year.")
     @CheckWith(MyChecks.YearCheck.class)
     public int startYear;
+
+    @CheckWith(MyChecks.URLCheck.class)
+    public String url;
     
     public String emails;
     
@@ -112,6 +115,7 @@ public final class Project extends Model {
         final String tags,
         final String peers,
         final String otherInspirations,
+        final String url,
         final String emails,
         final String sender,
         final String message 
@@ -124,6 +128,7 @@ public final class Project extends Model {
         this.tags = tags;
         this.peers = peers;
         this.otherInspirations = otherInspirations;
+        this.url = url;
         this.emails = emails;
         this.sender = sender;
         this.message = message;
@@ -138,6 +143,16 @@ public final class Project extends Model {
         
         this.isTest = false;
         this.date = new Date().getTime();
+    }
+    
+    public void initializeUrl() {
+        final String prefix = "http://";
+        final String securePrefix = "https://";
+        if (this.url != null && this.url.length() != 0) {
+           if (this.url.indexOf(prefix) != 0 && this.url.indexOf(securePrefix) != 0) {
+               this.url = prefix + this.url;
+           }
+        }
     }
     
     public void initializeImage() {
@@ -240,6 +255,8 @@ public final class Project extends Model {
         builder.append(this.peerSet);
         builder.append(", otherInspirationSet=");
         builder.append(this.otherInspirationSet);
+        builder.append(", url=");
+        builder.append(this.url);
         builder.append(", emailSet=");
         builder.append(this.emailSet);
         builder.append(", sender=");

@@ -25,6 +25,7 @@ public final class BasicTest extends UnitTest {
             "foo, bar, baz", 
             "Nicholas Cage, Rihanna", 
             "plants, rocks", 
+            "www.google.com",
             "someEmail@email.com",
             "My Name",
             "read my email"

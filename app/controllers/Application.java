@@ -187,6 +187,7 @@ public class Application extends Controller {
         // load the Set<Token> sets from the input Strings
         toAdd.initializeSets();
         toAdd.initializeImage();
+        toAdd.initializeUrl();
         toAdd.save();
         MyLogger.logProjectAdded(toAdd, ipAddress, Project.count());
         
@@ -208,6 +209,7 @@ public class Application extends Controller {
             flash.put("tags", toCancel.tags);
             flash.put("peers", toCancel.peers);
             flash.put("otherInspirations", toCancel.otherInspirations);
+            flash.put("url", toCancel.url);
             flash.put("emails", toCancel.emails);
             flash.put("sender", toCancel.sender);
             flash.put("message", toCancel.message);
@@ -227,6 +229,7 @@ public class Application extends Controller {
         ) {
             Project currentProject = allProjects.get(i);
             currentProject.initializeSets();
+            currentProject.initializeUrl();
             projects.add(currentProject);
         }
         
@@ -250,6 +253,7 @@ public class Application extends Controller {
         ) {
             Project currentProject = allProjects.get(i);
             currentProject.initializeSets();
+            currentProject.initializeUrl();
             projects.add(currentProject);
         }
         
@@ -325,6 +329,7 @@ public class Application extends Controller {
             if (project.projectTitle.equals(name)) {
                 target = project;
                 target.initializeSets();
+                target.initializeUrl();
                 break;
             }
         }
@@ -339,6 +344,7 @@ public class Application extends Controller {
             if (project.projectTitle.equals(name)) {
                 target = project;
                 target.initializeSets();
+                target.initializeUrl();
                 break;
             }
         }
@@ -402,6 +408,7 @@ public class Application extends Controller {
         ) {
             Project currentProject = allProjects.get(i);
             currentProject.initializeSets();
+            currentProject.initializeUrl();
             projects.add(currentProject);
         }
         
@@ -424,6 +431,7 @@ public class Application extends Controller {
         ) {
             Project currentProject = allProjects.get(i);
             currentProject.initializeSets();
+            currentProject.initializeUrl();
             projects.add(currentProject);
         }
         
@@ -535,6 +543,7 @@ public class Application extends Controller {
         ) {
             Project currentProject = allProjects.get(i);
             currentProject.initializeSets();
+            currentProject.initializeUrl();
             projects.add(currentProject);
         }
         
@@ -558,6 +567,7 @@ public class Application extends Controller {
         ) {
             Project currentProject = allProjects.get(i);
             currentProject.initializeSets();
+            currentProject.initializeUrl();
             projects.add(currentProject);
         }
         
@@ -589,6 +599,7 @@ public class Application extends Controller {
         ) {
             Project currentProject = allProjects.get(i);
             currentProject.initializeSets();
+            currentProject.initializeUrl();
             projects.add(currentProject);
         }
         
@@ -614,6 +625,8 @@ public class Application extends Controller {
         for (Project currentProject: projects) {
             if (currentProject.projectTitle.equals(projectTitle)) {
                 project = currentProject;
+                project.initializeSets();
+                project.initializeUrl();
                 break;
             }
         }

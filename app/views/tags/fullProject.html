@@ -22,7 +22,7 @@
       </span>
       <br />
       
-      <span style="font-weight:bold">Peers:</span>
+      <span style="font-weight:bold">Peers: </span>
       <span>    
         #{list _project.peerSet, as:'peer'}
           <a style="color:#000000" href="@{Application.inspiration(peer.text, 0)}">${peer.text}</a> &middot;
@@ -30,13 +30,21 @@
       </span>
       <br />
       
-      <span style="font-weight:bold">Other Inspirations:</span>
+      <span style="font-weight:bold">Other Inspirations: </span>
       <span>    
         #{list _project.otherInspirationSet, as:'otherInspiration'}
           <a style="color:#000000" href="@{Application.inspiration(otherInspiration.text, 0)}">${otherInspiration.text}</a> &middot;
         #{/list}
       </span>
       <br />
+      
+      #{if _project.url}
+        <span style="font-weight:bold">Website: </span>
+        <span>    
+            <a style="color:#ff0000" href="${_project.url}" target="_blank">${_project.url}</a>
+        </span>
+        <br />
+      #{/if}
     </div>
   </div>
 </div>

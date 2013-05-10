@@ -12,6 +12,7 @@ import org.apache.tika.metadata.Metadata;
 import org.apache.tika.mime.MimeTypes;
 
 import play.data.validation.Check;
+import play.data.validation.Validation;
 import play.db.jpa.Blob;
 import play.db.jpa.JPABase;
 
@@ -57,6 +58,43 @@ public abstract class MyChecks {
             return true;
         }
         
+    }
+    
+    public static final class URLCheck extends Check {
+        
+        @Override
+        public boolean isSatisfied(
+            final Object project,
+            final Object url
+        ) {
+            if (url == null) {
+                return true;
+            }
+            if (!(url instanceof String)) {
+                return false;
+            }
+            final String urlString = (String) url;
+            if (urlString.length() == 0) {
+                return true;
+            } 
+            
+            if (urlString.length() > MAX_NAME_LENGTH) {
+                setMessage("The URL is too long.");
+                return false;
+            }
+            
+            setMessage("Not a valid URL.");
+            if (Validation.current().url(urlString).ok) {
+                return true;
+            }
+            
+            final String prefix = "http://";
+            if (Validation.current().url(prefix + urlString).ok) {
+                return true;
+            }
+            
+            return false;
+        }
     }
     
     public static final class NameCheck extends Check {

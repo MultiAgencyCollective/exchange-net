@@ -44,7 +44,7 @@ Do the following if using your customized build of modernizr (http://www.moderni
     Artists do not create work in a vacuum.*
   </h2>
   <div style="float:right; margin-top:20px; font-size:16px">
-    <a href="@{Application.graph()}">HOME</a>
+    <a href="@{Application.graph()}" target="_blank">HOME</a>
   </div>
   #{if flash.error}
     <div id="errorBox" style="clear:both">
@@ -131,6 +131,15 @@ Do the following if using your customized build of modernizr (http://www.moderni
       <input type="text" name="newProject.otherInspirations" id="otherInspirations" placeholder="Enter inspirations, separated by commas" value="${flash.otherInspirations}" maxlength="100">
       <span class="error">#{error 'newProject.otherInspirations' /}</span>
     </p>
+    <p>
+      Your Website
+      <span style="color:#888888">(optional)</span>
+      <br />
+      <input type="text" name="newProject.url" id="url" placeholder="Enter a web address" value="${flash.url}" maxlength="50">
+      <span class="error">#{error 'newProject.url' /}</span>
+    </p>
+    
+    
     <p>
       <strong>Recommend artists for the archive!</strong>
       <br />
