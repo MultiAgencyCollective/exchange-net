@@ -7,7 +7,9 @@
       <a style="color:#000000" href="@{Application.project(_project.projectTitle)}">${_project.projectTitle}</a>
     </div>
     <div style="color:#888888;font-size:14px;width:inherit">
-      <a style="color:#888888" href="@{Application.artist(_project.artist, 0)}">${_project.artist}</a>
+      #{list _project.artistSet, as:'artist'}
+          <a style="color:#000000" href="@{Application.artist(artist.text, 0)}">${artist.text}</a> &middot;
+      #{/list}
     </div>
     <br />
     <div style="font-size:12px;width:inherit"> 
@@ -19,28 +21,21 @@
       </span>
       <br />
       
-      <span style="font-weight:bold">Living Inspirations:</span>
+      <span style="font-weight:bold">Peers:</span>
       <span>    
-        #{list _project.livingInspirationSet, as:'livingInspiration'}
-          <a style="color:#000000" href="@{Application.inspiration(livingInspiration.text, 0)}">${livingInspiration.text}</a> &middot;
+        #{list _project.peerSet, as:'peer'}
+          <a style="color:#000000" href="@{Application.inspiration(peer.text, 0)}">${peer.text}</a> &middot;
         #{/list}
       </span>
       <br />
       
-      <span style="font-weight:bold">Past Inspirations:</span>
+      <span style="font-weight:bold">Other Inspirations:</span>
       <span>    
-        #{list _project.pastInspirationSet, as:'pastInspiration'}
-          <a style="color:#000000" href="@{Application.inspiration(pastInspiration.text, 0)}">${pastInspiration.text}</a> &middot;
+        #{list _project.otherInspirationSet, as:'otherInspiration'}
+          <a style="color:#000000" href="@{Application.inspiration(otherInspiration.text, 0)}">${otherInspiration.text}</a> &middot;
         #{/list}
       </span>
       <br />
-      
-      <span style="font-weight:bold">Non-Artist Inspirations:</span>
-      <span>    
-        #{list _project.nonArtistInspirationSet, as:'nonArtistInspiration'}
-          <a style="color:#000000" href="@{Application.inspiration(nonArtistInspiration.text, 0)}">${nonArtistInspiration.text}</a> &middot;
-        #{/list}
-      </span>
     </div>
   </div>
 </div>

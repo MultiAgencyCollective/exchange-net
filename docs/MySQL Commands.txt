@@ -81,3 +81,5 @@ mysqldump -h us-cdbr-east-03.cleardb.com -u b16ed5a594fcd4 -p***** heroku_3634a2
 show tables;
 show columns from project;
 ALTER TABLE project ADD isTest BOOLEAN;
+
+ALTER TABLE project DROP artist;

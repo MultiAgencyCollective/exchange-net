@@ -6,25 +6,24 @@ public class ProjectForJson {
 
     public String projectTitle;
     
-    public String artist;
+    public String[] artists;
             
     public String[] tags;
     
-    public String[] livingInspirations;
+    public String[] peers;
     
-    public String[] pastInspirations;
+    public String[] otherInspirations;
     
-    public String[] nonArtistInspirations;
+    public String date;
             
     public ProjectForJson(final Project project) {
         project.initializeSets();
         this.projectTitle = project.projectTitle;
-        this.artist = project.artist;
+        this.artists = getStringArray(project.artistSet);
         this.tags = getStringArray(project.tagSet);
-        this.livingInspirations = getStringArray(project.livingInspirationSet);
-        this.pastInspirations = getStringArray(project.pastInspirationSet);
-        this.nonArtistInspirations = 
-            getStringArray(project.nonArtistInspirationSet);
+        this.peers = getStringArray(project.peerSet);
+        this.otherInspirations = getStringArray(project.otherInspirationSet);
+        this.date = "" + project.date;
     }
     
     private String[] getStringArray(final Set<ProjectToken> tokenSet) {

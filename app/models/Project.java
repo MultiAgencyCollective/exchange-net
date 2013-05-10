@@ -1,6 +1,7 @@
 package models;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -30,7 +31,7 @@ public final class Project extends Model {
     
     @Required(message = PLEASE_ENTER_A + "n artist.")
     @CheckWith(MyChecks.NameCheck.class)
-    public String artist;
+    public String artists;
     
     @Required(message = "Please upload a photo.")
     @CheckWith(MyChecks.PhotoCheck.class)
@@ -47,17 +48,13 @@ public final class Project extends Model {
     @CheckWith(MyChecks.NameCheck.class)
     public String tags;
     
-    @Required(message = PLEASE_ENTER_A + " living artist.")
+    @Required(message = PLEASE_ENTER_A + " peer.")
     @CheckWith(MyChecks.NameCheck.class)
-    public String livingInspirations;
-    
-    @Required(message = PLEASE_ENTER_A + " past artist.")
-    @CheckWith(MyChecks.NameCheck.class)
-    public String pastInspirations;
+    public String peers;
     
     @Required(message = PLEASE_ENTER_A + "n inspiration.")
     @CheckWith(MyChecks.NameCheck.class)
-    public String nonArtistInspirations;
+    public String otherInspirations;
     
     public String emails;
     
@@ -73,59 +70,68 @@ public final class Project extends Model {
     public String imageFileName;  
     
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
+    public Set<ProjectToken> artistSet;
+    
+    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
     public Set<ProjectToken> tagSet;
     
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
-    public Set<ProjectToken> livingInspirationSet;
+    public Set<ProjectToken> peerSet;
     
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
-    public Set<ProjectToken> pastInspirationSet;
-    
-    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
-    public Set<ProjectToken> nonArtistInspirationSet;
+    public Set<ProjectToken> otherInspirationSet;
         
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
     public Set<ProjectToken> emailSet;
+    
+    public boolean isTest;
 
+    public long date;
+    
     public Project() {
+        this.artistSet = new HashSet<ProjectToken>();
         this.tagSet = new HashSet<ProjectToken>();
-        this.livingInspirationSet = new HashSet<ProjectToken>();
-        this.pastInspirationSet = new HashSet<ProjectToken>();
-        this.nonArtistInspirationSet = new HashSet<ProjectToken>();
+        this.peerSet = new HashSet<ProjectToken>();
+        this.otherInspirationSet = new HashSet<ProjectToken>();
         this.emailSet = new HashSet<ProjectToken>();
+        
+        this.isTest = false;
+        this.date = new Date().getTime();
     }
     
     public Project(
         final String projectTitle,
-        final String artist,
+        final String artists,
         final Blob myImage,
         final String description,
         final String tags,
-        final String livingInspirations,
-        final String pastInspirations,
-        final String nonArtistInspirations,
+        final String peers,
+        final String otherInspirations,
         final String emails,
         final String sender,
         final String message 
     ) {
         this.projectTitle = projectTitle;
-        this.artist = artist;
+        this.artists = artists;
         this.myImage = myImage;
         this.description = description;
         this.tags = tags;
-        this.livingInspirations = livingInspirations;
-        this.pastInspirations = pastInspirations;
-        this.nonArtistInspirations = nonArtistInspirations;
+        this.peers = peers;
+        this.otherInspirations = otherInspirations;
         this.emails = emails;
         this.sender = sender;
         this.message = message;
         
         this.imageBytes = null;
+        
+        this.artistSet = new HashSet<ProjectToken>();
         this.tagSet = new HashSet<ProjectToken>();
-        this.livingInspirationSet = new HashSet<ProjectToken>();
-        this.pastInspirationSet = new HashSet<ProjectToken>();
-        this.nonArtistInspirationSet = new HashSet<ProjectToken>();
+        this.peerSet = new HashSet<ProjectToken>();
+        this.otherInspirationSet = new HashSet<ProjectToken>();
         this.emailSet = new HashSet<ProjectToken>();
+        
+        this.isTest = false;
+        this.date = new Date().getTime();
     }
     
     public void initializeImage() {
@@ -149,20 +155,20 @@ public final class Project extends Model {
     
     public void initializeSets() {
         if (!(
-            this.tagSet.isEmpty() 
-            && this.livingInspirationSet.isEmpty() 
-            && this.pastInspirationSet.isEmpty() 
-            && this.nonArtistInspirationSet.isEmpty() 
+            this.artistSet.isEmpty()
+            && this.tagSet.isEmpty() 
+            && this.peerSet.isEmpty() 
+            && this.otherInspirationSet.isEmpty()
             && this.emailSet.isEmpty()
         )) {
             // already initialized 
             return;  
         }
         
+        initializeSet(this.artistSet, this.artists);
         initializeSet(this.tagSet, this.tags);
-        initializeSet(this.livingInspirationSet, this.livingInspirations);
-        initializeSet(this.pastInspirationSet, this.pastInspirations);
-        initializeSet(this.nonArtistInspirationSet, this.nonArtistInspirations);
+        initializeSet(this.peerSet, this.peers);
+        initializeSet(this.otherInspirationSet, this.otherInspirations);
         if (this.emails != null && this.emails.length() != 0) {
             initializeSet(this.emailSet, this.emails);
         } else {
@@ -212,26 +218,30 @@ public final class Project extends Model {
         StringBuilder builder = new StringBuilder();
         builder.append("Project [ProjectTitle=");
         builder.append(this.projectTitle);
-        builder.append(", artist=");
-        builder.append(this.artist);
+        builder.append(", artists=");
+        builder.append(this.artists);
         builder.append(", myImage=");
         builder.append(this.myImage);
         builder.append(", description=");
         builder.append(this.description);
+        builder.append(", artistSet=");
+        builder.append(this.artistSet);
         builder.append(", tagSet=");
         builder.append(this.tagSet);
-        builder.append(", livingInspirationSet=");
-        builder.append(this.livingInspirationSet);
-        builder.append(", pastInspirationSet=");
-        builder.append(this.pastInspirationSet);
-        builder.append(", nonArtistInspirationSet=");
-        builder.append(this.nonArtistInspirationSet);
+        builder.append(", peerSet=");
+        builder.append(this.peerSet);
+        builder.append(", otherInspirationSet=");
+        builder.append(this.otherInspirationSet);
         builder.append(", emailSet=");
         builder.append(this.emailSet);
         builder.append(", sender=");
         builder.append(this.sender);
         builder.append(", message=");
         builder.append(this.message);
+        builder.append(", isTest=");
+        builder.append(this.isTest);
+        builder.append(", date=");
+        builder.append(this.date);
         builder.append("]");
         return builder.toString();
     }

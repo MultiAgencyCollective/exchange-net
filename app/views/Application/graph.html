@@ -23,7 +23,7 @@ _gaq.push(['_trackPageview']);
 <script type="text/javascript">
 
 var selectedButton = "button1";
-var buttonList = [ "button1", "button2", "button3", "button4", "button5" ];
+var buttonList = [ "button1", "button2", "button3", "button4" ];
 
 function radioButtonClick(clickedName) {
     selectedButton = clickedName;
@@ -114,37 +114,6 @@ function linkByArrays(arrayName) {
     sigInst.draw();
 }
 
-function linkByArtist() {
-    if (sigInst == null) {
-        setupSigInst();
-    }
-  
-    var projectsJson = JSON.parse(document.getElementById("projectData").innerHTML);
-
-    while (edgeIndex > 0) {
-        edgeIndex--;
-        sigInst.dropEdge(edgeIndex);
-    }
-  
-  // add a link between any projects with same artist
-    for (var i = 0; i < projectsJson.length; i++) {
-        var currentProject = projectsJson[i];
-        var artist = currentProject.artist;
-      
-        for (var j = i + 1; j < projectsJson.length; j++) {
-            var otherProject = projectsJson[j];
-            var otherArtist = otherProject.artist;
-            
-            if (artist == otherArtist) {
-                sigInst.addEdge(edgeIndex, currentProject.projectTitle, otherProject.projectTitle);
-                edgeIndex++; 
-            }
-        }
-    }
-   
-    sigInst.draw();
-}
-
 var GRAY = '#666';
 var LIGHT_GRAY = '#ccc';
 var RED = '#f00';
@@ -180,9 +149,11 @@ function init() {
     });
 
   
-    linkByArtist();
+    linkByArrays("artists");
+    radioButtonClick('button4');
   
     // linkByArrays("tags");
+    // radioButtonClick("button1");
    
     // Bind events :
     sigInst.bind('overnodes',function(event) {
@@ -299,10 +270,9 @@ if (document.addEventListener) {
         <table border="1" style="border-collapse:collapse;">
           <tr>
             <td class="buttonCell" id="button1" onmouseout="radioButtonOut('button1')" onmouseover="radioButtonOver('button1')" onclick="linkByArrays('tags');radioButtonClick('button1');">&nbsp;Tags&nbsp;</td>
-            <td class="buttonCell" id="button2" onmouseout="radioButtonOut('button2')" onmouseover="radioButtonOver('button2')" onclick="linkByArrays('livingInspirations');radioButtonClick('button2');">&nbsp;Living Inspirations&nbsp;</td>
-            <td class="buttonCell" id="button3" onmouseout="radioButtonOut('button3')" onmouseover="radioButtonOver('button3')" onclick="linkByArrays('pastInspirations');radioButtonClick('button3');">&nbsp;Past Inspirations&nbsp;</td>
-            <td class="buttonCell" id="button4" onmouseout="radioButtonOut('button4')" onmouseover="radioButtonOver('button4')" onclick="linkByArrays('nonArtistInspirations');radioButtonClick('button4');">&nbsp;Non-Artist Inspirations&nbsp;</td>
-            <td class="buttonCell" id="button5" onmouseout="radioButtonOut('button5')" onmouseover="radioButtonOver('button5')" onclick="linkByArtist();radioButtonClick('button5');">&nbsp;Artist&nbsp;</td>
+            <td class="buttonCell" id="button2" onmouseout="radioButtonOut('button2')" onmouseover="radioButtonOver('button2')" onclick="linkByArrays('peers');radioButtonClick('button2');">&nbsp;Peers&nbsp;</td>
+            <td class="buttonCell" id="button3" onmouseout="radioButtonOut('button3')" onmouseover="radioButtonOver('button3')" onclick="linkByArrays('otherInspirations');radioButtonClick('button3');">&nbsp;Other Inspirations&nbsp;</td>
+            <td class="buttonCell" id="button4" onmouseout="radioButtonOut('button4')" onmouseover="radioButtonOver('button4')" onclick="linkByArrays('artists');radioButtonClick('button4');">&nbsp;Artists&nbsp;</td>
           </tr>
         </table>
       </div>

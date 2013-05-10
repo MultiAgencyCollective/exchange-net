@@ -68,38 +68,41 @@ public class Bootstrap extends Job {
         final String title, 
         final Blob imageBlob
     ) {
-        return new Project(
+        Project result = new Project(
             title, // projectTitle
-            randomWords(50), // artist
+            randomWordsList(100), // artists
             imageBlob, // myImage
             randomWords(5000), // description
             randomWordsList(100), // tags
-            randomWordsList(100), // livingInspirations
-            randomWordsList(100), // pastInspirations
-            randomWordsList(100), // nonArtistInspirations
+            randomWordsList(100), // peers
+            randomWordsList(100), // otherInspirations
             randomWordsList(100), // emails
             randomName(), // sender
             randomWord() // message
         );
+        result.isTest = true;
+        return result;
     }
     
     private static Project randomLengthProject(
         final String title, 
         final Blob imageBlob
     ) {
-        return new Project(
+        Project result = new Project(
             title, // projectTitle
-            randomName(), // artist
+            randomWordCommaList(), // artists
             imageBlob, // myImage
             randomDescription(), // description
             randomWordCommaList(), // tags
-            randomWordCommaList(), // livingInspirations
-            randomWordCommaList(), // pastInspirations
-            randomWordCommaList(), // nonArtistInspirations
+            randomWordCommaList(), // peers
+            randomWordCommaList(), // otherInspirations
             randomWordCommaList(), // emails
             randomName(), // sender
             randomWord() // message
         );
+        
+        result.isTest = true;
+        return result;
     }
     
     
@@ -124,13 +127,13 @@ public class Bootstrap extends Job {
             imageBlob, // myImage
             testString, // description
             testString, // tags
-            testString, // livingInspirations
-            testString, // pastInspirations
-            testString, // nonArtistInspirations
+            testString, // peers
+            testString, // otherInspirations
             testString, // emails
             testString, // sender
             testString // message
         );
+        project.isTest = true;
         
         project.save();
     }

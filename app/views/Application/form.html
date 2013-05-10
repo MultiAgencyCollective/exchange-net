@@ -82,9 +82,9 @@ Do the following if using your customized build of modernizr (http://www.moderni
       <span class="error">#{error 'newProject.projectTitle' /}</span>
     </p>
     <p>
-      Artist
+      Artists
       <br />
-      <input type="text" name="newProject.artist" id="artist" placeholder="Artist and/or collective's name" value="${flash.artist}" maxlength="50">
+      <input type="text" name="newProject.artist" id="artist" placeholder="Artists' and/or collectives' names, separated by commas" value="${flash.artist}" maxlength="100">
       <span class="error">#{error 'newProject.artist' /}</span>
     </p>
     <p>
@@ -111,25 +111,19 @@ Do the following if using your customized build of modernizr (http://www.moderni
       <span class="error">#{error 'newProject.tags' /}</span>
     </p>
     <p>
-      Contemporary Inspirations 
-      <span style="color:#888888">. . . living artists who inspire your work</span>
+      Your Peers
+      <span style="color:#888888">. . . the people who give you feedback and support</span>
       <br />
-      <input type="text" name="newProject.livingInspirations" id="livingInspirations" placeholder="Enter artists, separated by commas" value="${flash.livingInspirations}" maxlength="100">
-      <span class="error">#{error 'newProject.livingInspirations' /}</span>
+      <input type="text" name="newProject.peers" id="peers" placeholder="Enter peers, separated by commas" value="${flash.peers}" maxlength="100">
+      <span class="error">#{error 'newProject.peers' /}</span>
     </p>
     <p>
-      Historical Inspirations 
-      <span style="color:#888888">. . . past artists who inspire your work</span>
+      Other Inspirations 
+      <span style="color:#888888">. . . people who inspire or influence your work</span>
       <br />
-      <input type="text" name="newProject.pastInspirations" id="pastInspirations" placeholder="Enter artists, separated by commas" value="${flash.pastInspirations}" maxlength="100">
-      <span class="error">#{error 'newProject.pastInspirations' /}</span>
+      <input type="text" name="newProject.otherInspirations" id="otherInspirations" placeholder="Enter inspirations, separated by commas" value="${flash.otherInspirations}" maxlength="100">
+      <span class="error">#{error 'newProject.otherInspirations' /}</span>
     </p>
-    <p>
-      Non-Artist Inspirations 
-      <span style="color:#888888">. . . whoever or whatever inspires your work</span>
-      <br />
-      <input type="text" name="newProject.nonArtistInspirations" id="nonArtistInspirations" placeholder="Enter inspirations, separated by commas" value="${flash.nonArtistInspirations}" maxlength="100">
-      <span class="error">#{error 'newProject.nonArtistInspirations' /}</span>
     <p>
       <strong>Recommend artists for the archive!</strong>
       <br />

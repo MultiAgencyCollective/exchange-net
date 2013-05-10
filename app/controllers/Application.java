@@ -202,15 +202,11 @@ public class Application extends Controller {
         
         if (toCancel != null) {
             flash.put("projectTitle", toCancel.projectTitle);
-            flash.put("artist", toCancel.artist);
+            flash.put("artists", toCancel.artists);
             flash.put("description", toCancel.description);
             flash.put("tags", toCancel.tags);
-            flash.put("livingInspirations", toCancel.livingInspirations);
-            flash.put("pastInspirations", toCancel.pastInspirations);
-            flash.put(
-                "nonArtistInspirations", 
-                toCancel.nonArtistInspirations
-            );
+            flash.put("peers", toCancel.peers);
+            flash.put("otherInspirations", toCancel.otherInspirations);
             flash.put("emails", toCancel.emails);
             flash.put("sender", toCancel.sender);
             flash.put("message", toCancel.message);
@@ -274,11 +270,20 @@ public class Application extends Controller {
             
             if (
                 pattern.matcher(project.projectTitle).find()
-                || pattern.matcher(project.artist).find()
             ) {
                 result.add(project);
             } else {
                 boolean found = false;
+                for (ProjectToken token: project.artistSet) {
+                    if (pattern.matcher(token.text).find()) {
+                        found = true;
+                        result.add(project);
+                        break;
+                    }
+                }
+                if (found) {
+                    continue;
+                }
                 for (ProjectToken token: project.tagSet) {
                     if (pattern.matcher(token.text).find()) {
                         found = true;
@@ -289,7 +294,7 @@ public class Application extends Controller {
                 if (found) {
                     continue;
                 }
-                for (ProjectToken token: project.livingInspirationSet) {
+                for (ProjectToken token: project.peerSet) {
                     if (pattern.matcher(token.text).find()) {
                         found = true;
                         result.add(project);
@@ -299,17 +304,7 @@ public class Application extends Controller {
                 if (found) {
                     continue;
                 }
-                for (ProjectToken token: project.pastInspirationSet) {
-                    if (pattern.matcher(token.text).find()) {
-                        found = true;
-                        result.add(project);
-                        break;
-                    }
-                }
-                if (found) {
-                    continue;
-                }
-                for (ProjectToken token: project.nonArtistInspirationSet) {
+                for (ProjectToken token: project.otherInspirationSet) {
                     if (pattern.matcher(token.text).find()) {
                         found = true;
                         result.add(project);
@@ -381,9 +376,8 @@ public class Application extends Controller {
         for (Project project: allProjects) {
             project.initializeSets();
             if (
-                project.livingInspirationSet.contains(target)
-                || project.pastInspirationSet.contains(target)
-                || project.nonArtistInspirationSet.contains(target)
+                project.peerSet.contains(target)
+                || project.otherInspirationSet.contains(target)
             ) {
                 result.add(project);
             }
@@ -443,8 +437,11 @@ public class Application extends Controller {
         ).fetch();
         
         for (Project project: allProjects) {
-            if (project.artist.equals(artist)) {
-                result.add(project);
+            project.initializeSets();
+            for (ProjectToken token: project.artistSet) {
+                if (token.text.equals(artist)) {
+                    result.add(project);
+                }
             }
         }
         
