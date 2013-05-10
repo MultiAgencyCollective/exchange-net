@@ -75,3 +75,9 @@ back up Heroku database:
 
 mysqldump -h us-cdbr-east-03.cleardb.com -u b16ed5a594fcd4 -p***** heroku_3634a222eb83637 --set-gtid-purged=OFF | mysql -u pratim -p exchange_db
 *****
+
+//////////////////////////////////////////////
+
+show tables;
+show columns from project;
+ALTER TABLE project ADD isTest BOOLEAN;
