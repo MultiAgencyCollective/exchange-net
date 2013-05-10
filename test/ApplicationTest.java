@@ -6,7 +6,7 @@ import play.test.FunctionalTest;
 public final class ApplicationTest extends FunctionalTest {
 
     @Test
-    public void testThatIndexPageWorks() {
+    public static void testThatIndexPageWorks() {
         Response response = GET("/");
         assertIsOk(response);
         assertContentType("text/html", response);

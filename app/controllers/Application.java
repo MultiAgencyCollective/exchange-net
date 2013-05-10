@@ -204,6 +204,7 @@ public class Application extends Controller {
             flash.put("projectTitle", toCancel.projectTitle);
             flash.put("artists", toCancel.artists);
             flash.put("description", toCancel.description);
+            flash.put("startYear", toCancel.startYear);
             flash.put("tags", toCancel.tags);
             flash.put("peers", toCancel.peers);
             flash.put("otherInspirations", toCancel.otherInspirations);

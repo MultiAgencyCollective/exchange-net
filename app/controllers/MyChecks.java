@@ -84,6 +84,38 @@ public abstract class MyChecks {
         }
     }
     
+    public static final class YearCheck extends Check {
+        
+        @Override
+        public boolean isSatisfied(
+            final Object project,
+            final Object year
+        ) {
+            setMessage("Please enter a year.");
+            if (year == null) {
+                return false;
+            }
+            if (!(year instanceof Integer)) {
+                return false;
+            }
+            final int yearInt = (Integer) year;
+            final int minYear = 1900;
+            final int maxYear = 2020;
+            
+            // special case: 0 may mean no year entered
+            if (yearInt == 0) {
+                return false;
+            }
+            
+            setMessage("Enter a year between 1900 and 2020.");
+            if (yearInt < minYear || yearInt > maxYear) {
+                return false;
+            }
+            
+            return true;
+        }
+    }
+    
     public static final class ListCheck extends Check {
         
         @Override

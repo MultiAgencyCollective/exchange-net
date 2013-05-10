@@ -56,6 +56,10 @@ public final class Project extends Model {
     @CheckWith(MyChecks.NameCheck.class)
     public String otherInspirations;
     
+    @Required(message = PLEASE_ENTER_A + " year.")
+    @CheckWith(MyChecks.YearCheck.class)
+    public int startYear;
+    
     public String emails;
     
     public String sender;
@@ -104,6 +108,7 @@ public final class Project extends Model {
         final String artists,
         final Blob myImage,
         final String description,
+        final int startYear,
         final String tags,
         final String peers,
         final String otherInspirations,
@@ -115,6 +120,7 @@ public final class Project extends Model {
         this.artists = artists;
         this.myImage = myImage;
         this.description = description;
+        this.startYear = startYear;
         this.tags = tags;
         this.peers = peers;
         this.otherInspirations = otherInspirations;
@@ -224,6 +230,8 @@ public final class Project extends Model {
         builder.append(this.myImage);
         builder.append(", description=");
         builder.append(this.description);
+        builder.append(", startYear=");
+        builder.append(this.startYear);
         builder.append(", artistSet=");
         builder.append(this.artistSet);
         builder.append(", tagSet=");

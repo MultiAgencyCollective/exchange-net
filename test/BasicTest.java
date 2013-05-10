@@ -10,28 +10,29 @@ import play.test.UnitTest;
 public final class BasicTest extends UnitTest {
     
     @Before
-    public void setup() {
+    public static void setup() {
         Fixtures.deleteDatabase();
     }
 
     @Test
-    public void createAndRetrieveProject() {
+    public static void createAndRetrieveProject() {
         new Project(
             "My Title", 
             "My Name",
-            new Blob(), 
+            new Blob(),
             "This is my description.", 
+            1950,
             "foo, bar, baz", 
             "Nicholas Cage, Rihanna", 
-            "M. C. Escher, Rube Goldberg", 
             "plants, rocks", 
-            "someEmail@email.com", 
+            "someEmail@email.com",
+            "My Name",
             "read my email"
         ).save();
         Project someProject = 
             Project.find("byDescription", "This is my description.").first();
         assertNotNull(someProject);
-        assertEquals("plants, rocks", someProject.nonArtistInspirations);
+        assertEquals("plants, rocks", someProject.otherInspirations);
     }
 
 }

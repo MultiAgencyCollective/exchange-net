@@ -73,6 +73,7 @@ public class Bootstrap extends Job {
             randomWordsList(100), // artists
             imageBlob, // myImage
             randomWords(5000), // description
+            randomYear(), // year
             randomWordsList(100), // tags
             randomWordsList(100), // peers
             randomWordsList(100), // otherInspirations
@@ -93,6 +94,7 @@ public class Bootstrap extends Job {
             randomWordCommaList(), // artists
             imageBlob, // myImage
             randomDescription(), // description
+            randomYear(), // year
             randomWordCommaList(), // tags
             randomWordCommaList(), // peers
             randomWordCommaList(), // otherInspirations
@@ -126,6 +128,7 @@ public class Bootstrap extends Job {
             testString, // artist
             imageBlob, // myImage
             testString, // description
+            randomYear(), // year
             testString, // tags
             testString, // peers
             testString, // otherInspirations
@@ -195,6 +198,12 @@ public class Bootstrap extends Job {
         }
         
         return builder.toString();
+    }
+    
+    private static int randomYear() {
+        final int minYear = 1900;
+        final int yearRange = 120;
+        return minYear + MY_RANDOM.nextInt(yearRange);
     }
     
     private static String randomWord() {

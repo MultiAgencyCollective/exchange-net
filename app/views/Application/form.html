@@ -84,8 +84,8 @@ Do the following if using your customized build of modernizr (http://www.moderni
     <p>
       Artists
       <br />
-      <input type="text" name="newProject.artist" id="artist" placeholder="Artists' and/or collectives' names, separated by commas" value="${flash.artist}" maxlength="100">
-      <span class="error">#{error 'newProject.artist' /}</span>
+      <input type="text" name="newProject.artists" id="artist" placeholder="Artists' and/or collectives' names, separated by commas" value="${flash.artists}" maxlength="100">
+      <span class="error">#{error 'newProject.artists' /}</span>
     </p>
     <p>
       Photo of Project
@@ -96,6 +96,13 @@ Do the following if using your customized build of modernizr (http://www.moderni
       #{if flash.error}
          <span class="error">RE-UPLOAD IMAGE</span>
       #{/if}
+    </p>
+    <p>
+      Start Date
+      <span style="color:#888888">. . . year that your project began</span>
+      <br />
+      <input type="text" name="newProject.startYear" id="startYear" placeholder="YYYY" value="${flash.startYear}" maxlength="4">
+      <span class="error">#{error 'newProject.startYear' /}</span>
     </p>
     <p>
       Description
