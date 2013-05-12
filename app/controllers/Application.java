@@ -496,10 +496,14 @@ public class Application extends Controller {
                                     project6 = allProjects.get(offset + index);
                                     index++;
                                     if (allProjects.size() > offset + index) {
-                                        project7 = allProjects.get(offset + index);
+                                        project7 = 
+                                            allProjects.get(offset + index);
                                         index++;
-                                        if (allProjects.size() > offset + index) {
-                                            project8 = allProjects.get(offset + index);
+                                        if (
+                                            allProjects.size() > offset + index
+                                        ) {
+                                            project8 = 
+                                                allProjects.get(offset + index);
                                             index++;
                                         }
                                     }
@@ -654,7 +658,10 @@ public class Application extends Controller {
         }
 
         if (project.myImage != null) {
-            project.myImage.getFile().delete();
+            boolean deleted = project.myImage.getFile().delete();
+            if (!deleted) {
+                MyLogger.logCouldNotDeleteImage(project);
+            }
         }
         
         project.delete();

@@ -52,9 +52,11 @@ public class Bootstrap extends Job {
                 e.printStackTrace();
             }
             */
-            String title = randomWords(30);
+            
+            final int titleMaxChars = 30;
+            String title = randomWords(titleMaxChars);
             while (isNameTaken(title)) {
-                title = randomWords(30);
+                title = randomWords(titleMaxChars);
             }
             
             Project project = randomLengthProject(title, imageBlob);
@@ -66,26 +68,34 @@ public class Bootstrap extends Job {
     
     private static String randomURL() {
         String[] urls = {
-            "www.google.com", "www.yahoo.com", "www.msn.com", "www.whitehouse.gov"
+            "www.google.com", 
+            "www.yahoo.com", 
+            "www.msn.com", 
+            "www.whitehouse.gov"
         };
         return urls[(int) (Math.random() * urls.length)];
     }
     
+    
+    @SuppressWarnings("unused")
     private static Project maxLengthProject(
         final String title, 
         final Blob imageBlob
     ) {
+        final int shortMaxChars = 100;
+        final int longMaxChars = 5000;
+        
         Project result = new Project(
             title, // projectTitle
-            randomWordsList(100), // artists
+            randomWordsList(shortMaxChars), // artists
             imageBlob, // myImage
-            randomWords(5000), // description
+            randomWords(longMaxChars), // description
             randomYear(), // year
-            randomWordsList(100), // tags
-            randomWordsList(100), // peers
-            randomWordsList(100), // otherInspirations
+            randomWordsList(shortMaxChars), // tags
+            randomWordsList(shortMaxChars), // peers
+            randomWordsList(shortMaxChars), // otherInspirations
             randomURL(), // url
-            randomWordsList(100), // emails
+            randomWordsList(shortMaxChars), // emails
             randomName(), // sender
             randomWord() // message
         );
@@ -117,6 +127,7 @@ public class Bootstrap extends Job {
     }
     
     
+    @SuppressWarnings("unused")
     private static void addTestProject() {
         final Blob imageBlob = new Blob();
         final File imageFile =  
@@ -153,6 +164,7 @@ public class Bootstrap extends Job {
     
     
     
+    @SuppressWarnings("unused")
     private static File randomImageFile() {
         final String folder = 
             "/Users/masonwright/dropbox/photos/badlands trip/";

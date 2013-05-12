@@ -36,6 +36,14 @@
         #{/list}
       </span>
       <br />
+      
+      #{if _project.url}
+        <span style="font-weight:bold">Website: </span>
+        <span>    
+            <a href="${_project.url}" target="_blank">${_project.url}</a>
+        </span>
+        <br />
+      #{/if}
     </div>
   </div>
 </div>

@@ -149,7 +149,10 @@ public final class Project extends Model {
         final String prefix = "http://";
         final String securePrefix = "https://";
         if (this.url != null && this.url.length() != 0) {
-           if (this.url.indexOf(prefix) != 0 && this.url.indexOf(securePrefix) != 0) {
+           if (
+               this.url.indexOf(prefix) != 0 
+               && this.url.indexOf(securePrefix) != 0
+           ) {
                this.url = prefix + this.url;
            }
         }
@@ -198,7 +201,9 @@ public final class Project extends Model {
         
         final int maxCharsForBriefDescription = 200;
         if (this.description.length() >= maxCharsForBriefDescription) {
-            this.briefDescription = this.description.substring(0, maxCharsForBriefDescription) + "...";
+            this.briefDescription = 
+                this.description.substring(0, maxCharsForBriefDescription) 
+                    + "...";
         } else {
             this.briefDescription = this.description;
         }

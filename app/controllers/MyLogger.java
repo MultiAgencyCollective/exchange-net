@@ -34,24 +34,32 @@ public abstract class MyLogger {
     }
     
     public static void logTooManyProjectsExist(
-            final String ipAddress
-        ) {
-            Logger.info(
-                "AttemptedAddWhenTooManyProjectsExistFromIP: " 
-                + ipAddress
-                + unixTimeMillisString()
-            );
-        }
+        final String ipAddress
+    ) {
+        Logger.info(
+            "AttemptedAddWhenTooManyProjectsExistFromIP: " 
+            + ipAddress
+            + unixTimeMillisString()
+        );
+    }
+    
+    public static void logCouldNotDeleteImage(final Project project) {
+        Logger.info(
+            "CouldNotDeleteImage: " 
+            + project.toString() 
+            + unixTimeMillisString()
+        );
+    }
     
     public static void logTooMuchImageDataStored(
-            final String ipAddress
-        ) {
-            Logger.info(
-                "AttemptedStoreTooMuchDataFromIP: " 
-                + ipAddress
-                + unixTimeMillisString()
-            );
-        }
+        final String ipAddress
+    ) {
+        Logger.info(
+            "AttemptedStoreTooMuchDataFromIP: " 
+            + ipAddress
+            + unixTimeMillisString()
+        );
+    }
     
     public static void logIncompleteProjectSubmission(
         final List<play.data.validation.Error> list
