@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -13,6 +14,7 @@ import javax.persistence.OneToMany;
 import org.apache.commons.io.IOUtils;
 
 import play.data.validation.CheckWith;
+import play.data.validation.Email;
 import play.data.validation.Required;
 import play.db.jpa.Blob;
 import play.db.jpa.Model;
@@ -91,6 +93,11 @@ public final class Project extends Model {
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
     public Set<ProjectToken> emailSet;
     
+    public String uuid;
+    
+    @Email
+    public String creatorEmail;
+    
     public boolean isTest;
 
     public long date;
@@ -104,6 +111,7 @@ public final class Project extends Model {
         
         this.isTest = false;
         this.date = new Date().getTime();
+        this.uuid = UUID.randomUUID().toString();
     }
     
     public Project(
@@ -118,7 +126,8 @@ public final class Project extends Model {
         final String url,
         final String emails,
         final String sender,
-        final String message 
+        final String message,
+        final String creatorEmail
     ) {
         this.projectTitle = projectTitle;
         this.artists = artists;
@@ -132,6 +141,7 @@ public final class Project extends Model {
         this.emails = emails;
         this.sender = sender;
         this.message = message;
+        this.creatorEmail = creatorEmail;
         
         this.imageBytes = null;
         
@@ -143,6 +153,7 @@ public final class Project extends Model {
         
         this.isTest = false;
         this.date = new Date().getTime();
+        this.uuid = UUID.randomUUID().toString();
     }
     
     public void initializeUrl() {
@@ -272,6 +283,10 @@ public final class Project extends Model {
         builder.append(this.isTest);
         builder.append(", date=");
         builder.append(this.date);
+        builder.append(", creatorEmail=");
+        builder.append(this.creatorEmail);
+        builder.append(", uuid=");
+        builder.append(this.uuid);
         builder.append("]");
         return builder.toString();
     }

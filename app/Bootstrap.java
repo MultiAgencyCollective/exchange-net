@@ -1,6 +1,4 @@
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.util.List;
 import java.util.Random;
 
@@ -9,12 +7,12 @@ import models.Project;
 import play.db.jpa.Blob;
 import play.jobs.Job;
 import play.jobs.OnApplicationStart;
-import play.libs.MimeTypes;
  
 @OnApplicationStart
 public class Bootstrap extends Job {
  
     public static final Random MY_RANDOM = new Random();
+    private static final String EMAIL = "abcde@gmail.com";
     
     @Override
     public final void doJob() {
@@ -97,7 +95,8 @@ public class Bootstrap extends Job {
             randomURL(), // url
             randomWordsList(shortMaxChars), // emails
             randomName(), // sender
-            randomWord() // message
+            randomWord(), // message
+            EMAIL // creatorEmail
         );
         result.isTest = true;
         return result;
@@ -119,15 +118,15 @@ public class Bootstrap extends Job {
             randomURL(), // url
             randomWordCommaList(), // emails
             randomName(), // sender
-            randomWord() // message
+            randomWord(), // message
+            EMAIL // creatorEmail
         );
         
         result.isTest = true;
         return result;
     }
     
-    
-    @SuppressWarnings("unused")
+    /*
     private static void addTestProject() {
         final Blob imageBlob = new Blob();
         final File imageFile =  
@@ -155,13 +154,14 @@ public class Bootstrap extends Job {
             randomURL(), // url
             testString, // emails
             testString, // sender
-            testString // message
+            testString, // message
+            EMAIL // creatorEmail
         );
         project.isTest = true;
         
         project.save();
     }
-    
+    */
     
     
     @SuppressWarnings("unused")

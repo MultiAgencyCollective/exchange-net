@@ -23,11 +23,37 @@ public abstract class MyLogger {
         );
     }
     
+    public static void logCouldNotSendEmail(
+        final String emailType,
+        final String address,
+        final String errorMessage
+    ) {
+        Logger.info(
+            "CouldNotSendEmailOfType: " 
+            + emailType
+            + ". address: "
+            + address
+            + ". errorMessage: " 
+            + errorMessage
+            + unixTimeMillisString()
+        );
+    }
+    
     public static void logTooManyProjectsSubmitted(
         final String ipAddress
     ) {
         Logger.info(
             "AttemptedAddTooManyProjectsFromIP: " 
+            + ipAddress
+            + unixTimeMillisString()
+        );
+    }
+    
+    public static void logTooManyUsersExist(
+        final String ipAddress
+    ) {
+        Logger.info(
+            "AttemptedAddWhenTooManyProjectsUsersFromIP: " 
             + ipAddress
             + unixTimeMillisString()
         );

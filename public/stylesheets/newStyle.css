@@ -257,6 +257,12 @@ input:invalid, textarea:invalid { background-color: #f0dddd; }
 
 #errorBox { border:2px solid; border-color: #000000; border-radius:25px; height:30px; width:550px; text-align: center; font-size: 24px; background-color:#ff0000; color: #ffffff; font-weight:bold; }
 
+#guestButton { border:2px solid; border-radius:25px; height:25px; width:250px; text-align: center; font-size: 20px; background-color:#00aa00; cursor:pointer; }
+#registerButton { border:2px solid; border-radius:25px; height:25px; width:100px; text-align: center; font-size: 20px; background-color:#00aa00; cursor:pointer; }
+#guestButton:hover, #registerButton:hover { background-color:#00ff00; }
+
+#buttonLink { color:#000; text-decoration:none; outline:0; }
+
 /* =============================================================================
    Tables
    ========================================================================== */
