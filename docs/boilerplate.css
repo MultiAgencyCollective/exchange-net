@@ -1,7 +1,7 @@
 @charset "utf-8";
 /*
 /* 
- * HTML5 ✰ Boilerplate, edited
+ * HTML5 ✰ Boilerplate
  *
  * What follows is the result of much research on cross-browser styling. 
  * Credit left inline and big thanks to Nicolas Gallagher, Jonathan Neal,
@@ -16,32 +16,6 @@
  * ==|== normalize ==========================================================
  */
 
-html, body {height: 100%;}
-
-#wrap {min-height: 100%;}
-
-#main {overflow:auto;
-    padding-bottom: 60px;}  /* must be same height as the footer */
-
-#footer {position: relative;
-    margin-top: -60px; /* negative value of footer height */
-    height: 60px;
-    clear:both;} 
-
-/*Opera Fix*/
-body:before {
-    content:"";
-    height:100%;
-    float:left;
-    width:0;
-    margin-top:-32767px;/
-}
-And on your html page you will need this conditional style for IE6 and earlier and for IE8 (!IE7 means not 7, but all others);
-<!--[if !IE 7]>
-    <style type="text/css">
-        #wrap {display:table;height:100%}
-    </style>
-<![endif]-->
 
 /* =============================================================================
    HTML5 display definitions
@@ -64,24 +38,9 @@ audio:not([controls]) { display: none; }
 
 html { font-size: 100%; overflow-y: scroll; -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; }
 
-body { margin-left:200px; font-size: 13px; line-height: 1.231; width:600px; }
+body { margin: 0; font-size: 13px; line-height: 1.231; }
 
-@font-face {
-  font-family: 'Open Sans';
-  font-style: normal;
-  font-weight: 400;
-  src: local('Open Sans'), local('OpenSans'), url(http://themes.googleusercontent.com/static/fonts/opensans/v6/cJZKeOuBrn4kERxqtaUH3bO3LdcAZYWl9Si6vvxL-qU.woff) format('woff');
-}
-@font-face {
-  font-family: 'Open Sans';
-  font-style: normal;
-  font-weight: 700;
-  src: local('Open Sans Bold'), local('OpenSans-Bold'), url(http://themes.googleusercontent.com/static/fonts/opensans/v6/k3k702ZOKiLJc3WVjuplzKRDOzjiPcYnFooOUGCOsRk.woff) format('woff');
-}
-    
-body, button, input, select, textarea { font-family: "Open Sans", sans-serif; color: #222; }
-
-h3 { font-weight:normal; font-size:16px; }
+body, button, input, select, textarea { font-family: sans-serif; color: #222; }
 
 /* 
  * Remove text-shadow in selection highlight: h5bp.com/i
@@ -98,15 +57,14 @@ h3 { font-weight:normal; font-size:16px; }
    Links
    ========================================================================== */
 
-a { color: #f00; text-decoration:none; }
-a:visited { color: #a06; }
-a:hover { color: #000; text-decoration:underline; }
+a { color: #00e; }
+a:visited { color: #551a8b; }
+a:hover { color: #06e; }
 a:focus { outline: thin dotted; }
 
 /* Improve readability when focused and hovered in all browsers: h5bp.com/h */
 a:hover, a:active { outline: 0; }
 
- #buttonLink { color:#000; text-decoration:none; outline:0; }
 
 /* =============================================================================
    Typography
@@ -120,7 +78,7 @@ blockquote { margin: 1em 40px; }
 
 dfn { font-style: italic; }
 
-hr { display: block; height: 1px; border: 0; border-top: 1px solid #ccc; margin: 1em 0; padding: 0; width:550px; }
+hr { display: block; height: 1px; border: 0; border-top: 1px solid #ccc; margin: 1em 0; padding: 0; }
 
 ins { background: #ff9; color: #000; text-decoration: none; }
 
@@ -230,8 +188,6 @@ input[type="checkbox"], input[type="radio"] { box-sizing: border-box; }
 input[type="search"] { -webkit-appearance: textfield; -moz-box-sizing: content-box; -webkit-box-sizing: content-box; box-sizing: content-box; }
 input[type="search"]::-webkit-search-decoration { -webkit-appearance: none; }
 
-input[type="checkbox"], input[type="radio"], input[type="button"]:hover { cursor:pointer; }
-
 /* 
  * Remove inner padding and border in FF3/4: h5bp.com/l 
  */
@@ -243,27 +199,12 @@ button::-moz-focus-inner, input::-moz-focus-inner { border: 0; padding: 0; }
  * 2. Allow only vertical resizing
  */
 
-textarea { overflow: auto; vertical-align: top; resize: vertical; width:550px; }
-
-input[type="text"] { width:550px; }
+textarea { overflow: auto; vertical-align: top; resize: vertical; }
 
 /* Colors for form validity */
 input:valid, textarea:valid {  }
 input:invalid, textarea:invalid { background-color: #f0dddd; }
 
-.error { color:#ff0000; }
-
-#successBox { border:2px solid; border-radius:25px; height:40px; width:550px; text-align: center; font-size: 32px; background-color:#00ff00; }
-
-#errorBox { border:2px solid; border-color: #000000; border-radius:25px; height:30px; width:550px; text-align: center; font-size: 24px; background-color:#ff0000; color: #ffffff; font-weight:bold; }
-
-#buttonLink { color:#000; text-decoration:none; outline:0; }
-
-#deleteButton { border:2px solid; border-radius:25px; height:25px; width:150px; text-align: center; font-size: 20px; background-color:#aa0000; cursor:pointer; }
-#deleteButton:hover { background-color:#ff0000; }
-
-#plainButton { border:2px solid; border-radius:25px; height:25px; width:150px; text-align: center; font-size: 20px; background-color:#888888; cursor:pointer; }
-#plainButton:hover { background-color:#cccccc; }
 
 /* =============================================================================
    Tables
@@ -276,6 +217,21 @@ td { vertical-align: top; }
 /* ==|== primary styles =====================================================
    Author: 
    ========================================================================== */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /* ==|== non-semantic helper classes ========================================
    Please define your styles before this section.

@@ -142,6 +142,45 @@ public class Application extends Controller {
         }
     }
     
+    public static void projectDeleted() {
+        render();
+    }
+    
+    public static void userDeleteProject(
+        final String uuid
+    ) {
+        List<Project> projects = Project.findAll();
+        Project target = null;
+        for (Project project: projects) {
+            if (project.uuid.toString().equals(uuid)) {
+                target = project;
+                break;
+            }
+        }
+        
+        if (target != null) {
+            deleteProject(target);
+            render("Application/projectDeleted.html");
+        } else {
+            render("Application/error.html");
+        }
+    }
+    
+    public static void deleteWarning(
+        final String uuid
+    ) {
+        List<Project> projects = Project.findAll();
+        String name = null;
+        for (Project project: projects) {
+            if (project.uuid.toString().equals(uuid)) {
+                name = project.projectTitle;
+                break;
+            }
+        }
+        
+        render(uuid, name);
+    }
+    
     public static void editProject(
         final String projectTitle,
         final String artists,
@@ -498,7 +537,7 @@ public class Application extends Controller {
         
         builder.append("Link to <b>edit</b> your project:<br />");
         builder.append(
-            "<a href=\"http://www.theexchangearchive.com/application/edit?aUUID="
+        "<a href=\"http://www.theexchangearchive.com/application/edit?aUUID="
             ).append(project.uuid).append("\">").append("Edit ")
             .append(project.projectTitle).append("</a><br /><br />");
         

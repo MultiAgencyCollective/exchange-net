@@ -1,0 +1,47 @@
+#{extends 'main.html' /}
+#{set title:'EXCHANGE ARCHIVE - Delete?' /}
+
+<!DOCTYPE html>
+<!--[if lt IE 7]> <html class="ie6 oldie"> <![endif]-->
+<!--[if IE 7]>    <html class="ie7 oldie"> <![endif]-->
+<!--[if IE 8]>    <html class="ie8 oldie"> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html class="">
+<!--<![endif]-->
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" media="screen" href="@{'/public/stylesheets/newStyle.css'}">
+<link rel="stylesheet" media="screen" href="@{'/public/stylesheets/main.css'}">
+<script src="@{'/public/javascripts/respond.min.js'}" type="text/javascript" ></script>
+        
+<!--[if lt IE 9]>
+<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+</head>
+
+<body>
+<div class="gridContainer clearfix">
+  <h2 style="float:left">
+    <a style="color:#000000" href="@{Application.graph()}">THE EXCHANGE ARCHIVE</a>
+  </h2>
+  <div style="float:right; margin-top:20px; font-size:16px">
+    <a href="@{Application.graph()}">HOME</a>
+  </div>
+  <div style="clear:both">
+    <br />
+    <p>
+      Are you sure you want to delete project <b>${name}</b>?
+    </p>
+    <div style="float:left;margin:10px" id="deleteButton">
+      <a href="@{Application.userDeleteProject(uuid)}" id="buttonLink">Delete</a>
+    </div>
+    <div style="float:left;margin:10px" id="plainButton">
+      <a href="@{Application.graph()}" id="buttonLink">Cancel</a>
+    </div>
+  </div>
+</div>
+</body>
+
+</html>

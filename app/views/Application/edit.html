@@ -33,6 +33,11 @@
   <br style="clear:both" />
   <div>
   <h2>Edit Your Project</h2>
+    <div>
+      <div id="deleteButton">
+      <a href="@{Application.deleteWarning(flash.uuid)}" id="buttonLink">Delete Project</a>
+    </div>
+
   #{form @Application.editProject(), enctype:'multipart/form-data'}
     <p>
       Project Title
