@@ -1,5 +1,5 @@
 #{extends 'main.html' /}
-#{set title:'EXCHANGE ARCHIVE - ' + name /}
+#{set title:'EXCHANGE ARCHIVE - Edit Project' /}
 
 <!DOCTYPE html>
 <!--[if lt IE 7]> <html class="ie6 oldie"> <![endif]-->
@@ -22,6 +22,7 @@
 </head>
 
 <body>
+<div class="gridContainer clearfix">
   <h2 style="float:left">
     <a style="color:#000000" href="@{Application.graph()}">THE EXCHANGE ARCHIVE</a>
   </h2>
@@ -29,13 +30,98 @@
     <a href="@{Application.graph()}">HOME</a>
   </div>
 
+  <br style="clear:both" />
   <div>
-    #{if target}
+  <h2>Edit Your Project</h2>
+  #{form @Application.editProject(), enctype:'multipart/form-data'}
+    <p>
+      Project Title
+      <br />
+      <input type="text" name="projectTitle" id="projectTitle" placeholder="Project title" value="${flash.projectTitle}" maxlength="50">
+      <span class="error">${flash.projectTitleError}</span>
+    </p>
+    <p>
+      Artists
+      <br />
+      <input type="text" name="artists" id="artist" placeholder="Artists' and/or collectives' names, separated by commas" value="${flash.artists}" maxlength="100">
+      <span class="error">${flash.artistsError}</span>
+    </p>
+    <p>
+      Photo of Project
+      <br />
+
+      #{if myProjectId}
+      Previous photo:
+      <br />
       <div>
-        #{fullProject project:target /}
+        <img src="@{Application.getImage2(myProjectId)}" width="100px" height="100px" />
       </div>
-    #{/if}
+      #{/if}
+      
+      <input type="file" name="myImage" id="myImage">
+      <br />
+      <span class="error">${flash.myImageError}</span>
+    </p>
+    <p>
+      Start Date
+      <span style="color:#888888">. . . year that your project began</span>
+      <br />
+      <input type="text" name="startYear" id="startYear" placeholder="YYYY" value="${flash.startYear}" maxlength="4">
+      <span class="error">${flash.startYearError}</span>
+    </p>
+    <p>
+      Description
+      <br />
+      <textarea name="description" cols="100" rows="4" id="description" placeholder="Add a short description of your project" maxlength="5000">${flash.description}</textarea>
+      <span class="error">${flash.descriptionError}</span>
+    </p>
+    <p>
+      Tags 
+      <span style="color:#888888">. . . words that describe your work</span>
+      <br />
+      <input type="text" name="tags" id="tags" placeholder="Enter tags, separated by commas" value="${flash.tags}" maxlength="100">
+      <span class="error">${flash.tagsError}</span>
+    </p>
+    <p>
+      Your Peers
+      <span style="color:#888888">. . . the people who give you feedback and support</span>
+      <br />
+      <input type="text" name="peers" id="peers" placeholder="Enter peers, separated by commas" value="${flash.peers}" maxlength="100">
+      <span class="error">${flash.peersError}</span>
+    </p>
+    <p>
+      Other Inspirations 
+      <span style="color:#888888">. . . people who inspire or influence your work</span>
+      <br />
+      <input type="text" name="otherInspirations" id="otherInspirations" placeholder="Enter inspirations, separated by commas" value="${flash.otherInspirations}" maxlength="100">
+      <span class="error">${flash.otherInspirationsError}</span>
+    </p>
+    <p>
+      Your Website
+      <span style="color:#888888">(optional)</span>
+      <br />
+      <input type="text" name="url" id="url" placeholder="Your web site's address" value="${flash.url}" maxlength="50">
+      <span class="error">${flash.urlError}</span>
+    </p>
+    
+    <input type="text" name="uuid" id="uuid" value="${flash.uuid}" readonly="readonly" style="display:none" >
+    
+    <p>
+      Please type the code below.
+      <br />
+      <img src="@{Application.captcha(randomId)}" />
+      <br />
+      <input type="text" name="code" id="code" size="18" value="" maxlength="50"/>
+      <input type="hidden" name="randomId" id="randomId" value="${randomId}" />
+      <span class="error">${flash.myCode}</span>
+    </p>
+    <p>
+      <input type="submit" name="submit" id="submit" value="Submit">
+      <button type="button" onclick='window.location = "@{Application.graph()}";');">Cancel</button>
+    </p>
+   #{/}
   </div>
+</div>
 </body>
 
 </html>

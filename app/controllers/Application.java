@@ -11,6 +11,7 @@ import models.Project;
 import models.ProjectForJson;
 import models.ProjectToken;
 import play.cache.Cache;
+import play.db.jpa.Blob;
 import play.libs.Codec;
 import play.libs.Images;
 import play.mvc.Controller;
@@ -31,8 +32,8 @@ public class Application extends Controller {
         
         // display text in black color
         String code = myCaptcha.getText("#000000");
-        // store in cache for 5 minutes
-        Cache.set(id, code, "5mn");
+        // store in cache for 10 minutes
+        Cache.set(id, code, "10mn");
         renderBinary(myCaptcha);
         try {
             myCaptcha.close();
@@ -41,10 +42,7 @@ public class Application extends Controller {
         }
     }
     
-    public static void form(
-        final String email, 
-        final String password
-    ) {
+    public static void form() {
         testMobile();
         final String randomId = Codec.UUID();
         render(randomId);
@@ -93,6 +91,10 @@ public class Application extends Controller {
         render();
     }
     
+    public static void projectEdited() {
+        render();
+    }
+    
     public static void projectAdded() {
         render();
     }
@@ -109,6 +111,258 @@ public class Application extends Controller {
         final String stringInput = (String) input;
         return code.equalsIgnoreCase(stringInput);
     }
+
+    
+    public static void doCancelEdit(
+        final String projectTitle,
+        final String artists,
+        final String description,
+        final String startYear,
+        final String tags,
+        final String peers,
+        final String otherInspirations,
+        final String url,
+        final String idString,
+        final String uuid
+    ) {         
+        if (projectTitle != null) {
+            flash.put("projectTitle", projectTitle);
+            flash.put("artists", artists);
+            flash.put("description", description);
+            flash.put("startYear", startYear);
+            flash.put("tags", tags);
+            flash.put("peers", peers);
+            flash.put("otherInspirations", otherInspirations);
+            flash.put("url", url);
+            flash.put("uuid", uuid);
+            
+            final String myProjectId = idString;
+            final String randomId = Codec.UUID();
+            renderTemplate("Application/edit.html", myProjectId, randomId);
+        }
+    }
+    
+    public static void editProject(
+        final String projectTitle,
+        final String artists,
+        final Blob myImage,
+        final String startYear,
+        final String description,
+        final String tags,
+        final String peers,
+        final String otherInspirations,
+        final String url,
+        final String code,
+        final String randomId,
+        final String uuid
+    ) {
+        List<Project> projects = Project.findAll();
+        Project target = null;
+        for (Project project: projects) {
+            if (project.uuid.toString().equals(uuid)) {
+                target = project;
+                break;
+            }
+        }
+        
+        if (target == null) {
+            System.out.println("Error: null project edited, uuid=" + uuid);
+            render("Application/error.html");
+            return;
+        }
+        
+        if (captchaSuccess(code, randomId)) {
+            Cache.delete(randomId);
+            
+            boolean success = true;
+            if (!EditChecks.isEmpty(projectTitle)) {
+                if (EditChecks.validText(
+                    projectTitle, 
+                    EditChecks.MAX_NAME_LENGTH)
+                ) {
+                    if (!EditChecks.titleAvailable(
+                        projectTitle, 
+                        target.projectTitle)
+                    ) {
+                        flash.put(
+                            "projectTitleError", 
+                            "That title is taken."
+                        );
+                        success = false;
+                    }
+                } else {
+                    flash.put(
+                        "projectTitleError", 
+                        "Please enter a title."
+                    );
+                    success = false;
+                }
+            }
+            
+            if (!EditChecks.isEmpty(artists)) {
+                if (!EditChecks.validText(
+                    artists, 
+                    EditChecks.MAX_NAME_LENGTH)
+                ) {
+                    flash.put(
+                        "artistsError", 
+                        "Please enter an artist."
+                    );
+                    success = false;
+                }
+            }
+            
+            if (myImage != null) {
+                if (!EditChecks.validPhoto(myImage)) {
+                    flash.put(
+                        "myImageError", 
+                        "Photo is not valid."
+                    );
+                    success = false;
+                }
+            }
+            
+            if (!EditChecks.isEmpty(startYear)) {
+                int yearInt = Integer.parseInt(startYear);
+                if (!EditChecks.validYear(yearInt)) {
+                    flash.put(
+                        "startYearError", 
+                        "Enter a year between 1900 and 2020."
+                    );
+                    success = false;
+                }
+            }
+            
+            if (!EditChecks.isEmpty(description)) {
+                if (!EditChecks.validText(
+                    description, 
+                    EditChecks.MAX_DESCRIPTION_LENGTH)
+                ) {
+                    flash.put(
+                        "descriptionError", 
+                        "Please enter a description."
+                    );
+                    success = false;
+                }
+            }
+            
+            if (!EditChecks.isEmpty(tags)) {
+                if (!EditChecks.validText(tags, EditChecks.MAX_LIST_LENGTH)) {
+                    flash.put(
+                        "tagsError", 
+                        "Please enter a tag."
+                    );
+                    success = false;
+                }
+            }
+            
+            if (!EditChecks.isEmpty(peers)) {
+                if (!EditChecks.validText(peers, EditChecks.MAX_LIST_LENGTH)) {
+                    flash.put(
+                        "peersError", 
+                        "Please enter a peer."
+                    );
+                    success = false;
+                }
+            }
+            
+            if (!EditChecks.isEmpty(otherInspirations)) {
+                if (!EditChecks.validText(
+                    otherInspirations, 
+                    EditChecks.MAX_LIST_LENGTH)
+                ) {
+                    flash.put(
+                        "otherInspirationsError", 
+                        "Please enter an inspiration."
+                    );
+                    success = false;
+                }
+            }
+            
+            if (!EditChecks.isEmpty(url)) {
+                if (!EditChecks.validUrl(url)) {
+                    flash.put(
+                        "otherInspirationsError", 
+                        "Please enter a url."
+                    );
+                    success = false;
+                }
+            }
+                        
+            if (success) {
+                if (!EditChecks.isEmpty(projectTitle)) {
+                    target.projectTitle = projectTitle;
+                }
+                if (!EditChecks.isEmpty(artists)) {
+                    target.artists = artists;
+                }
+                if (myImage != null) {
+                    target.myImage = myImage;
+                    target.refreshImage();
+                }
+                if (!EditChecks.isEmpty(startYear)) {
+                    int yearInt = Integer.parseInt(startYear);
+                    target.startYear = yearInt;
+                }
+                if (!EditChecks.isEmpty(description)) {
+                    target.description = description;
+                }
+                if (!EditChecks.isEmpty(tags)) {
+                    target.tags = tags;
+                }
+                if (!EditChecks.isEmpty(peers)) {
+                    target.peers = peers;
+                }
+                if (!EditChecks.isEmpty(otherInspirations)) {
+                    target.otherInspirations = otherInspirations;
+                }
+                if (!EditChecks.isEmpty(url)) {
+                    target.url = url;
+                    target.refreshUrl();
+                } else {
+                    target.url = null;
+                }
+                
+                target.refreshSetsAndDescription();
+                target.save();
+                render("Application/projectEdited.html");
+                // TODO: send edited email
+            } else {
+                flash.error("Project is not valid.");
+                doCancelEdit(
+                    target.projectTitle,
+                    target.artists,
+                    target.description,
+                    "" + target.startYear,
+                    target.tags,
+                    target.peers,
+                    target.otherInspirations,
+                    target.url,
+                    target.id.toString(),
+                    target.uuid
+                );
+            }
+        } else {
+            flash.put(
+                "myCode", 
+                "Invalid code."
+            );
+            
+            flash.error("Code is not valid.");
+            doCancelEdit(
+                target.projectTitle,
+                target.artists,
+                target.description,
+                "" + target.startYear,
+                target.tags,
+                target.peers,
+                target.otherInspirations,
+                target.url,
+                target.id.toString(),
+                target.uuid
+            );
+        }
+    }
     
     public static void addProject(
         final Project newProject,
@@ -116,6 +370,8 @@ public class Application extends Controller {
         final String randomId
     ) {        
         if (captchaSuccess(code, randomId)) {
+            Cache.delete(randomId);
+
             if (validation.valid(newProject).ok) {
                 final String requestIPAddress = request.remoteAddress;
                 final GeneralData myGeneralData = 
@@ -170,11 +426,9 @@ public class Application extends Controller {
                 myGeneralData.save();
             } else {
                 MyLogger.logIncompleteProjectSubmission(validation.errors());
-                flash.error("Submission is not valid.");
+                flash.error("Project is not valid.");
                 doCancelProject(newProject);
-            }
-            
-            Cache.delete(randomId);
+            }            
         } else {
             flash.put(
                 "myCode", 
@@ -202,16 +456,18 @@ public class Application extends Controller {
         projectAdded();
     }
     
-    // FIXME: run on worker thread
     private static void sendProjectCreatedEmail(final Project project) {
-        if (project.creatorEmail != null) {
+        if (
+            project.creatorEmail != null
+            && project.creatorEmail.length() != 0
+        ) {
             try {
-                Email.send(
+                new EmailWorker(
                     "ExchangeArchive", 
                     "How to Edit Your New Project in the Archive", 
                     project.creatorEmail, 
                     getProjectAddedEmailText(project)
-                );
+                ).execute();
             } catch (Exception e) {
                 MyLogger.logCouldNotSendEmail(
                     "projectCreated", 
@@ -234,13 +490,15 @@ public class Application extends Controller {
         
         builder.append("Link to your project's page:<br />");
         builder.append(
-        "<a href=\"http:www.theexchangearchive.com/application/project?name="
+        "<a href=\"http://www.theexchangearchive.com/application/project?name="
             ).append(project.projectTitle).append("\">")
-            .append(project.projectTitle).append("</a><br /><br />");
+            .append("www.theexchangearchive.com/application/project?name=")
+            .append(project.projectTitle)
+            .append("</a><br /><br />");
         
         builder.append("Link to <b>edit</b> your project:<br />");
         builder.append(
-            "<a href=\"http:www.theexchangearchive.com/application/edit?aUUID="
+            "<a href=\"http://www.theexchangearchive.com/application/edit?aUUID="
             ).append(project.uuid).append("\">").append("Edit ")
             .append(project.projectTitle).append("</a><br /><br />");
         
@@ -384,18 +642,31 @@ public class Application extends Controller {
     }
     
     public static void edit(final String aUUID) {
-        Project target = null;
+        Project myProject = null;
         List<Project> projects = Project.findAll();
         for (Project project: projects) {
             if (project.uuid.equals(aUUID)) {
-                target = project;
-                target.initializeSets();
-                target.initializeUrl();
+                myProject = project;
+                myProject.initializeSets();
+                myProject.initializeUrl();
                 break;
             }
         }
-        
-        render(target);
+                
+        if (myProject != null) {
+            flash.put("projectTitle", myProject.projectTitle);
+            flash.put("artists", myProject.artists);
+            flash.put("description", myProject.description);
+            flash.put("startYear", myProject.startYear);
+            flash.put("tags", myProject.tags);
+            flash.put("peers", myProject.peers);
+            flash.put("otherInspirations", myProject.otherInspirations);
+            flash.put("url", myProject.url);
+            flash.put("uuid", myProject.uuid.toString());
+        }
+        final String myProjectId = myProject.id.toString();
+        final String randomId = Codec.UUID();
+        render(myProjectId, randomId);
     }
     
     public static void project(final String name) {

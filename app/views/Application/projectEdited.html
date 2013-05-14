@@ -1,5 +1,5 @@
 #{extends 'main.html' /}
-#{set title:'EXCHANGE ARCHIVE - ' + name /}
+#{set title:'EXCHANGE ARCHIVE - Project Edited' /}
 
 <!DOCTYPE html>
 <!--[if lt IE 7]> <html class="ie6 oldie"> <![endif]-->
@@ -22,31 +22,20 @@
 </head>
 
 <body>
-<div id="wrap">
-<div id="main">
+
+<div class="gridContainer clearfix">
   <h2 style="float:left">
     <a style="color:#000000" href="@{Application.graph()}">THE EXCHANGE ARCHIVE</a>
+    <br />
+    Artists do not create work in a vacuum.*
   </h2>
   <div style="float:right; margin-top:20px; font-size:16px">
     <a href="@{Application.graph()}">HOME</a>
   </div>
-
-  <div>
-    #{if target}
-      <div>
-        #{fullProject project:target /}
-      </div>
-    #{/if}
+  <div id="successBox" style="clear:both">
+    Project edited. Thank you!
   </div>
 </div>
-</div>
-
-  <div id="footer" style="text-align:center">
-    <hr />
-    <a style="color:#000000" href="@{Application.about()}">About</a> 
-    &nbsp;|&nbsp;
-    <a style="color:#000000" href="@{Application.contact()}">Contact</a>
-  </div>
 </body>
 
 </html>

@@ -18,7 +18,7 @@ import play.data.validation.Email;
 import play.data.validation.Required;
 import play.db.jpa.Blob;
 import play.db.jpa.Model;
-import controllers.MyChecks;
+import controllers.InitialChecks;
 
 @Entity
 public final class Project extends Model {
@@ -28,41 +28,41 @@ public final class Project extends Model {
     static final String PLEASE_ENTER_A = "Please enter a";
     
     @Required(message = PLEASE_ENTER_A + " title.")
-    @CheckWith(MyChecks.ProjectTitleCheck.class)
+    @CheckWith(InitialChecks.ProjectTitleCheck.class)
     public String projectTitle;
     
     @Required(message = PLEASE_ENTER_A + "n artist.")
-    @CheckWith(MyChecks.NameCheck.class)
+    @CheckWith(InitialChecks.NameCheck.class)
     public String artists;
     
     @Required(message = "Please upload a photo.")
-    @CheckWith(MyChecks.PhotoCheck.class)
+    @CheckWith(InitialChecks.PhotoCheck.class)
     public Blob myImage;
     
     @Required(message = PLEASE_ENTER_A + " description.")
-    @CheckWith(MyChecks.DescriptionCheck.class)
+    @CheckWith(InitialChecks.DescriptionCheck.class)
     @Lob 
     public String description;
     
     public String briefDescription;
     
     @Required(message = PLEASE_ENTER_A + " tag.")
-    @CheckWith(MyChecks.NameCheck.class)
+    @CheckWith(InitialChecks.NameCheck.class)
     public String tags;
     
     @Required(message = PLEASE_ENTER_A + " peer.")
-    @CheckWith(MyChecks.NameCheck.class)
+    @CheckWith(InitialChecks.NameCheck.class)
     public String peers;
     
     @Required(message = PLEASE_ENTER_A + "n inspiration.")
-    @CheckWith(MyChecks.NameCheck.class)
+    @CheckWith(InitialChecks.NameCheck.class)
     public String otherInspirations;
     
     @Required(message = PLEASE_ENTER_A + " year.")
-    @CheckWith(MyChecks.YearCheck.class)
+    @CheckWith(InitialChecks.YearCheck.class)
     public int startYear;
 
-    @CheckWith(MyChecks.URLCheck.class)
+    @CheckWith(InitialChecks.URLCheck.class)
     public String url;
     
     public String emails;
@@ -169,6 +169,21 @@ public final class Project extends Model {
         }
     }
     
+    public void refreshUrl() {
+        initializeUrl();
+    }
+    
+    public void refreshImage() {
+        try {
+            this.imageBytes = IOUtils.toByteArray(this.myImage.get());
+            this.imageMimeType = 
+                InitialChecks.PhotoCheck.detectMimeType(this.myImage.getFile());
+            this.imageFileName = this.myImage.getFile().getName();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    
     public void initializeImage() {
         if (!(
             this.imageBytes == null
@@ -181,10 +196,31 @@ public final class Project extends Model {
         try {
             this.imageBytes = IOUtils.toByteArray(this.myImage.get());
             this.imageMimeType = 
-                MyChecks.PhotoCheck.detectMimeType(this.myImage.getFile());
+                InitialChecks.PhotoCheck.detectMimeType(this.myImage.getFile());
             this.imageFileName = this.myImage.getFile().getName();
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+    
+    public void refreshSetsAndDescription() {
+        initializeSet(this.artistSet, this.artists);
+        initializeSet(this.tagSet, this.tags);
+        initializeSet(this.peerSet, this.peers);
+        initializeSet(this.otherInspirationSet, this.otherInspirations);
+        if (this.emails != null && this.emails.length() != 0) {
+            initializeSet(this.emailSet, this.emails);
+        } else {
+            this.emailSet.clear();
+        }
+        
+        final int maxCharsForBriefDescription = 200;
+        if (this.description.length() >= maxCharsForBriefDescription) {
+            this.briefDescription = 
+                this.description.substring(0, maxCharsForBriefDescription) 
+                    + "...";
+        } else {
+            this.briefDescription = this.description;
         }
     }
     
