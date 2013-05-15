@@ -24,26 +24,26 @@
 <body>
   <div id="wrap">
   <div id="main">
-      #{if projects}
-        <h1 style="clear:both">Artist: ${artist}</h1>
+    #{if projects}
+      <h1 style="clear:both">Artist: ${artist}</h1>
   
-        <div style="width:600px;">    
-          #{list projects, as:'project'}
-            #{fullProject project:project /}
-          #{/list}
-        </div>
+      <div style="width:600px;">    
+        #{list projects, as:'project'}
+          #{fullProject project:project /}
+        #{/list}
+      </div>
   
-        <div style="clear:both">
-          #{if offset > 0}
-            <a style="font-size:20px" href="@{Application.artist(artist, offset - 10)}">Previous</a>
-          #{/if}
-          &nbsp; 
-          #{if hasNext}
-            <a style="font-size:20px" href="@{Application.artist(artist, offset + 10)}">Next</a>
-          #{/if}
-        </div>
-      #{/if}
-    </div>
+      <div style="clear:both;">
+        #{if offset > 0}
+          <a style="font-size:20px" href="@{Application.artist(artist, offset - 10)}">Previous</a>
+        #{/if}
+        &nbsp; 
+        #{if hasNext}
+          <a style="font-size:20px" href="@{Application.artist(artist, offset + 10)}">Next</a>
+        #{/if}
+      </div>
+    #{/if}
+  </div>
   </div>
   <div id="footer" style="text-align:center">
     <hr />
