@@ -4,6 +4,8 @@ import static org.apache.commons.lang.StringEscapeUtils.escapeHtml;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
@@ -595,9 +597,21 @@ public class Application extends Controller {
         builder.append("All artists work in a dialog with others. The Exchange Archive supports");
         builder.append(" artistic dialog by showing the inspirations that flow between projects.<br /><br />");
         builder.append("<b>See Your Friend's Project:</b><br />");
-        builder.append(
-        "<a href=\"http://www.theexchangearchive.com/application/project?name="
-            ).append(project.projectTitle).append("\">")
+        
+        String projectUrlString = "";
+        try {
+            projectUrlString = new URI(
+                "http", 
+                "www.theexchangearchive.com", 
+                "/application/project",
+                "name=" + project.projectTitle,
+                null
+            ).toASCIIString();
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
+        
+        builder.append("<a href=\"").append(projectUrlString).append("\">")
             .append(escapeHtml(project.projectTitle)).append("</a><br /><br />");
         builder.append("<b>Or Visit the Archive:</b><br />");
         builder.append("<a href=\"http://www.theexchangearchive.com\">theexchangearchive.com</a><br /><br />");
@@ -616,11 +630,22 @@ public class Application extends Controller {
             append(escapeHtml(project.artists)).append("<br /><br />");
         
         builder.append("Link to your project's page:<br />");
-        builder.append(
-        "<a href=\"http://www.theexchangearchive.com/application/project?name="
-            ).append(project.projectTitle).append("\">")
-            .append("www.theexchangearchive.com/application/project?name=")
-            .append(project.projectTitle)
+        
+        String projectUrlString = "";
+        try {
+            projectUrlString = new URI(
+                "http", 
+                "www.theexchangearchive.com", 
+                "/application/project",
+                "name=" + project.projectTitle,
+                null
+            ).toASCIIString();
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
+        
+        builder.append("<a href=\"").append(projectUrlString).append("\">")
+            .append(projectUrlString)
             .append("</a><br /><br />");
         
         builder.append("Link to <b>edit</b> your project:<br />");

@@ -12,7 +12,6 @@ import javax.persistence.Lob;
 import javax.persistence.OneToMany;
 
 import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang.StringUtils;
 
 import play.data.validation.CheckWith;
 import play.data.validation.Email;
@@ -170,14 +169,6 @@ public final class Project extends Model {
         }
     }
     
-    private String stripHtmlSpecialChars(final String input) {
-        return StringUtils.replaceEach(
-            input, 
-            new String[]{"&", "\"", "<", ">", "'", "/"}, 
-            new String[]{"", "", "", "", "", ""}
-        );
-    }
-    
     public void refreshUrl() {
         initializeUrl();
     }
@@ -232,20 +223,7 @@ public final class Project extends Model {
             this.briefDescription = this.description;
         }
     }
-    
-    private void initializeStrings() {        
-        this.projectTitle = stripHtmlSpecialChars(this.projectTitle);
-        initializeTokenSet(this.artistSet);
-        initializeTokenSet(this.tagSet);
-        initializeTokenSet(this.peerSet);
-        initializeTokenSet(this.otherInspirationSet);
-    }
-    
-    private void initializeTokenSet(final Set<ProjectToken> tokenSet) {
-        for (ProjectToken token: tokenSet) {
-            token.text = stripHtmlSpecialChars(token.text);
-        }
-    }
+   
     
     public void initializeSets() {
         if (!(
@@ -276,9 +254,7 @@ public final class Project extends Model {
                     + "...";
         } else {
             this.briefDescription = this.description;
-        }
-        
-        initializeStrings();
+        }        
     }
     
     private static void initializeSet(
