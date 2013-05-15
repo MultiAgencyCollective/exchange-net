@@ -490,9 +490,49 @@ public class Application extends Controller {
         MyLogger.logProjectAdded(toAdd, ipAddress, Project.count());
         if (!toAdd.isTest) {
             sendProjectCreatedEmail(toAdd);
+            sendFormInviteEmails(toAdd);
         }
         
         projectAdded();
+    }
+    
+    private static String removeWhitespace(final String string) {
+        return string.replaceAll("\\s", "");
+    }
+    
+    private static void sendFormInviteEmails(final Project project) {
+        if (project == null) {
+            return;
+        }
+        
+        project.initializeSets();
+        String sender = "ExchangeArchive";
+        if (
+            project.sender != null
+            && project.sender.length() != 0
+        ) {
+            sender = removeWhitespace(project.sender);
+        }
+        
+        for (ProjectToken email: project.emailSet) {
+            try {
+                new EmailWorker(
+                    sender, // from
+                    sender 
+                    + " Says: Add Your Work to the Web " 
+                    + "Database of Exchange Artwork", // subject
+                    email.text, // to
+                    getInviteEmailText(project) // HTML text
+                ).execute();
+            } catch (Exception e) {
+                MyLogger.logCouldNotSendEmail(
+                    "invite", 
+                    email.text, 
+                    e.getMessage()
+                );
+                e.printStackTrace();
+            }
+        }
     }
     
     private static void sendProjectCreatedEmail(final Project project) {
@@ -502,10 +542,10 @@ public class Application extends Controller {
         ) {
             try {
                 new EmailWorker(
-                    "ExchangeArchive", 
-                    "How to Edit Your New Project in the Archive", 
-                    project.creatorEmail, 
-                    getProjectAddedEmailText(project)
+                    "ExchangeArchive", // from
+                    "How to Edit Your New Project in the Archive", // subject
+                    project.creatorEmail, // to
+                    getProjectAddedEmailText(project) // HTML message
                 ).execute();
             } catch (Exception e) {
                 MyLogger.logCouldNotSendEmail(
@@ -516,6 +556,53 @@ public class Application extends Controller {
                 e.printStackTrace();
             }
         }
+    }
+    
+    private static String getInviteEmailText(final Project project) {
+        
+        final StringBuilder builder = new StringBuilder();
+        if (
+            project.sender != null
+            && project.sender.length() != 0
+        ) {
+            builder.append("<b>").append(project.sender).
+                append("</b> invited you to submit a project ");
+            builder.append("to The Exchange Archive!<br /><br />");
+        }
+        
+        if (
+            project.sender != null
+            && project.sender.length() != 0
+            && project.message != null
+            && project.message.length() != 0
+        ) {
+            builder.append("Your message from <b>").
+                append(project.sender).append("</b>:<br />");
+        }
+        
+        if (
+            project.message != null 
+            && project.message.length() != 0
+        ) {
+            builder.append(project.message).append("<br /><br />");
+        }
+        
+        builder.append("<b>Submit a Project:</b><br />");
+        builder.append("<a href=\"http://www.theexchangearchive.com/form\">Submit Your Project</a><br />");
+        builder.append("No registration required.<br /><br />");
+        builder.append("<b>About THE EXCHANGE ARCHIVE:</b><br />");
+        builder.append("All artists work in a dialog with others. The Exchange Archive supports");
+        builder.append(" artistic dialog by showing the inspirations that flow between projects.<br /><br />");
+        builder.append("<b>See Your Friend's Project:</b><br />");
+        builder.append(
+        "<a href=\"http://www.theexchangearchive.com/application/project?name="
+            ).append(project.projectTitle).append("\">")
+            .append(project.projectTitle).append("</a><br /><br />");
+        builder.append("<b>Or Visit the Archive:</b><br />");
+        builder.append("<a href=\"http://www.theexchangearchive.com\">theexchangearchive.com</a><br /><br />");
+        builder.append("Thank You!<br />");
+        
+        return builder.toString();
     }
     
     private static String getProjectAddedEmailText(final Project project) {
