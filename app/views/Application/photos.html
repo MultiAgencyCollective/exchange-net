@@ -1,5 +1,5 @@
 #{extends 'main.html' /}
-#{set title:'EXCHANGE ARCHIVE - Images' /}
+#{set title:'EXCHANGE ARCHIVE - Photos' /}
 
 <!DOCTYPE html>
 <!--[if lt IE 7]> <html class="ie6 oldie"> <![endif]-->
@@ -63,11 +63,11 @@
   
         <div style="clear:both">
           #{if offset > 0}
-            <a style="font-size:20px" href="@{Application.images(offset - 10)}">Previous</a>
+            <a style="font-size:20px" href="@{Application.photos(offset - 10)}">Previous</a>
           #{/if}
           &nbsp;
           #{if hasNext}
-            <a style="font-size:20px" href="@{Application.images(offset + 10)}">Next</a>
+            <a style="font-size:20px" href="@{Application.photos(offset + 10)}">Next</a>
           #{/if}
         </div>
       #{/if}

@@ -968,7 +968,7 @@ public class Application extends Controller {
         return result;
     }
     
-    public static void images(int offset) {
+    public static void photos(int offset) {
         if (offset < 0 || offset >= Project.count()) {
             offset = 0;
         }
@@ -1098,7 +1098,7 @@ public class Application extends Controller {
         return Project.count() > offset + MAX_TO_RETURN;
     }
     
-    public static void listProjects(int offset) {
+    public static void projects(int offset) {
         if (offset < 0 || offset >= Project.count()) {
             offset = 0;
         }
