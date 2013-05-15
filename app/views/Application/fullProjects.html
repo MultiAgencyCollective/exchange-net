@@ -23,10 +23,10 @@
 
 <body>
 <div class="gridContainer clearfix">
-  #{if projects}
-    <h1>Projects</h1>
-  
-    <div>    
+  <br />
+  <br />
+  #{if projects}  
+    <div style="width:600px;">    
       #{list projects, as:'project'}
         #{fullProject project:project /}
       #{/list}

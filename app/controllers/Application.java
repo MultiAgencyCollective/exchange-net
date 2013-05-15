@@ -98,7 +98,13 @@ public class Application extends Controller {
         render();
     }
     
-    public static void projectAdded() {
+    public static void projectAdded(final boolean canEdit) {
+        if (canEdit) {
+            flash.put("messageSent", true);
+        } else {
+            flash.put("messageSent", false);
+        }
+        
         render();
     }
     
@@ -496,7 +502,10 @@ public class Application extends Controller {
             sendFormInviteEmails(toAdd);
         }
         
-        projectAdded();
+        boolean canEdit = 
+            toAdd.creatorEmail != null 
+            && toAdd.creatorEmail.length() != 0;
+        projectAdded(canEdit);
     }
     
     private static String removeWhitespace(final String string) {

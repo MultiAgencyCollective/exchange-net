@@ -29,12 +29,16 @@
     <br />
     Artists do not create work in a vacuum.*
   </h2>
-  <div style="float:right; margin-top:20px; font-size:16px">
-    <a href="@{Application.graph()}">HOME</a>
-  </div>
   <div id="successBox" style="clear:both">
     Project added. Thank you!
   </div>
+  #{if flash.get("messageSent") == "true" }
+    <h2>Check your inbox!</h2>
+    <p>
+      We've just sent you an email that explains how to <strong>edit</strong> your new project.
+      You will need the link from the email in order to edit.
+    </p>
+  #{/if}
 </div>
 </body>
 

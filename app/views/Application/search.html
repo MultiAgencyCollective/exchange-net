@@ -24,17 +24,10 @@
 <body>
 <div id="wrap">
 <div id="main">
-  <h2 style="float:left">
-    <a style="color:#000000" href="@{Application.graph()}">THE EXCHANGE ARCHIVE</a>
-  </h2>
-  <div style="float:right; margin-top:20px; font-size:16px">
-    <a href="@{Application.graph()}">HOME</a>
-  </div>
-  
   #{if projects}
     <h1 style="clear:both">Search for: ${target}</h1>
   
-    <div>    
+    <div style="width:600px;">    
       #{list projects, as:'project'}
         #{fullProject project:project /}
       #{/list}
