@@ -103,6 +103,9 @@
       <br />
       <input type="text" name="newProject.tags" id="tags" placeholder="Enter tags, separated by commas" value="${flash.tags}" maxlength="100">
       <span class="error">#{error 'newProject.tags' /}</span>
+      #{if popularTags}
+        <div>Popular Tags: ${popularTags}</div>
+      #{/if}
     </p>
     <p>
       Your Peers

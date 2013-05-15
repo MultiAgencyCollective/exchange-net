@@ -7,7 +7,10 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.regex.Pattern;
 
 import models.GeneralData;
@@ -48,7 +51,62 @@ public class Application extends Controller {
     public static void form() {
         testMobile();
         final String randomId = Codec.UUID();
-        render(randomId);
+        final String popularTags = getPopularTagsString(5);
+        render(randomId, popularTags);
+    }
+    
+    private static String getPopularTagsString(final int count) {
+        final StringBuilder builder = new StringBuilder();
+        int i = 0;
+        final List<String> popularTags = getPopularTags(count);
+        for (String tag: popularTags) {
+            builder.append(tag);
+            i++;
+            if (i < count) {
+                builder.append(", ");
+            }
+        }
+        
+        return builder.toString();
+    }
+    
+    private static List<String> getPopularTags(final int count) {
+        List<String> result = new ArrayList<String>();
+        
+        Map<String, Integer> tagsToCount = new HashMap<String, Integer>();
+        List<Project> projects = Project.findAll();        
+        for (Project project: projects) {
+            project.initializeSets();
+            for (ProjectToken token: project.tagSet) {
+                String string = token.text;
+                if (tagsToCount.containsKey(string)) {
+                    tagsToCount.put(string, tagsToCount.get(string) + 1);
+                } else {
+                    tagsToCount.put(string, 1);
+                }
+            }
+        }
+        
+        while (result.size() < count && !tagsToCount.isEmpty()) {
+            int max = 0;
+            String tag = null;
+            for (Entry<String, Integer> entry: tagsToCount.entrySet()) {
+                if (entry.getValue() > max) {
+                    max = entry.getValue();
+                    tag = entry.getKey();
+                }
+            }
+            
+            if (tag == null) {
+                System.err.println("error in getting popular tags");
+                break;
+            }
+            
+            result.add(tag);
+            tagsToCount.remove(tag);
+        }
+        
+        return result;
     }
     
     private static void testMobile() {
@@ -621,7 +679,8 @@ public class Application extends Controller {
         }
         
         builder.append("<a href=\"").append(projectUrlString).append("\">")
-            .append(escapeHtml(project.projectTitle)).append("</a><br /><br />");
+            .append(escapeHtml(project.projectTitle))
+            .append("</a><br /><br />");
         builder.append("<b>Or Visit the Archive:</b><br />");
         builder.append("<a href=\"http://www.theexchangearchive.com\">theexchangearchive.com</a><br /><br />");
         builder.append("Thank You!<br />");
@@ -661,7 +720,8 @@ public class Application extends Controller {
         builder.append(
         "<a href=\"http://www.theexchangearchive.com/application/edit?aUUID="
             ).append(project.uuid).append("\">").append("Edit ")
-            .append(escapeHtml(project.projectTitle)).append("</a><br /><br />");
+            .append(escapeHtml(project.projectTitle))
+            .append("</a><br /><br />");
         
         builder.append("Explore <b>THE EXCHANGE ARCHIVE</b>:<br />");
         builder.append(
@@ -830,7 +890,8 @@ public class Application extends Controller {
         }
         
         final String randomId = Codec.UUID();
-        render(myProjectId, randomId);
+        final String popularTags = getPopularTagsString(5);
+        render(myProjectId, randomId, popularTags);
     }
     
     public static void project(final String name) {

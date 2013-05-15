@@ -1,4 +1,4 @@
-#{extends 'main.html' /}
+#{extends 'mainHome.html' /}
 #{set title:'EXCHANGE ARCHIVE - Home' /}
 
 <head>
@@ -153,8 +153,8 @@ function init() {
     sigInst.addNode(
       name, 
       {
-        'x': Math.random() * 50,
-        'y': Math.random() * 10,
+        'x': Math.random() * 40,
+        'y': Math.random() * 5,
         'size': 4,
         'color': GRAY,
       }
@@ -227,15 +227,19 @@ if (document.addEventListener) {
 <style type="text/css">
   .sigma-parent {
     position: relative;
-    border-radius: 2px;
-    -moz-border-radius: 2px;
-    -webkit-border-radius: 2px;
+    border-top: 2px solid #ccc;
+    -moz-border-top: 2px solid #ccc;
+    -webkit-border-top: 2px solid #ccc;
+    border-bottom: 2px solid #ccc;
+    -moz-border-bottom: 2px solid #ccc;
+    -webkit-border-bottom: 2px solid #ccc;
     background: #fff;
+    margin-left: 0px;
+    padding-left: 0px;
     height: 200px;
-    width: 1020px;
-    border-style: solid;
-    border-width:2px;
-    border-color: #ccc;
+    width: 100%;
+    left: 0px;
+    right: 0px;
   }  
   .status-area {
     position: absolute;
@@ -252,14 +256,13 @@ if (document.addEventListener) {
 </style>
 
 </head>
-<body style="width:1030px;">
+<body style="width:100%; padding-left:0px; margin-left:0px">
   <div id="projectData" style="display:none;">
     ${projectsJson}
   </div>
 <div id="wrap">
 <div id="main">
   <br style="clear:both" />
-  <br />
   
   <div class="container">
     <div class="span12 sigma-parent" id="sigma-example-parent">
@@ -270,7 +273,7 @@ if (document.addEventListener) {
     
   <br />
     
-  <div style="padding-left:2px;float:left;">
+  <div style="padding-left:10px;float:left;">
     <div style="font-weight:bold">
       Link By:
     </div>

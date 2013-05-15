@@ -4,12 +4,12 @@
   </div>
   <div>
     <div style="font-weight:bold;font-size:16px;width:inherit">
-      <a style="color:#000000" href="@{Application.project(_project.projectTitle)}">${_project.projectTitle}</a>
+      ${_project.projectTitle}
       &nbsp;&nbsp;<span style="font-weight:normal">(${_project.startYear})</span>
     </div>
     <div style="color:#888888;font-size:14px;width:inherit">
       #{list _project.artistSet, as:'artist'}
-          <a style="color:#000000" href="@{Application.artist(artist.text, 0)}">${artist.text}</a> &middot;
+        <a style="color:#000000" href="@{Application.artist(artist.text, 0)}">${artist.text}</a> &middot;
       #{/list}
     </div>
     <br />

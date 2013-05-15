@@ -72,6 +72,9 @@
       <br />
       <textarea name="description" cols="100" rows="4" id="description" placeholder="Add a short description of your project" maxlength="5000">${flash.description}</textarea>
       <span class="error">${flash.descriptionError}</span>
+      #{if popularTags}
+        <div>Popular Tags: ${popularTags}</div>
+      #{/if}
     </p>
     <p>
       Tags 
