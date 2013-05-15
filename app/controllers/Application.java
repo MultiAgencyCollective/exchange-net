@@ -1,5 +1,7 @@
 package controllers;
 
+import static org.apache.commons.lang.StringEscapeUtils.escapeHtml;
+
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -18,7 +20,6 @@ import play.mvc.Controller;
 import play.mvc.Http;
 
 import com.google.gson.Gson;
-
 
 public class Application extends Controller {
     
@@ -565,7 +566,7 @@ public class Application extends Controller {
             project.sender != null
             && project.sender.length() != 0
         ) {
-            builder.append("<b>").append(project.sender).
+            builder.append("<b>").append(escapeHtml(project.sender)).
                 append("</b> invited you to submit a project ");
             builder.append("to The Exchange Archive!<br /><br />");
         }
@@ -577,14 +578,14 @@ public class Application extends Controller {
             && project.message.length() != 0
         ) {
             builder.append("Your message from <b>").
-                append(project.sender).append("</b>:<br />");
+                append(escapeHtml(project.sender)).append("</b>:<br />");
         }
         
         if (
             project.message != null 
             && project.message.length() != 0
         ) {
-            builder.append(project.message).append("<br /><br />");
+            builder.append(escapeHtml(project.message)).append("<br /><br />");
         }
         
         builder.append("<b>Submit a Project:</b><br />");
@@ -597,7 +598,7 @@ public class Application extends Controller {
         builder.append(
         "<a href=\"http://www.theexchangearchive.com/application/project?name="
             ).append(project.projectTitle).append("\">")
-            .append(project.projectTitle).append("</a><br /><br />");
+            .append(escapeHtml(project.projectTitle)).append("</a><br /><br />");
         builder.append("<b>Or Visit the Archive:</b><br />");
         builder.append("<a href=\"http://www.theexchangearchive.com\">theexchangearchive.com</a><br /><br />");
         builder.append("Thank You!<br />");
@@ -610,9 +611,9 @@ public class Application extends Controller {
         builder.append("Your project was added.<br /><br />");
         
         builder.append("<b>Title:</b> ").
-            append(project.projectTitle).append("<br />");
+            append(escapeHtml(project.projectTitle)).append("<br />");
         builder.append("<b>Artists:</b> ").
-            append(project.artists).append("<br /><br />");
+            append(escapeHtml(project.artists)).append("<br /><br />");
         
         builder.append("Link to your project's page:<br />");
         builder.append(
@@ -626,7 +627,7 @@ public class Application extends Controller {
         builder.append(
         "<a href=\"http://www.theexchangearchive.com/application/edit?aUUID="
             ).append(project.uuid).append("\">").append("Edit ")
-            .append(project.projectTitle).append("</a><br /><br />");
+            .append(escapeHtml(project.projectTitle)).append("</a><br /><br />");
         
         builder.append("Explore <b>THE EXCHANGE ARCHIVE</b>:<br />");
         builder.append(
@@ -779,6 +780,7 @@ public class Application extends Controller {
             }
         }
                 
+        String myProjectId = null;
         if (myProject != null) {
             flash.put("projectTitle", myProject.projectTitle);
             flash.put("artists", myProject.artists);
@@ -789,8 +791,10 @@ public class Application extends Controller {
             flash.put("otherInspirations", myProject.otherInspirations);
             flash.put("url", myProject.url);
             flash.put("uuid", myProject.uuid.toString());
+            
+            myProjectId = myProject.id.toString();
         }
-        final String myProjectId = myProject.id.toString();
+        
         final String randomId = Codec.UUID();
         render(myProjectId, randomId);
     }
