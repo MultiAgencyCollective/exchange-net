@@ -14,9 +14,9 @@ _gaq.push(['_setAccount', 'UA-29798319-1']);
 _gaq.push(['_trackPageview']);
 
 (function() {
-    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+  ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
 })();
 </script>
 
@@ -26,111 +26,111 @@ var selectedButton = "button1";
 var buttonList = [ "button1", "button2", "button3", "button4" ];
 
 function radioButtonClick(clickedName) {
-    selectedButton = clickedName;
+  selectedButton = clickedName;
     
-    for (var i = 0; i < buttonList.length; i++) {
-        var buttonName = buttonList[i];
-        if (buttonName == clickedName) {
-           document.getElementById(buttonName).style.background = '#666666';
-           document.getElementById(buttonName).style.color = '#dddddd';
-        } else {
-           document.getElementById(buttonName).style.background = '#dddddd';
-           document.getElementById(buttonName).style.color = '#000000';
-        }
+  for (var i = 0; i < buttonList.length; i++) {
+    var buttonName = buttonList[i];
+      if (buttonName == clickedName) {
+        document.getElementById(buttonName).style.background = '#666666';
+        document.getElementById(buttonName).style.color = '#dddddd';
+      } else {
+        document.getElementById(buttonName).style.background = '#dddddd';
+        document.getElementById(buttonName).style.color = '#000000';
     }
+  }
 }
 
 function radioButtonOver(clickedName) {
-    if (clickedName != selectedButton) {
-      document.getElementById(clickedName).style.background = '#ffffff';
-    }
+  if (clickedName != selectedButton) {
+    document.getElementById(clickedName).style.background = '#ffffff';
+  }
 }
 
 function radioButtonOut(clickedName) {
-    if (clickedName != selectedButton) {
-      document.getElementById(clickedName).style.background = '#cccccc';
-    }
+  if (clickedName != selectedButton) {
+    document.getElementById(clickedName).style.background = '#cccccc';
+  }
 }
 
 var sigInst;
 var edgeIndex = 0;
 
 function setupSigInst() {
-    sigInst = sigma.init(document.getElementById('sigma-example-parent')).drawingProperties({
-        defaultLabelColor: '#000',
-        defaultLabelSize: 14,
-        defaultLabelBGColor: '#fff',
-        defaultLabelHoverColor: '#000',
-        labelThreshold: 6,
-        defaultEdgeType: 'curve'
-    }).graphProperties({
-        minNodeSize: 0.5,
-        maxNodeSize: 5,
-        minEdgeSize: 1,
-        maxEdgeSize: 1
-    }).mouseProperties({
-        maxRatio: 4
-    });
+  sigInst = sigma.init(document.getElementById('sigma-example-parent')).drawingProperties({
+    defaultLabelColor: '#000',
+    defaultLabelSize: 14,
+    defaultLabelBGColor: '#fff',
+    defaultLabelHoverColor: '#000',
+    labelThreshold: 6,
+    defaultEdgeType: 'curve'
+  }).graphProperties({
+    minNodeSize: 0.5,
+    maxNodeSize: 5,
+    minEdgeSize: 1,
+    maxEdgeSize: 1
+  }).mouseProperties({
+    maxRatio: 4
+  });
 }
 
 function linkByArrays(arrayName) {
-    if (sigInst == null) {
-        setupSigInst();
-    }
+  if (sigInst == null) {
+    setupSigInst();
+  }
   
-    var projectsJson = JSON.parse(document.getElementById("projectData").innerHTML);
+  var projectsJson = JSON.parse(document.getElementById("projectData").innerHTML);
   
-    while (edgeIndex > 0) {
-        edgeIndex--;
-        sigInst.dropEdge(edgeIndex);
-    }
+  while (edgeIndex > 0) {
+    edgeIndex--;
+    sigInst.dropEdge(edgeIndex);
+  }
   
-    edgeIndex = 0;
-    // add a link between any projects with same tags
-    for (var i = 0; i < projectsJson.length; i++) {
-        var currentProject = projectsJson[i];
-        var items = currentProject[arrayName];
+  edgeIndex = 0;
+  // add a link between any projects with same tags
+  for (var i = 0; i < projectsJson.length; i++) {
+    var currentProject = projectsJson[i];
+    var items = currentProject[arrayName];
         
-        for (var j = i + 1; j < projectsJson.length; j++) {
-            var otherProject = projectsJson[j];
-            var otherItems = otherProject[arrayName];
-            var foundMatch = false;
+    for (var j = i + 1; j < projectsJson.length; j++) {
+      var otherProject = projectsJson[j];
+      var otherItems = otherProject[arrayName];
+      var foundMatch = false;
             
-            for (var k = 0; !foundMatch && k < items.length; k++) {
-                for (m = 0; !foundMatch && m < otherItems.length; m++) {
-                    if (items[k] == otherItems[m]) {
-                        foundMatch = true;
-                    }
-                }
-            }
-        
-            var edgeColor;
-            
-            var source = sigInst.getNodes(currentProject.projectTitle);
-            var target = sigInst.getNodes(otherProject.projectTitle);
-            if (source.color == LIGHT_GRAY && target.color == LIGHT_GRAY) {
-                edgeColor = GRAY;
-            } else if (source.color == GRAY && target.color == GRAY) {
-                edgeColor = GRAY;
-            } else if (source.color == RED || target.color == RED) {
-                edgeColor = RED;
-            } else if (source.color == GREEN || target.color == GREEN) {
-                edgeColor = GREEN;
-            } 
-        
-            if (foundMatch) {
-                sigInst.addEdge(
-                    edgeIndex, 
-                    currentProject.projectTitle, 
-                    otherProject.projectTitle,
-                    { 'color': edgeColor }
-                );
-                edgeIndex++; 
-            }
+      for (var k = 0; !foundMatch && k < items.length; k++) {
+        for (m = 0; !foundMatch && m < otherItems.length; m++) {
+          if (items[k] == otherItems[m]) {
+            foundMatch = true;
+          }
         }
+      }
+        
+      var edgeColor;      
+      var source = sigInst.getNodes(currentProject.projectTitle);
+      var target = sigInst.getNodes(otherProject.projectTitle);
+      if (source.color == LIGHT_GRAY && target.color == LIGHT_GRAY) {
+        edgeColor = GRAY;
+      } else if (source.color == GRAY && target.color == GRAY) {
+        edgeColor = GRAY;
+      } else if (source.color == RED || target.color == RED) {
+        edgeColor = RED;
+      } else if (source.color == GREEN || target.color == GREEN) {
+        edgeColor = GREEN;
+      } 
+        
+      if (foundMatch) {
+        sigInst.addEdge(
+          edgeIndex, 
+          currentProject.projectTitle, 
+          otherProject.projectTitle,
+          { 'color': edgeColor }
+        );
+        
+        edgeIndex++; 
+      }
     }
+  }
    
-    sigInst.draw();
+  sigInst.draw();
 }
 
 var GRAY = '#666';
@@ -139,91 +139,88 @@ var RED = '#f00';
 var GREEN = '00aa00';
 
 function init() {
-    var projectsJson = JSON.parse(document.getElementById("projectData").innerHTML);
+  var projectsJson = JSON.parse(document.getElementById("projectData").innerHTML);
     
-    if (sigInst == null) {
-        setupSigInst();
-    }
+  if (sigInst == null) {
+    setupSigInst();
+  }
  
-    edgeIndex = 0;
+  edgeIndex = 0;
  
-    // add a node for each project
-    for (var i = 0; i < projectsJson.length; i++) {
-        var name = projectsJson[i].projectTitle;
-        sigInst.addNode(
-            name, 
-            {
-                'x': Math.random() * 5,
-                'y': Math.random() * 5,
-                'size': 4,
-                'color': GRAY,
-            }
-        );
-    }
+  // add a node for each project
+  for (var i = 0; i < projectsJson.length; i++) {
+    var name = projectsJson[i].projectTitle;
+    sigInst.addNode(
+      name, 
+      {
+        'x': Math.random() * 50,
+        'y': Math.random() * 10,
+        'size': 4,
+        'color': GRAY,
+      }
+    );
+  }
 
-    sigInst.iterNodes(function(currentNode) {
-        if (currentNode.id.length > 20) {
-            currentNode.label = currentNode.id.substring(0, 20) + "...";
-        }
-    });
+  sigInst.iterNodes(function(currentNode) {
+    if (currentNode.id.length > 20) {
+      currentNode.label = currentNode.id.substring(0, 20) + "...";
+    }
+  });
 
   
-    linkByArrays("artists");
-    radioButtonClick('button4');
-  
-    // linkByArrays("tags");
-    // radioButtonClick("button1");
+  linkByArrays("artists");
+  radioButtonClick('button4');
    
-    // Bind events :
-    sigInst.bind('overnodes',function(event) {
-        document.body.style.cursor = "pointer";
-        var nodes = event.content;
-        var neighbors = {};
-        sigInst.iterEdges(function(e) {
-            if (nodes.indexOf(e.source) < 0 && nodes.indexOf(e.target) < 0) {
-                e.color = GRAY;
-            } else {
-                e.color = GREEN; 
-                neighbors[e.source] = 1;
-                neighbors[e.target] = 1;
-            }
-        }).iterNodes(function(n) {
-            if (!neighbors[n.id] && nodes.indexOf(n.id) < 0) {
-                if (n.color != RED) {
-                    n.color = LIGHT_GRAY;
-                }
-            } else {
-                if (n.color != RED) {
-                    n.color = GREEN;
-                }
-            }
-        }).draw();
-    }).bind('downnodes',function(e) {
-        var nodes = e.content;
-        var clickedNodeId = nodes[0];
-        sigInst.iterNodes(function(currentNode) {
-            if (currentNode.id == clickedNodeId) {
-                currentNode.color = RED;
-                currentNode.active = true;
-            } else {
-                currentNode.color = LIGHT_GRAY;
-                currentNode.active = false;
-            }
-        }).draw();
-        $('#projectView').load('@{fullProjectInset()}', {'name': clickedNodeId});
+  sigInst.bind('overnodes',function(event) {
+    document.body.style.cursor = "pointer";
+    var nodes = event.content;
+    var neighbors = {};
+    sigInst.iterEdges(function(e) {
+      if (nodes.indexOf(e.source) < 0 && nodes.indexOf(e.target) < 0) {
+        e.color = GRAY;
+      } else {
+        e.color = GREEN; 
+        neighbors[e.source] = 1;
+        neighbors[e.target] = 1;
+      }
+    }).iterNodes(function(n) {
+      if (!neighbors[n.id] && nodes.indexOf(n.id) < 0) {
+        if (n.color != RED) {
+          n.color = LIGHT_GRAY;
+        }
+      } else {
+        if (n.color != RED) {
+          n.color = GREEN;
+        }
+      }
     }).draw();
+  }).bind('downnodes',function(e) {
+    var nodes = e.content;
+    var clickedNodeId = nodes[0];
+    sigInst.iterNodes(function(currentNode) {
+      if (currentNode.id == clickedNodeId) {
+        currentNode.color = RED;
+        currentNode.active = true;
+      } else {
+        currentNode.color = LIGHT_GRAY;
+        currentNode.active = false;
+      }
+    }).draw();
+  
+    $('#projectView').load('@{fullProjectInset()}', {'name': clickedNodeId});
+  }).draw();
     
-    sigInst.bind('outnodes',function(event) {
-        document.body.style.cursor = "default";
-    });
-  // Draw the graph :
+  sigInst.bind('outnodes',function(event) {
+    document.body.style.cursor = "default";
+  });
+  
   sigInst.draw();
 }
  
 if (document.addEventListener) {
-    document.addEventListener("DOMContentLoaded", init, false);
+  document.addEventListener("DOMContentLoaded", init, false);
 } else {
-    window.onready = init;
+  window.onready = init;
 }
 </script>
 
@@ -234,8 +231,8 @@ if (document.addEventListener) {
     -moz-border-radius: 2px;
     -webkit-border-radius: 2px;
     background: #fff;
-    height: 500px;
-    width: 500px;
+    height: 200px;
+    width: 1020px;
     border-style: solid;
     border-width:2px;
     border-color: #ccc;
@@ -264,51 +261,55 @@ if (document.addEventListener) {
   <br style="clear:both" />
   <br />
   
-  <div style="float:left">
-    <div class="container">
-      <div class="span12 sigma-parent" id="sigma-example-parent">
-        <span class="sigma-expand" id="node-demo"></span>
-        <span id="status" class="status-area"></span>
-      </div>
+  <div class="container">
+    <div class="span12 sigma-parent" id="sigma-example-parent">
+      <span class="sigma-expand" id="node-demo"></span>
+      <span id="status" class="status-area"></span>
     </div>
-    <br />
-    <div style="padding-left:2px">
-      <div style="font-weight:bold">
-        Link By:
-      </div>
-      <div>
-        <table border="1" style="border-collapse:collapse;">
-          <tr>
-            <td class="buttonCell" id="button1" onmouseout="radioButtonOut('button1')" onmouseover="radioButtonOver('button1')" onclick="linkByArrays('tags');radioButtonClick('button1');">&nbsp;Tags&nbsp;</td>
-            <td class="buttonCell" id="button2" onmouseout="radioButtonOut('button2')" onmouseover="radioButtonOver('button2')" onclick="linkByArrays('peers');radioButtonClick('button2');">&nbsp;Peers&nbsp;</td>
-            <td class="buttonCell" id="button3" onmouseout="radioButtonOut('button3')" onmouseover="radioButtonOver('button3')" onclick="linkByArrays('otherInspirations');radioButtonClick('button3');">&nbsp;Other Inspirations&nbsp;</td>
-            <td class="buttonCell" id="button4" onmouseout="radioButtonOut('button4')" onmouseover="radioButtonOver('button4')" onclick="linkByArrays('artists');radioButtonClick('button4');">&nbsp;Artists&nbsp;</td>
-          </tr>
-        </table>
-      </div>
-    </div>
+  </div>
     
-    <br />
-    <br />
-    <div style="padding-left:2px">
-       <div style="font-weight:bold">
-          Search:
-       </div>
-       #{form @Application.search(), enctype:'multipart/form-data'}
-         <input type="text" name="target" id="target" maxlength="50">
-         <input type="submit" name="search" id="search" value="Search">
-       #{/}
+  <br />
+    
+  <div style="padding-left:2px;float:left;">
+    <div style="font-weight:bold">
+      Link By:
     </div>
+    <div>
+      <table border="1" style="border-collapse:collapse;">
+        <tr>
+          <td class="buttonCell" id="button1" onmouseout="radioButtonOut('button1')" onmouseover="radioButtonOver('button1')" onclick="linkByArrays('tags');radioButtonClick('button1');">&nbsp;Tags&nbsp;</td>
+          <td class="buttonCell" id="button2" onmouseout="radioButtonOut('button2')" onmouseover="radioButtonOver('button2')" onclick="linkByArrays('peers');radioButtonClick('button2');">&nbsp;Peers&nbsp;</td>
+          <td class="buttonCell" id="button3" onmouseout="radioButtonOut('button3')" onmouseover="radioButtonOver('button3')" onclick="linkByArrays('otherInspirations');radioButtonClick('button3');">&nbsp;Other Inspirations&nbsp;</td>
+          <td class="buttonCell" id="button4" onmouseout="radioButtonOut('button4')" onmouseover="radioButtonOver('button4')" onclick="linkByArrays('artists');radioButtonClick('button4');">&nbsp;Artists&nbsp;</td>
+        </tr>
+      </table>
+    </div>
+      
+    <br />
+    <br />
+      
+    <div style="font-weight:bold">
+      Search:
+    </div>
+    #{form @Application.search(), enctype:'multipart/form-data'}
+      <input type="text" name="target" id="target" maxlength="50">
+      <input type="submit" name="search" id="search" value="Search">
+    #{/}
   </div>
   
-  <div id="projectView" style="height:500px;width:500px;float:left">
+  <div id="projectView" style="float:left;height:600px;width:500px;padding-left:50px;">
+    <span style="font-size:40px;font-weight:bold;">THE EXCHANGE ARCHIVE</span>
+    <br />
+    <span style="font-size:32px;">
+      <strong>Artists</strong> do not create work in a <strong>vacuum</strong>.
+    </span>
   </div>
 </div>
 </div>
-<div id="footer" style="text-align:center">
+<div id="footer" style="clear:both;text-align:center">
   <hr />
-    <a style="color:#000000" href="@{Application.about()}">About</a> 
-    &nbsp;|&nbsp;
-    <a style="color:#000000" href="@{Application.contact()}">Contact</a>
+  <a style="color:#000000" href="@{Application.about()}">About</a> 
+  &nbsp;|&nbsp;
+  <a style="color:#000000" href="@{Application.contact()}">Contact</a>
 </div>
 </body>
