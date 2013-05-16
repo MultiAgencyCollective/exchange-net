@@ -1,4 +1,6 @@
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.List;
 import java.util.Random;
 
@@ -7,6 +9,7 @@ import models.Project;
 import play.db.jpa.Blob;
 import play.jobs.Job;
 import play.jobs.OnApplicationStart;
+import play.libs.MimeTypes;
  
 @OnApplicationStart
 public class Bootstrap extends Job {
@@ -39,7 +42,7 @@ public class Bootstrap extends Job {
         final int numberOfRecords = 10; 
         for (int i = 0; i < numberOfRecords; i++) {
             final Blob imageBlob = new Blob();
-           /*
+           
             final File imageFile = randomImageFile();
             try {
                 imageBlob.set(
@@ -49,7 +52,6 @@ public class Bootstrap extends Job {
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }
-            */
             
             final int titleMaxChars = 30;
             String title = randomWords(titleMaxChars);
@@ -59,7 +61,8 @@ public class Bootstrap extends Job {
             
             Project project = randomLengthProject(title, imageBlob);
             // Project project = maxLengthProject(title, imageBlob);
-            
+            project.initializeImage();
+
             project.save();
         }
     }
@@ -164,17 +167,16 @@ public class Bootstrap extends Job {
     */
     
     
-    @SuppressWarnings("unused")
     private static File randomImageFile() {
         final String folder = 
-            "/Users/masonwright/dropbox/photos/badlands trip/";
+            "public/images/";
         final String[] imageFiles = {
-                "95970001.jpg", 
-                "95970005.jpg", 
-                "95970009.jpg", 
-                "95970002.jpg", 
-                "95970006.jpg"
-            };
+            "amelia.jpg",
+            "caroline.jpg",
+            "corey.jpg",
+            "mason.jpeg",
+            "pratim.png"
+        };
         final String choice = 
             imageFiles[(int) (Math.random() * imageFiles.length)];
         return new File(folder + choice);
