@@ -51,7 +51,7 @@
     <h3>
        <strong>Thank you!</strong>
        <br />
-       -- Caroline Woolard, MultiAgency Collective
+       -- Caroline Woolard and the MultiAgency Collective
     </h3>
   #{/if}
   <br />
@@ -66,22 +66,23 @@
       Project Title
       <br />
       <input type="text" name="newProject.projectTitle" id="projectTitle" placeholder="Project title" value="${flash.projectTitle}" maxlength="50">
-      <span class="error">#{error 'newProject.projectTitle' /}</span>
+      <div class="error">#{error 'newProject.projectTitle' /}</div>
     </p>
     <p>
       Artists
       <br />
       <input type="text" name="newProject.artists" id="artist" placeholder="Artists' and/or collectives' names, separated by commas" value="${flash.artists}" maxlength="100">
-      <span class="error">#{error 'newProject.artists' /}</span>
+      <div class="error">#{error 'newProject.artists' /}</div>
     </p>
     <p>
       Photo of Project
+      <span style="color:#888888"> (limit 10 MB. most image types accepted)</span>
       <br />
       <input type="file" name="newProject.myImage" id="myImage" value="${flash.myImage}">
       <br />
-      <span class="error">#{error 'newProject.myImage' /}</span>
+      <div class="error">#{error 'newProject.myImage' /}</div>
       #{if flash.error}
-         <span class="error">RE-UPLOAD IMAGE</span>
+         <div class="error">Re-upload image. (An image must be added each time the form is submitted.)</div>
       #{/if}
     </p>
     <p>
@@ -89,20 +90,20 @@
       <span style="color:#888888">. . . year that your project began</span>
       <br />
       <input type="text" name="newProject.startYear" id="startYear" placeholder="YYYY" value="${flash.startYear}" maxlength="4">
-      <span class="error">#{error 'newProject.startYear' /}</span>
+      <div class="error">#{error 'newProject.startYear' /}</div>
     </p>
     <p>
       Description
       <br />
       <textarea name="newProject.description" cols="100" rows="4" id="description" placeholder="Add a short description of your project" maxlength="5000">${flash.description}</textarea>
-      <span class="error">#{error 'newProject.description' /}</span>
+      <div class="error">#{error 'newProject.description' /}</div>
     </p>
     <p>
       Tags 
       <span style="color:#888888">. . . words that describe your work</span>
       <br />
       <input type="text" name="newProject.tags" id="tags" placeholder="Enter tags, separated by commas" value="${flash.tags}" maxlength="100">
-      <span class="error">#{error 'newProject.tags' /}</span>
+      <div class="error">#{error 'newProject.tags' /}</div>
       #{if popularTags}
         <div>Popular Tags: ${popularTags}</div>
       #{/if}
@@ -112,21 +113,21 @@
       <span style="color:#888888">. . . the people who give you feedback and support</span>
       <br />
       <input type="text" name="newProject.peers" id="peers" placeholder="Enter peers, separated by commas" value="${flash.peers}" maxlength="100">
-      <span class="error">#{error 'newProject.peers' /}</span>
+      <div class="error">#{error 'newProject.peers' /}</div>
     </p>
     <p>
       Other Inspirations 
       <span style="color:#888888">. . . people who inspire or influence your work</span>
       <br />
       <input type="text" name="newProject.otherInspirations" id="otherInspirations" placeholder="Enter inspirations, separated by commas" value="${flash.otherInspirations}" maxlength="100">
-      <span class="error">#{error 'newProject.otherInspirations' /}</span>
+      <div class="error">#{error 'newProject.otherInspirations' /}</div>
     </p>
     <p>
       Your Website
       <span style="color:#888888">(optional)</span>
       <br />
       <input type="text" name="newProject.url" id="url" placeholder="Your web site's address" value="${flash.url}" maxlength="50">
-      <span class="error">#{error 'newProject.url' /}</span>
+      <div class="error">#{error 'newProject.url' /}</div>
     </p>
     
     <p>
@@ -136,9 +137,9 @@
       <span style="color:#888888">(optional)</span>
       <br />
       <input type="text" name="newProject.creatorEmail" id="creatorEmail" placeholder="Your email address" value="${flash.creatorEmail}" maxlength="100">
-      <span class="error">#{error 'newProject.creatorEmail' /}</span>
+      <div class="error">#{error 'newProject.creatorEmail' /}</div>
+      <div style="color:#888888;">We'll send you a link to your project's edit page</div>
       <br />
-      <span style="color:#888888">We'll send you a link to your project's edit page</span>
     </p>
     
     <p>
@@ -148,20 +149,20 @@
       <span style="color:#888888">(optional)</span>
       <br />
       <input type="text" name="newProject.emails" id="emails" placeholder="Enter email addresses, separated by commas" value="${flash.emails}" maxlength="100">
-      <span class="error">#{error 'newProject.emails' /}</span>
+      <div class="error">#{error 'newProject.emails' /}</div>
     </p>
     <p>
       Sender name on the email
       <span style="color:#888888">(optional)</span>
       <br />
       <input type="text" name="newProject.sender" id="sender" placeholder="Enter a sender's name for the email" value="${flash.sender}" maxlength="50">
-      <span class="error">#{error 'newProject.sender' /}</span>
+      <div class="error">#{error 'newProject.sender' /}</div>
     </p>
     <p>
       Add a message to the email 
       <span style="color:#888888">(optional)</span>
       <textarea name="newProject.message" cols="100" rows="2" id="message" placeholder="Add a short message to the email" maxlength="500">${flash.message}</textarea>
-      <span class="error">#{error 'newProject.message' /}</span>
+      <div class="error">#{error 'newProject.message' /}</div>
     </p>
     <p>
       Please type the code below.
@@ -170,7 +171,7 @@
       <br />
       <input type="text" name="code" id="code" size="18" value="" maxlength="50"/>
       <input type="hidden" name="randomId" id="randomId" value="${randomId}" />
-      <span class="error">${flash.myCode}</span>
+      <div class="error">${flash.myCode}</div>
     </p>
     <p>
       <input type="submit" name="submit" id="submit" value="Submit">

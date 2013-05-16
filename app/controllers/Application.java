@@ -152,16 +152,22 @@ public class Application extends Controller {
         render();
     }
     
-    public static void projectEdited() {
+    public static void projectEdited(final String urlString) {
+        flash.put("urlString", urlString);
         render();
     }
     
-    public static void projectAdded(final boolean canEdit) {
+    public static void projectAdded(
+        final boolean canEdit,
+        final String urlString
+    ) {
         if (canEdit) {
             flash.put("messageSent", true);
         } else {
             flash.put("messageSent", false);
         }
+        
+        flash.put("urlString", urlString);
         
         render();
     }
@@ -431,7 +437,7 @@ public class Application extends Controller {
                 
                 target.refreshSetsAndDescription();
                 target.save();
-                render("Application/projectEdited.html");
+                projectEdited(getUrlString(target.projectTitle));
                 // TODO: send edited email
             } else {
                 flash.error("Project is not valid.");
@@ -563,7 +569,8 @@ public class Application extends Controller {
         boolean canEdit = 
             toAdd.creatorEmail != null 
             && toAdd.creatorEmail.length() != 0;
-        projectAdded(canEdit);
+        String urlString = getUrlString(toAdd.projectTitle);
+        projectAdded(canEdit, urlString);
     }
     
     private static String removeWhitespace(final String string) {
@@ -628,6 +635,23 @@ public class Application extends Controller {
         }
     }
     
+    private static String getUrlString(final String projectTitle) {
+        String result = "";
+        try {
+            result = new URI(
+                "http", 
+                "www.theexchangearchive.com", 
+                "/application/project",
+                "name=" + projectTitle,
+                null
+            ).toASCIIString();
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
+        
+        return result;
+    }
+    
     private static String getInviteEmailText(final Project project) {
         
         final StringBuilder builder = new StringBuilder();
@@ -665,18 +689,7 @@ public class Application extends Controller {
         builder.append(" artistic dialog by showing the inspirations that flow between projects.<br /><br />");
         builder.append("<b>See Your Friend's Project:</b><br />");
         
-        String projectUrlString = "";
-        try {
-            projectUrlString = new URI(
-                "http", 
-                "www.theexchangearchive.com", 
-                "/application/project",
-                "name=" + project.projectTitle,
-                null
-            ).toASCIIString();
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
-        }
+        String projectUrlString = getUrlString(project.projectTitle);
         
         builder.append("<a href=\"").append(projectUrlString).append("\">")
             .append(escapeHtml(project.projectTitle))
@@ -699,18 +712,7 @@ public class Application extends Controller {
         
         builder.append("Link to your project's page:<br />");
         
-        String projectUrlString = "";
-        try {
-            projectUrlString = new URI(
-                "http", 
-                "www.theexchangearchive.com", 
-                "/application/project",
-                "name=" + project.projectTitle,
-                null
-            ).toASCIIString();
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
-        }
+        String projectUrlString = getUrlString(project.projectTitle);
         
         builder.append("<a href=\"").append(projectUrlString).append("\">")
             .append(projectUrlString)
