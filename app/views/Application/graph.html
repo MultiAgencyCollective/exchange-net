@@ -25,17 +25,37 @@ _gaq.push(['_trackPageview']);
 var selectedButton = "button1";
 var buttonList = [ "button1", "button2", "button3", "button4" ];
 
+var hasShrunk = false;
+
+function shrinkIfNeeded() {
+  if (hasShrunk) {
+    return;
+  }
+    
+  hasShrunk = true;
+  var divWidth = $("#sigma-example-parent").css("width");
+  $("#sigma-example-parent").animate(
+    { height: "200px" },
+    {
+      duration: 1000,
+      step: function(myHeight) {
+        sigInst.resize();
+      }
+    }
+  );
+}
+
 function radioButtonClick(clickedName) {
   selectedButton = clickedName;
     
   for (var i = 0; i < buttonList.length; i++) {
     var buttonName = buttonList[i];
-      if (buttonName == clickedName) {
-        document.getElementById(buttonName).style.background = '#666666';
-        document.getElementById(buttonName).style.color = '#dddddd';
-      } else {
-        document.getElementById(buttonName).style.background = '#dddddd';
-        document.getElementById(buttonName).style.color = '#000000';
+    if (buttonName == clickedName) {
+      document.getElementById(buttonName).style.background = '#666666';
+      document.getElementById(buttonName).style.color = '#dddddd';
+    } else {
+      document.getElementById(buttonName).style.background = '#dddddd';
+      document.getElementById(buttonName).style.color = '#000000';
     }
   }
 }
@@ -207,6 +227,7 @@ function init() {
       }
     }).draw();
   
+    shrinkIfNeeded();
     $('#projectView').load('@{fullProjectInset()}', {'name': clickedNodeId});
   }).draw();
     
@@ -236,23 +257,11 @@ if (document.addEventListener) {
     background: #fff;
     margin-left: 0px;
     padding-left: 0px;
-    height: 200px;
+    height: 400px;
     width: 100%;
     left: 0px;
     right: 0px;
   }  
-  .status-area {
-    position: absolute;
-    border-radius: 4px;
-    -moz-border-radius: 4px;
-    -webkit-border-radius: 4px;
-    background: #EEE;
-    width: 350px;
-    height 500px;
-    top: 0px;
-    left: 502px;
-    font-family:sans-serif;
-  }
 </style>
 
 </head>
@@ -264,15 +273,10 @@ if (document.addEventListener) {
 <div id="main">
   <br style="clear:both" />
   
-  <div class="container">
-    <div class="span12 sigma-parent" id="sigma-example-parent">
-      <span class="sigma-expand" id="node-demo"></span>
-      <span id="status" class="status-area"></span>
-    </div>
+  <div class="span12 sigma-parent" id="sigma-example-parent">
   </div>
     
   <br />
-    
   <div style="padding-left:10px;float:left;">
     <div style="font-weight:bold">
       Link By:
