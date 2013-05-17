@@ -4,7 +4,6 @@ import java.io.FileNotFoundException;
 import java.util.List;
 import java.util.Random;
 
-import models.GeneralData;
 import models.Project;
 import play.db.jpa.Blob;
 import play.jobs.Job;
@@ -18,12 +17,7 @@ public class Bootstrap extends Job {
     private static final String EMAIL = "abcde@gmail.com";
     
     @Override
-    public final void doJob() {
-        if (GeneralData.count() == 0) {
-            final GeneralData generalData = new GeneralData();
-            generalData.save();
-        }      
-
+    public final void doJob() {   
         populateProjectDatabase();
     }
     

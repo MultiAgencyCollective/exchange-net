@@ -18,11 +18,11 @@ import play.db.jpa.JPABase;
 
 public abstract class InitialChecks {
 
-    static final int MAX_NAME_LENGTH = 50;
-    static final int MAX_LIST_LENGTH = 100;
-    static final int MAX_MESSAGE_LENGTH = 500;
-    static final int MAX_DESCRIPTION_LENGTH = 5000;
-
+    public static final int MAX_50 = 50;
+    public static final int MAX_100 = 100;
+    public static final int MAX_MESSAGE_LENGTH = 500;
+    public static final int MAX_DESCRIPTION_LENGTH = 1000;
+    public static final int MAX_LIST_ITEMS = 10;
     
     public static final class ProjectTitleCheck extends Check {
 
@@ -41,12 +41,13 @@ public abstract class InitialChecks {
             final String titleString = (String) title;
             if (
                 titleString.length() == 0 
-                || titleString.length() > MAX_NAME_LENGTH
+                || titleString.length() > MAX_50
             ) {
                 return false;
             }          
             
             if (!titleString.matches(".*[a-zA-Z]+.*")) {
+                setMessage("Title must contain a letter.");
                 return false;
             }
             
@@ -82,7 +83,7 @@ public abstract class InitialChecks {
                 return true;
             } 
             
-            if (urlString.length() > MAX_NAME_LENGTH) {
+            if (urlString.length() > MAX_100) {
                 setMessage("The URL is too long.");
                 return false;
             }
@@ -117,12 +118,13 @@ public abstract class InitialChecks {
             final String nameString = (String) name;
             if (
                 nameString.length() == 0 
-                || nameString.length() > MAX_NAME_LENGTH
+                || nameString.length() > MAX_50
             ) {
                 return false;
             }
             
             if (!nameString.matches(".*[a-zA-Z]+.*")) {
+                setMessage("Name must contain a letter.");
                 return false;
             }
             
@@ -137,7 +139,7 @@ public abstract class InitialChecks {
             final Object project,
             final Object year
         ) {
-            setMessage("Please enter a year.");
+            setMessage("Please enter a year between 1900 and 2020.");
             if (year == null) {
                 return false;
             }
@@ -153,7 +155,6 @@ public abstract class InitialChecks {
                 return false;
             }
             
-            setMessage("Enter a year between 1900 and 2020.");
             if (yearInt < minYear || yearInt > maxYear) {
                 return false;
             }
@@ -178,12 +179,22 @@ public abstract class InitialChecks {
             final String listString = (String) list;
             if (
                 listString.length() == 0 
-                || listString.length() > MAX_LIST_LENGTH
+                || listString.length() > MAX_100
             ) {
                 return false;
             }
             
             if (!listString.matches(".*[a-zA-Z]+.*")) {
+                setMessage("List must contain a letter.");
+                return false;
+            }
+            
+            if (Project.countTokens(listString) > MAX_LIST_ITEMS) {
+                setMessage(
+                    "List must have " 
+                    + MAX_LIST_ITEMS 
+                    + " or fewer items."
+                );
                 return false;
             }
             
@@ -247,12 +258,13 @@ public abstract class InitialChecks {
         public boolean isSatisfied(
             final Object project,
             final Object input
-        ) {
-            setMessage("Please upload a photo.");
-            
+        ) {            
             if (input == null) {
-                return false;
+                // photo is optional
+                return true;
             }
+            
+            setMessage("Please upload a photo.");
             if (!(input instanceof Blob)) {
                 System.out.println("not a blob");
                 return false;
@@ -260,25 +272,17 @@ public abstract class InitialChecks {
             final Blob myBlob = (Blob) input;
             final File blobFile = myBlob.getFile();
             
-            // doesn't work: file mime type is application/octet-stream
-            /*
-            final String mimeType = 
-                new MimetypesFileTypeMap().getContentType(blobFile);
-            if (!mimeType.contains("image")) {
-                System.out.println("not an image: " + mimeType);
-                return false;
-            }
-            */
-            
             String mimeType;
             try {
                 mimeType = detectMimeType(blobFile);
                 if (mimeType == null) {
                     System.out.println("not an image: null");
+                    setMessage("Not an image file.");
                     return false;
                 }
                 if (!mimeType.contains("image")) {
                     System.out.println("not an image: " + mimeType);
+                    setMessage("Not an image file.");
                     return false;
                 }
             } catch (IOException e) {
@@ -286,11 +290,10 @@ public abstract class InitialChecks {
                 return false;
             }
 
-            // max file size of 10 MB
-            final long maxFileBytes = 10485760L;
+            // max file size of 4 MB
+            final long maxFileBytes = 1048576L * 4L;
             if (blobFile.length() > maxFileBytes) {
-                System.out.println("too large");
-                setMessage("Image must be smaller than 10MB.");
+                setMessage("Image must be smaller than 4 MB.");
                 return false;
             }
             

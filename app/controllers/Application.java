@@ -3,6 +3,7 @@ package controllers;
 import static org.apache.commons.lang.StringEscapeUtils.escapeHtml;
 
 import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -13,7 +14,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.regex.Pattern;
 
-import models.GeneralData;
 import models.Project;
 import models.ProjectForJson;
 import models.ProjectToken;
@@ -290,7 +290,7 @@ public class Application extends Controller {
             if (!EditChecks.isEmpty(projectTitle)) {
                 if (EditChecks.validText(
                     projectTitle, 
-                    EditChecks.MAX_NAME_LENGTH)
+                    InitialChecks.MAX_50)
                 ) {
                     if (!EditChecks.titleAvailable(
                         projectTitle, 
@@ -314,7 +314,7 @@ public class Application extends Controller {
             if (!EditChecks.isEmpty(artists)) {
                 if (!EditChecks.validText(
                     artists, 
-                    EditChecks.MAX_NAME_LENGTH)
+                    InitialChecks.MAX_100)
                 ) {
                     flash.put(
                         "artistsError", 
@@ -348,7 +348,7 @@ public class Application extends Controller {
             if (!EditChecks.isEmpty(description)) {
                 if (!EditChecks.validText(
                     description, 
-                    EditChecks.MAX_DESCRIPTION_LENGTH)
+                    InitialChecks.MAX_DESCRIPTION_LENGTH)
                 ) {
                     flash.put(
                         "descriptionError", 
@@ -359,7 +359,7 @@ public class Application extends Controller {
             }
             
             if (!EditChecks.isEmpty(tags)) {
-                if (!EditChecks.validText(tags, EditChecks.MAX_LIST_LENGTH)) {
+                if (!EditChecks.validText(tags, InitialChecks.MAX_100)) {
                     flash.put(
                         "tagsError", 
                         "Please enter a tag."
@@ -369,7 +369,7 @@ public class Application extends Controller {
             }
             
             if (!EditChecks.isEmpty(peers)) {
-                if (!EditChecks.validText(peers, EditChecks.MAX_LIST_LENGTH)) {
+                if (!EditChecks.validText(peers, InitialChecks.MAX_100)) {
                     flash.put(
                         "peersError", 
                         "Please enter a peer."
@@ -381,7 +381,7 @@ public class Application extends Controller {
             if (!EditChecks.isEmpty(otherInspirations)) {
                 if (!EditChecks.validText(
                     otherInspirations, 
-                    EditChecks.MAX_LIST_LENGTH)
+                    InitialChecks.MAX_100)
                 ) {
                     flash.put(
                         "otherInspirationsError", 
@@ -486,33 +486,6 @@ public class Application extends Controller {
 
             if (validation.valid(newProject).ok) {
                 final String requestIPAddress = request.remoteAddress;
-                final GeneralData myGeneralData = 
-                    (GeneralData) GeneralData.findAll().get(0);
-                final models.Number submissionCount = 
-                    myGeneralData.ipToSubmissionCount.get(requestIPAddress);
-                if (
-                    submissionCount != null 
-                    && submissionCount.value >= MAX_PROJECTS_PER_IP_ADDRESS
-                ) {
-                    MyLogger.logTooManyProjectsSubmitted(requestIPAddress);
-                    flash.error("Too many projects submitted.");
-                    doCancelProject(newProject);
-                    return;
-                }
-                
-                // don't allow more than 10,000 15 MB 
-                // files (max file size), or about 150 GB
-                final long maxImageBytes = 157286400000L;
-                if (
-                    myGeneralData.totalImagesSize 
-                    + newProject.myImage.getFile().length()
-                    > maxImageBytes
-                ) {
-                    MyLogger.logTooMuchImageDataStored(requestIPAddress);
-                    flash.error("Too much image data already submitted.");
-                    doCancelProject(newProject);
-                    return;
-                }
                 
                 final int maxProjects = 10000;
                 if (Project.count() >= maxProjects) {
@@ -524,18 +497,6 @@ public class Application extends Controller {
                 
                 System.out.println(newProject.uuid);
                 doAddProject(newProject, requestIPAddress);
-                if (submissionCount == null) {
-                    final models.Number one = new models.Number();
-                    one.value = 1;
-                    myGeneralData.ipToSubmissionCount.
-                        put(requestIPAddress, one);
-                } else {
-                    submissionCount.value++;
-                }
-                
-                myGeneralData.totalImagesSize 
-                    += newProject.myImage.getFile().length();
-                myGeneralData.save();
             } else {
                 MyLogger.logIncompleteProjectSubmission(validation.errors());
                 flash.error("Project is not valid.");
@@ -1185,18 +1146,6 @@ public class Application extends Controller {
         render(projects, offset, hasNext);
     }
     
-    /*
-    public static void data123() {
-        List<Project> projects = Project.find(
-            "order by projectTitle asc"
-        ).fetch(MAX_TO_RETURN);
-        for (Project project: projects) {
-            project.initializeSets();
-        }
-        render(projects);
-    }
-    */
-    
     public static void getProjectByTitle(final String projectTitle) {
         List<Project> projects = Project.findAll();
         Project project = null;
@@ -1220,10 +1169,14 @@ public class Application extends Controller {
             return;
         }
         
-        ByteArrayInputStream inputStream = 
-            new ByteArrayInputStream(project.imageBytes);
-        response.current().contentType = project.imageMimeType;
-        renderBinary(inputStream);
+        if (project.imageBytes == null) {
+            renderBinary(new File("public/images/placeholder.png"));
+        } else {
+            ByteArrayInputStream inputStream = 
+                new ByteArrayInputStream(project.imageBytes);
+            response.current().contentType = project.imageMimeType;
+            renderBinary(inputStream);
+        }
     }
     
     private static void deleteProject(final Project project) {
@@ -1231,7 +1184,7 @@ public class Application extends Controller {
             return;
         }
 
-        if (project.myImage != null) {
+        if (project.myImage != null && project.myImage.getFile() != null) {
             boolean deleted = project.myImage.getFile().delete();
             if (!deleted) {
                 MyLogger.logCouldNotDeleteImage(project);

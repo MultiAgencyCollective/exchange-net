@@ -10,11 +10,6 @@ import play.db.jpa.JPABase;
 
 
 public abstract class EditChecks {
-    
-    public static final int MAX_NAME_LENGTH = 50;
-    public static final int MAX_LIST_LENGTH = 100;
-    public static final int MAX_MESSAGE_LENGTH = 500;
-    public static final int MAX_DESCRIPTION_LENGTH = 5000;
 
     
     public static boolean isEmpty(final String str) {
@@ -99,9 +94,8 @@ public abstract class EditChecks {
             return false;
         }
 
-
-        // max file size of 10 MB
-        final long maxFileBytes = 10485760L;
+        // max file size of 4 MB
+        final long maxFileBytes = 1048576L * 4L;
         if (blobFile.length() > maxFileBytes) {
             return false;
         }
@@ -148,7 +142,7 @@ public abstract class EditChecks {
             return true;
         } 
         
-        if (urlString.length() > MAX_NAME_LENGTH) {
+        if (urlString.length() > InitialChecks.MAX_100) {
             return false;
         }
         

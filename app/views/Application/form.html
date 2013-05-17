@@ -76,13 +76,16 @@
     </p>
     <p>
       Photo of Project
-      <span style="color:#888888"> (limit 10 MB. most image types accepted)</span>
+      <span style="color:#888888"> (limit 4 MB. most image types accepted)</span>
       <br />
       <input type="file" name="newProject.myImage" id="myImage" value="${flash.myImage}">
       <br />
       <div class="error">#{error 'newProject.myImage' /}</div>
       #{if flash.error}
-         <div class="error">Re-upload image. (An image must be added each time the form is submitted.)</div>
+        #{ifError 'newProject.myImage'}#{/ifError}
+        #{else}
+          <div class="error">Re-upload image. (An image must be added each time the form is submitted.)</div>
+        #{/else}
       #{/if}
     </p>
     <p>
@@ -95,7 +98,7 @@
     <p>
       Description
       <br />
-      <textarea name="newProject.description" cols="100" rows="4" id="description" placeholder="Add a short description of your project" maxlength="5000">${flash.description}</textarea>
+      <textarea name="newProject.description" cols="100" rows="4" id="description" placeholder="Add a short description of your project" maxlength="1000">${flash.description}</textarea>
       <div class="error">#{error 'newProject.description' /}</div>
     </p>
     <p>
@@ -126,7 +129,7 @@
       Your Website
       <span style="color:#888888">(optional)</span>
       <br />
-      <input type="text" name="newProject.url" id="url" placeholder="Your web site's address" value="${flash.url}" maxlength="50">
+      <input type="text" name="newProject.url" id="url" placeholder="Your web site's address" value="${flash.url}" maxlength="100">
       <div class="error">#{error 'newProject.url' /}</div>
     </p>
     
@@ -148,7 +151,7 @@
       Email this form to: 
       <span style="color:#888888">(optional)</span>
       <br />
-      <input type="text" name="newProject.emails" id="emails" placeholder="Enter email addresses, separated by commas" value="${flash.emails}" maxlength="100">
+      <input type="text" name="newProject.emails" id="emails" placeholder="Enter email addresses, separated by commas" value="${flash.emails}" maxlength="200">
       <div class="error">#{error 'newProject.emails' /}</div>
     </p>
     <p>

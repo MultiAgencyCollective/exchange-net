@@ -25,8 +25,6 @@ public final class ProjectToken extends Model {
         this.text = someText;
     }
     
-    
-
     @Override
     public int hashCode() {
         final int prime = 31;

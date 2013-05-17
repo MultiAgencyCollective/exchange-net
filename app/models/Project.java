@@ -32,10 +32,9 @@ public final class Project extends Model {
     public String projectTitle;
     
     @Required(message = PLEASE_ENTER_A + "n artist.")
-    @CheckWith(InitialChecks.NameCheck.class)
+    @CheckWith(InitialChecks.ListCheck.class)
     public String artists;
     
-    @Required(message = "Please upload a photo.")
     @CheckWith(InitialChecks.PhotoCheck.class)
     public Blob myImage;
     
@@ -47,15 +46,15 @@ public final class Project extends Model {
     public String briefDescription;
     
     @Required(message = PLEASE_ENTER_A + " tag.")
-    @CheckWith(InitialChecks.NameCheck.class)
+    @CheckWith(InitialChecks.ListCheck.class)
     public String tags;
     
     @Required(message = PLEASE_ENTER_A + " peer.")
-    @CheckWith(InitialChecks.NameCheck.class)
+    @CheckWith(InitialChecks.ListCheck.class)
     public String peers;
     
     @Required(message = PLEASE_ENTER_A + "n inspiration.")
-    @CheckWith(InitialChecks.NameCheck.class)
+    @CheckWith(InitialChecks.ListCheck.class)
     public String otherInspirations;
     
     @Required(message = PLEASE_ENTER_A + " year.")
@@ -175,10 +174,12 @@ public final class Project extends Model {
     
     public void refreshImage() {
         try {
-            this.imageBytes = IOUtils.toByteArray(this.myImage.get());
-            this.imageMimeType = 
-                InitialChecks.PhotoCheck.detectMimeType(this.myImage.getFile());
-            this.imageFileName = this.myImage.getFile().getName();
+            if (this.myImage != null && this.myImage.getFile() != null) {
+                this.imageBytes = IOUtils.toByteArray(this.myImage.get());
+                this.imageMimeType = 
+                    InitialChecks.PhotoCheck.detectMimeType(this.myImage.getFile());
+                this.imageFileName = this.myImage.getFile().getName();
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -194,10 +195,12 @@ public final class Project extends Model {
         }
         
         try {
-            this.imageBytes = IOUtils.toByteArray(this.myImage.get());
-            this.imageMimeType = 
-                InitialChecks.PhotoCheck.detectMimeType(this.myImage.getFile());
-            this.imageFileName = this.myImage.getFile().getName();
+            if (this.myImage != null && this.myImage.getFile() != null) {
+                this.imageBytes = IOUtils.toByteArray(this.myImage.get());
+                this.imageMimeType = 
+                    InitialChecks.PhotoCheck.detectMimeType(this.myImage.getFile());
+                this.imageFileName = this.myImage.getFile().getName();
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -257,6 +260,22 @@ public final class Project extends Model {
         }        
     }
     
+    public static int countTokens(final String source) {
+        if (source == null) {
+            return 0;
+        }
+        
+        int result = 0;
+        for (final String commaToken: source.split(",")) {
+            if (isValidToken(commaToken)) {
+
+                result++;
+            }
+        }
+        
+        return result;
+    }
+    
     private static void initializeSet(
         final Set<ProjectToken> targetSet,
         final String source
@@ -264,7 +283,6 @@ public final class Project extends Model {
         assert targetSet != null && source != null;
         targetSet.clear();
         
-        final int maxTokens = 10;
         int tokenCount = 0;
         
         for (final String commaToken: source.split(",")) {
@@ -275,7 +293,7 @@ public final class Project extends Model {
                 final ProjectToken newToken = new ProjectToken(commaToken);
                 targetSet.add(newToken);
                 tokenCount++;
-                if (tokenCount >= maxTokens) {
+                if (tokenCount >= InitialChecks.MAX_LIST_ITEMS) {
                     return;
                 }
             }
