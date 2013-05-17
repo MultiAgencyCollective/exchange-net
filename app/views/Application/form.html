@@ -23,11 +23,6 @@
 
 <body>
 <div class="gridContainer clearfix">
-#{if flash.get("isMobile") == "true" }
-#{/if}
-#{else}
-#{/else}
-
   <h2 style="float:left">
     THE EXCHANGE ARCHIVE
     <br />
@@ -76,7 +71,7 @@
     </p>
     <p>
       Photo of Project
-      <span style="color:#888888"> (limit 4 MB. most image types accepted)</span>
+      <span style="color:#888888"> (optional. limit 4 MB. most image types accepted)</span>
       <br />
       <input type="file" name="newProject.myImage" id="myImage" value="${flash.myImage}">
       <br />

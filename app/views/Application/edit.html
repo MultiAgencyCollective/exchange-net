@@ -25,6 +25,12 @@
 <div class="gridContainer clearfix">
   <br style="clear:both" />
   <div>
+    #{if flash.error}
+      <div id="errorBox" style="clear:both">
+        Your form contains errors. Please try again.
+      </div>
+    #{/if}
+  
   <h2>Edit Your Project</h2>
     <div>
       <div id="deleteButton">
@@ -58,7 +64,7 @@
       #{/if}
       
       <input type="file" name="myImage" id="myImage">
-      <br />
+      <br /><br />
       <div class="error">${flash.myImageError}</div>
     </p>
     <p>

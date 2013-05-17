@@ -177,7 +177,8 @@ public final class Project extends Model {
             if (this.myImage != null && this.myImage.getFile() != null) {
                 this.imageBytes = IOUtils.toByteArray(this.myImage.get());
                 this.imageMimeType = 
-                    InitialChecks.PhotoCheck.detectMimeType(this.myImage.getFile());
+                    InitialChecks.PhotoCheck.
+                        detectMimeType(this.myImage.getFile());
                 this.imageFileName = this.myImage.getFile().getName();
             }
         } catch (IOException e) {
@@ -198,7 +199,8 @@ public final class Project extends Model {
             if (this.myImage != null && this.myImage.getFile() != null) {
                 this.imageBytes = IOUtils.toByteArray(this.myImage.get());
                 this.imageMimeType = 
-                    InitialChecks.PhotoCheck.detectMimeType(this.myImage.getFile());
+                    InitialChecks.PhotoCheck.
+                        detectMimeType(this.myImage.getFile());
                 this.imageFileName = this.myImage.getFile().getName();
             }
         } catch (IOException e) {

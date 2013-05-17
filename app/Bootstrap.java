@@ -109,7 +109,7 @@ public class Bootstrap extends Job {
             imageBlob, // myImage
             randomDescription(), // description
             randomYear(), // year
-            randomWordCommaList(), // tags
+            randomTagCommaList(), // tags
             randomWordCommaList(), // peers
             randomWordCommaList(), // otherInspirations
             randomURL(), // url
@@ -174,6 +174,45 @@ public class Bootstrap extends Job {
         final String choice = 
             imageFiles[(int) (Math.random() * imageFiles.length)];
         return new File(folder + choice);
+    }
+    
+    private static String randomTagWord() {
+        String[] names = {
+                "exchange", "barter", "network", "community",
+                "commoning", "studio", "future", "workshop",
+                "event", "sculpture", "class", "furniture",
+                "research", "trade", "school", "engineering",
+                "costume", "performance", "social"
+            };
+            return names[(int) (Math.random() * names.length)];
+    }
+    
+    private static String randomTag() {
+        final int maxWords = 3;
+        final int wordCount = 1 + MY_RANDOM.nextInt(maxWords);
+        final StringBuilder builder = new StringBuilder();
+        for (int i = 0; i < wordCount; i++) {
+            builder.append(randomTagWord());
+            if (i < wordCount - 1) {
+                builder.append(" ");
+            } 
+        }
+        
+        return builder.toString();
+    }
+    
+    private static String randomTagCommaList() {
+        final int maxWords = 5;
+        final int wordCount = 1 + MY_RANDOM.nextInt(maxWords);
+        final StringBuilder builder = new StringBuilder();
+        for (int i = 0; i < wordCount; i++) {
+            builder.append(randomTag());
+            if (i < wordCount - 1) {
+                builder.append(", ");
+            } 
+        }
+        
+        return builder.toString();
     }
     
     private static String randomWordCommaList() {

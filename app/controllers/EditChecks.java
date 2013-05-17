@@ -43,6 +43,24 @@ public abstract class EditChecks {
         return true;
     }
     
+    public static boolean validItemCount(
+        final Object list
+    ) {
+        if (list == null) {
+            return false;
+        }
+        if (!(list instanceof String)) {
+            return false;
+        }
+        final String listString = (String) list;
+        
+        if (Project.countTokens(listString) > InitialChecks.MAX_LIST_ITEMS) {
+            return false;
+        }
+        
+        return true;
+    }
+    
     public static boolean validText(
         final Object name,
         final int maxLength
@@ -61,15 +79,41 @@ public abstract class EditChecks {
             return false;
         }          
         
-        if (!nameString.matches(".*[a-zA-Z]+.*")) {
+        // allow newline characters in description, 
+        // so enable DOTALL mode with (?s)
+        if (!nameString.matches("(?s).*[a-zA-Z]+.*")) {
+            System.out.println("name string:");
+            System.out.println(nameString);
             return false;
         }
         
         return true;
     }
     
+    public static boolean validBlobSize(final Object input) {
+        if (input == null) {
+            return false;
+        }
+        if (!(input instanceof Blob)) {
+            return false;
+        }
+        final Blob myBlob = (Blob) input;
+        final File blobFile = myBlob.getFile();
         
-    public static boolean validPhoto(final Object input) {
+        if (blobFile == null) {
+            return false;
+        }
+
+        // max file size of 4 MB
+        final long maxFileBytes = 1048576L * 4L;
+        if (blobFile.length() > maxFileBytes) {
+            return false;
+        }
+        
+        return true;
+    }
+        
+    public static boolean isPhoto(final Object input) {
         
         if (input == null) {
             return false;
@@ -91,12 +135,6 @@ public abstract class EditChecks {
             }
         } catch (IOException e) {
             e.printStackTrace();
-            return false;
-        }
-
-        // max file size of 4 MB
-        final long maxFileBytes = 1048576L * 4L;
-        if (blobFile.length() > maxFileBytes) {
             return false;
         }
         

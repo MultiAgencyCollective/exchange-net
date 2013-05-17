@@ -278,7 +278,6 @@ public class Application extends Controller {
         }
         
         if (target == null) {
-            System.out.println("Error: null project edited, uuid=" + uuid);
             render("Application/error.html");
             return;
         }
@@ -305,11 +304,16 @@ public class Application extends Controller {
                 } else {
                     flash.put(
                         "projectTitleError", 
-                        "Please enter a title."
+                        "Title must contain a letter."
                     );
                     success = false;
                 }
             }
+            
+            final String listWarning = 
+                "List must have " 
+                + InitialChecks.MAX_LIST_ITEMS 
+                + " or fewer items.";
             
             if (!EditChecks.isEmpty(artists)) {
                 if (!EditChecks.validText(
@@ -318,31 +322,50 @@ public class Application extends Controller {
                 ) {
                     flash.put(
                         "artistsError", 
-                        "Please enter an artist."
+                        "Text must contain a letter."
                     );
+                    success = false;
+                } else if (!EditChecks.validItemCount(artists)) {
+                    flash.put("artistsError", listWarning);
                     success = false;
                 }
             }
             
             if (myImage != null) {
-                if (!EditChecks.validPhoto(myImage)) {
+                if (!EditChecks.isPhoto(myImage)) {
                     flash.put(
                         "myImageError", 
-                        "Photo is not valid."
+                        "Not an image file."
+                    );
+                    success = false;
+                } else if (!EditChecks.validBlobSize(myImage)) {
+                    flash.put(
+                        "myImageError", 
+                        "Image must be smaller than 4 MB."
                     );
                     success = false;
                 }
             }
             
             if (!EditChecks.isEmpty(startYear)) {
-                int yearInt = Integer.parseInt(startYear);
-                if (!EditChecks.validYear(yearInt)) {
+                try {
+                    int yearInt = Integer.parseInt(startYear);
+                    
+                    if (!EditChecks.validYear(yearInt)) {
+                        flash.put(
+                            "startYearError", 
+                            "Enter a year between 1900 and 2020."
+                        );
+                        success = false;
+                    }
+                } catch (final NumberFormatException e) {
                     flash.put(
                         "startYearError", 
                         "Enter a year between 1900 and 2020."
                     );
                     success = false;
                 }
+
             }
             
             if (!EditChecks.isEmpty(description)) {
@@ -352,7 +375,7 @@ public class Application extends Controller {
                 ) {
                     flash.put(
                         "descriptionError", 
-                        "Please enter a description."
+                        "Text must contain a letter."
                     );
                     success = false;
                 }
@@ -362,8 +385,11 @@ public class Application extends Controller {
                 if (!EditChecks.validText(tags, InitialChecks.MAX_100)) {
                     flash.put(
                         "tagsError", 
-                        "Please enter a tag."
+                        "Text must contain a letter."
                     );
+                    success = false;
+                } else if (!EditChecks.validItemCount(tags)) {
+                    flash.put("tagsError", listWarning);
                     success = false;
                 }
             }
@@ -372,8 +398,11 @@ public class Application extends Controller {
                 if (!EditChecks.validText(peers, InitialChecks.MAX_100)) {
                     flash.put(
                         "peersError", 
-                        "Please enter a peer."
+                        "Text must contain a letter."
                     );
+                    success = false;
+                } else if (!EditChecks.validItemCount(peers)) {
+                    flash.put("peersError", listWarning);
                     success = false;
                 }
             }
@@ -385,8 +414,11 @@ public class Application extends Controller {
                 ) {
                     flash.put(
                         "otherInspirationsError", 
-                        "Please enter an inspiration."
+                        "Text must contain a letter."
                     );
+                    success = false;
+                } else if (!EditChecks.validItemCount(otherInspirations)) {
+                    flash.put("otherInspirationsError", listWarning);
                     success = false;
                 }
             }
@@ -394,8 +426,8 @@ public class Application extends Controller {
             if (!EditChecks.isEmpty(url)) {
                 if (!EditChecks.validUrl(url)) {
                     flash.put(
-                        "otherInspirationsError", 
-                        "Please enter a url."
+                        "urlError", 
+                        "Not a valid URL."
                     );
                     success = false;
                 }
@@ -438,7 +470,6 @@ public class Application extends Controller {
                 target.refreshSetsAndDescription();
                 target.save();
                 projectEdited(getUrlString(target.projectTitle));
-                // TODO: send edited email
             } else {
                 flash.error("Project is not valid.");
                 doCancelEdit(
@@ -850,11 +881,13 @@ public class Application extends Controller {
             flash.put("uuid", myProject.uuid.toString());
             
             myProjectId = myProject.id.toString();
+            
+            final String randomId = Codec.UUID();
+            final String popularTags = getPopularTagsString(5);
+            render(myProjectId, randomId, popularTags);
         }
         
-        final String randomId = Codec.UUID();
-        final String popularTags = getPopularTagsString(5);
-        render(myProjectId, randomId, popularTags);
+        renderTemplate("Application/error.html");
     }
     
     public static void project(final String name) {
