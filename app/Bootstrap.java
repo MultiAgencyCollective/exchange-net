@@ -18,7 +18,7 @@ public class Bootstrap extends Job {
     
     @Override
     public final void doJob() {   
-        populateProjectDatabase();
+        // populateProjectDatabase();
     }
     
     private static boolean isNameTaken(final String name) {
@@ -32,6 +32,7 @@ public class Bootstrap extends Job {
         return false;
     }
     
+    @SuppressWarnings("unused")
     private static void populateProjectDatabase() {
         final int numberOfRecords = 10; 
         for (int i = 0; i < numberOfRecords; i++) {
