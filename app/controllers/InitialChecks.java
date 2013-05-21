@@ -78,7 +78,7 @@ public abstract class InitialChecks {
             if (!(url instanceof String)) {
                 return false;
             }
-            final String urlString = (String) url;
+            final String urlString = ((String) url).toLowerCase();
             if (urlString.length() == 0) {
                 return true;
             } 
@@ -266,7 +266,6 @@ public abstract class InitialChecks {
             
             setMessage("Please upload a photo.");
             if (!(input instanceof Blob)) {
-                System.out.println("not a blob");
                 return false;
             }
             final Blob myBlob = (Blob) input;
@@ -276,13 +275,15 @@ public abstract class InitialChecks {
             try {
                 mimeType = detectMimeType(blobFile);
                 if (mimeType == null) {
-                    System.out.println("not an image: null");
                     setMessage("Not an image file.");
                     return false;
                 }
                 if (!mimeType.contains("image")) {
-                    System.out.println("not an image: " + mimeType);
                     setMessage("Not an image file.");
+                    return false;
+                }
+                if (mimeType.contains("tiff")) {
+                    setMessage("TIFF or raw files not supported.");
                     return false;
                 }
             } catch (IOException e) {

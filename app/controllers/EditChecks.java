@@ -133,6 +133,9 @@ public abstract class EditChecks {
             if (!mimeType.contains("image")) {
                 return false;
             }
+            if (mimeType.contains("tiff")) {
+                return false;
+            }
         } catch (IOException e) {
             e.printStackTrace();
             return false;
@@ -175,7 +178,7 @@ public abstract class EditChecks {
         if (!(url instanceof String)) {
             return false;
         }
-        final String urlString = (String) url;
+        final String urlString = ((String) url).toLowerCase();
         if (urlString.length() == 0) {
             return true;
         } 

@@ -157,8 +157,10 @@ public final class Project extends Model {
     
     public void initializeUrl() {
         final String prefix = "http://";
-        final String securePrefix = "https://";
+        final String securePrefix = "https://";        
         if (this.url != null && this.url.length() != 0) {
+            this.url = this.url.toLowerCase();
+
            if (
                this.url.indexOf(prefix) != 0 
                && this.url.indexOf(securePrefix) != 0
