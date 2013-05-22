@@ -294,7 +294,9 @@ public final class Project extends Model {
                 if (commaToken == null || commaToken.length() == 0) {
                     System.out.println("ERROR: invalid token");
                 }
-                final ProjectToken newToken = new ProjectToken(commaToken);
+                
+                final ProjectToken newToken = 
+                    new ProjectToken(commaToken.trim());
                 targetSet.add(newToken);
                 tokenCount++;
                 if (tokenCount >= InitialChecks.MAX_LIST_ITEMS) {

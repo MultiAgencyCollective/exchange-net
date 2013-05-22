@@ -20,9 +20,10 @@ public abstract class InitialChecks {
 
     public static final int MAX_50 = 50;
     public static final int MAX_100 = 100;
+    public static final int MAX_255 = 255;
     public static final int MAX_MESSAGE_LENGTH = 500;
     public static final int MAX_DESCRIPTION_LENGTH = 1000;
-    public static final int MAX_LIST_ITEMS = 10;
+    public static final int MAX_LIST_ITEMS = 20;
     
     public static final class ProjectTitleCheck extends Check {
 
@@ -179,7 +180,7 @@ public abstract class InitialChecks {
             final String listString = (String) list;
             if (
                 listString.length() == 0 
-                || listString.length() > MAX_100
+                || listString.length() > MAX_255
             ) {
                 return false;
             }

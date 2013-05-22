@@ -8,34 +8,82 @@
     <div style="font-weight:bold;font-size:16px;width:inherit">
       <a style="color:#000000" href="@{Application.project(_project.projectTitle)}">${_project.projectTitle}</a>
     </div>
-    <div style="color:#888888;font-size:14px;width:inherit">
-      #{list _project.artistSet, as:'artist'}
-        <a style="color:#000000" href="@{Application.artist(artist.text, 0)}">${artist.text}</a> &middot;
-      #{/list}    
+    <div style="font-size:14px;width:inherit">
+      %{
+        int listCount = 0;
+        int charCount = 0;
+        for(artist in _project.artistSet) {
+          listCount++;
+          charCount += artist.text.size();
+          if (listCount > 10 || (charCount > 100 && listCount > 1)) {
+            out.print("<span style='color:#777777'>...</span>");
+            break;
+          }
+      }%
+        <a style="color:#777777" href="@{Application.artist(artist.text, 0)}">${artist.text}</a> &middot;
+      %{
+        }
+      }% 
     </div>
     <br />
     <div style="font-size:12px;width:inherit">
       <span style="font-weight:bold">Tags: </span>
       <span>    
-        #{list _project.tagSet, as:'tag'}
-          <a style="color:#000000" href="@{Application.tag(tag.text, 0)}">${tag.text}</a> &middot;
-        #{/list}
+      %{
+        int listCount1 = 0;
+        int charCount1 = 0;
+        for(tag in _project.tagSet) {
+          listCount1++;
+          charCount1 += tag.text.size();
+          if (listCount1 > 10 || (charCount1 > 100 && listCount1 > 1)) {
+            out.print("...");
+            break;
+          }
+      }%
+        <a style="color:#000000" href="@{Application.tag(tag.text, 0)}">${tag.text}</a> &middot;
+      %{
+        }
+      }% 
       </span>
       <br />
       
       <span style="font-weight:bold">Peers:</span>
       <span>    
-        #{list _project.peerSet, as:'peer'}
-          <a style="color:#000000" href="@{Application.inspiration(peer.text, 0)}">${peer.text}</a> &middot;
-        #{/list}
+      %{
+        int listCount2 = 0;
+        int charCount2 = 0;
+        for(peer in _project.peerSet) {
+          listCount2++;
+          charCount2 += peer.text.size();
+          if (listCount2 > 10 || (charCount2 > 100 && listCount2 > 1)) {
+            out.print("...");
+            break;
+          }
+      }%
+        <a style="color:#000000" href="@{Application.inspiration(peer.text, 0)}">${peer.text}</a> &middot;
+      %{
+        }
+      }% 
       </span>
       <br />
       
       <span style="font-weight:bold">Other Inspirations:</span>
       <span>    
-        #{list _project.otherInspirationSet, as:'otherInspiration'}
-          <a style="color:#000000" href="@{Application.inspiration(otherInspiration.text, 0)}">${otherInspiration.text}</a> &middot;
-        #{/list}
+      %{
+        int listCount3 = 0;
+        int charCount3 = 0;
+        for(otherInspiration in _project.otherInspirationSet) {
+          listCount3++;
+          charCount3 += otherInspiration.text.size();
+          if (listCount3 > 10 || (charCount3 > 100 && listCount3 > 1)) {
+            out.print("...");
+            break;
+          }
+      }%
+        <a style="color:#000000" href="@{Application.inspiration(otherInspiration.text, 0)}">${otherInspiration.text}</a> &middot;
+      %{
+        }
+      }% 
       </span>
       <br />
       

@@ -8,10 +8,22 @@
     <div style="font-weight:bold;font-size:16px;width:inherit">
       <a style="color:#000000" href="@{Application.project(_project.projectTitle)}">${_project.projectTitle}</a>
     </div>
-    <div style="color:#888888;font-size:14px;width:inherit">
-      #{list _project.artistSet, as:'artist'}
-          <a style="color:#000000" href="@{Application.artist(artist.text, 0)}">${artist.text}</a> &middot;
-      #{/list}
+    <div style="font-size:14px;width:inherit">
+      %{
+        int listCount = 0;
+        int charCount = 0;
+        for(artist in _project.artistSet) {
+          listCount++;
+          charCount += artist.text.size();
+          if (listCount > 10 || (charCount > 100 && listCount > 1)) {
+            out.print("<span style='color:#777777'>...</span>");
+            break;
+          }
+      }%
+        <a style="color:#777777" href="@{Application.artist(artist.text, 0)}">${artist.text}</a> &middot;
+      %{
+        }
+      }%
     </div>
     <div sytle="font-size:12px;width:inherit">
       ${_project.briefDescription}

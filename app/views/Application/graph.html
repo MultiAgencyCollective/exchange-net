@@ -23,7 +23,7 @@ _gaq.push(['_trackPageview']);
 <script type="text/javascript">
 
 var selectedButton = "button1";
-var buttonList = [ "button1", "button2", "button3", "button4" ];
+var buttonList = [ "button1", "button2", "button3", "button4", "button5" ];
 
 var hasShrunk = false;
 
@@ -50,11 +50,11 @@ function radioButtonClick(clickedName) {
   for (var i = 0; i < buttonList.length; i++) {
     var buttonName = buttonList[i];
     if (buttonName == clickedName) {
-      document.getElementById(buttonName).style.background = '#666666';
+      document.getElementById(buttonName).style.background = getButtonColor(buttonName);
       document.getElementById(buttonName).style.color = '#dddddd';
     } else {
       document.getElementById(buttonName).style.background = '#dddddd';
-      document.getElementById(buttonName).style.color = '#000000';
+      document.getElementById(buttonName).style.color = getButtonColor(buttonName);
     }
   }
 }
@@ -92,6 +92,106 @@ function setupSigInst() {
   });
 }
 
+function linkByAll() {
+    if (sigInst == null) {
+    setupSigInst();
+    }
+    
+    var projectsJson = JSON.parse(document.getElementById("projectData").innerHTML);
+    var arrayNames = [ "tags", "peers", "otherInspirations", "artists" ];
+
+    while (edgeIndex > 0) {
+    edgeIndex--;
+    sigInst.dropEdge(edgeIndex);
+    }
+    
+    edgeIndex = 0;
+    // add a link between any projects with same tags
+    for (var currentProjectIndex = 0; currentProjectIndex < projectsJson.length; currentProjectIndex++) {
+    var currentProject = projectsJson[currentProjectIndex];
+        
+    for (var otherProjectIndex = currentProjectIndex + 1; otherProjectIndex < projectsJson.length; otherProjectIndex++) {
+        var otherProject = projectsJson[otherProjectIndex];
+        var matchType = null;
+        for (var arrayIndex = 0; arrayIndex < arrayNames.length; arrayIndex++) {
+        var arrayName = arrayNames[arrayIndex];
+        var items = currentProject[arrayName];
+        var otherItems = otherProject[arrayName];
+
+        var foundMatch = false;
+        for (var itemIndex = 0; !foundMatch && itemIndex < items.length; itemIndex++) {
+            var itemLowerCase = items[itemIndex].toLowerCase();
+            for (otherItemIndex = 0; !foundMatch && otherItemIndex < otherItems.length; otherItemIndex++) {
+            if (itemLowerCase == otherItems[otherItemIndex].toLowerCase()) {
+                foundMatch = true;
+                if (matchType == null) {
+                matchType = arrayName;
+                } else {
+                matchType = "multiple";
+                }
+            }
+            }
+        }
+        }
+
+        var edgeColor = getEdgeColor(matchType);   
+            
+        if (matchType != null) {
+        sigInst.addEdge(
+            edgeIndex, 
+            currentProject.projectTitle, 
+            otherProject.projectTitle,
+            { 
+            'color': edgeColor
+            }
+        );
+        
+        edgeIndex++; 
+        }
+    }
+    }
+    
+    sigInst.draw();
+}
+
+function getButtonColor(buttonName) {
+  if (buttonName == "button1") {
+    return GREEN;
+  }
+  if (buttonName == "button2") {
+    return BLUE;
+  }
+  if (buttonName == "button3") {
+    return RED;
+  }
+  if (buttonName == "button4") {
+    return ORANGE;
+  }
+  if (buttonName == "button5") {
+    return BROWN;
+  }
+}
+
+function getEdgeColor(arrayName) {
+  if (arrayName == "tags") {
+    return GREEN;
+  }
+  if (arrayName == "peers") {
+    return BLUE;
+  }
+  if (arrayName == "otherInspirations") {
+    return RED;
+  }
+  if (arrayName == "artists") {
+    return ORANGE;
+  }
+  if (arrayName == "multiple") {
+    return BROWN;
+  }
+  
+  return GRAY;
+}
+
 function linkByArrays(arrayName) {
   if (sigInst == null) {
     setupSigInst();
@@ -116,25 +216,15 @@ function linkByArrays(arrayName) {
       var foundMatch = false;
             
       for (var k = 0; !foundMatch && k < items.length; k++) {
+        var itemLowerCase = items[k].toLowerCase();
         for (m = 0; !foundMatch && m < otherItems.length; m++) {
-          if (items[k] == otherItems[m]) {
+          if (itemLowerCase == otherItems[m].toLowerCase()) {
             foundMatch = true;
           }
         }
       }
         
-      var edgeColor;      
-      var source = sigInst.getNodes(currentProject.projectTitle);
-      var target = sigInst.getNodes(otherProject.projectTitle);
-      if (source.color == LIGHT_GRAY && target.color == LIGHT_GRAY) {
-        edgeColor = GRAY;
-      } else if (source.color == GRAY && target.color == GRAY) {
-        edgeColor = GRAY;
-      } else if (source.color == RED || target.color == RED) {
-        edgeColor = RED;
-      } else if (source.color == GREEN || target.color == GREEN) {
-        edgeColor = GREEN;
-      } 
+      var edgeColor = getEdgeColor(arrayName);;      
         
       if (foundMatch) {
         sigInst.addEdge(
@@ -157,7 +247,10 @@ function linkByArrays(arrayName) {
 var GRAY = '#666';
 var LIGHT_GRAY = '#ccc';
 var RED = '#f00';
-var GREEN = '00aa00';
+var GREEN = '#0a0';
+var BLUE = '#00f';
+var BROWN = '#822';
+var ORANGE = '#f90';
 
 function init() {
   var projectsJson = JSON.parse(document.getElementById("projectData").innerHTML);
@@ -189,8 +282,8 @@ function init() {
   });
 
   
-  linkByArrays("artists");
-  radioButtonClick('button4');
+  linkByAll();
+  radioButtonClick('button5');
    
   sigInst.bind('overnodes',function(event) {
     document.body.style.cursor = "pointer";
@@ -289,6 +382,7 @@ if (document.addEventListener) {
           <td class="buttonCell" id="button2" onmouseout="radioButtonOut('button2')" onmouseover="radioButtonOver('button2')" onclick="linkByArrays('peers');radioButtonClick('button2');">&nbsp;Peers&nbsp;</td>
           <td class="buttonCell" id="button3" onmouseout="radioButtonOut('button3')" onmouseover="radioButtonOver('button3')" onclick="linkByArrays('otherInspirations');radioButtonClick('button3');">&nbsp;Other Inspirations&nbsp;</td>
           <td class="buttonCell" id="button4" onmouseout="radioButtonOut('button4')" onmouseover="radioButtonOver('button4')" onclick="linkByArrays('artists');radioButtonClick('button4');">&nbsp;Artists&nbsp;</td>
+          <td class="buttonCell" id="button5" onmouseout="radioButtonOut('button5')" onmouseover="radioButtonOver('button5')" onclick="linkByAll();radioButtonClick('button5');">&nbsp;All&nbsp;</td>
         </tr>
       </table>
     </div>

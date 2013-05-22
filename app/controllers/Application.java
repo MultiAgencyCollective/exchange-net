@@ -318,7 +318,7 @@ public class Application extends Controller {
             if (!EditChecks.isEmpty(artists)) {
                 if (!EditChecks.validText(
                     artists, 
-                    InitialChecks.MAX_100)
+                    InitialChecks.MAX_255)
                 ) {
                     flash.put(
                         "artistsError", 
@@ -382,7 +382,7 @@ public class Application extends Controller {
             }
             
             if (!EditChecks.isEmpty(tags)) {
-                if (!EditChecks.validText(tags, InitialChecks.MAX_100)) {
+                if (!EditChecks.validText(tags, InitialChecks.MAX_255)) {
                     flash.put(
                         "tagsError", 
                         "Text must contain a letter."
@@ -395,7 +395,7 @@ public class Application extends Controller {
             }
             
             if (!EditChecks.isEmpty(peers)) {
-                if (!EditChecks.validText(peers, InitialChecks.MAX_100)) {
+                if (!EditChecks.validText(peers, InitialChecks.MAX_255)) {
                     flash.put(
                         "peersError", 
                         "Text must contain a letter."
@@ -410,7 +410,7 @@ public class Application extends Controller {
             if (!EditChecks.isEmpty(otherInspirations)) {
                 if (!EditChecks.validText(
                     otherInspirations, 
-                    InitialChecks.MAX_100)
+                    InitialChecks.MAX_255)
                 ) {
                     flash.put(
                         "otherInspirationsError", 
@@ -930,7 +930,7 @@ public class Application extends Controller {
         
         for (Project project: allProjects) {
             project.initializeSets();
-            if (project.tagSet.contains(target)) {
+            if (Util.containsIgnoreCase(project.tagSet, target.text)) {
                 result.add(project);
             }
         }
@@ -951,8 +951,8 @@ public class Application extends Controller {
         for (Project project: allProjects) {
             project.initializeSets();
             if (
-                project.peerSet.contains(target)
-                || project.otherInspirationSet.contains(target)
+                Util.containsIgnoreCase(project.peerSet, target.text)
+                || Util.containsIgnoreCase(project.otherInspirationSet, target.text)
             ) {
                 result.add(project);
             }
@@ -1016,7 +1016,7 @@ public class Application extends Controller {
         for (Project project: allProjects) {
             project.initializeSets();
             for (ProjectToken token: project.artistSet) {
-                if (token.text.equals(artist)) {
+                if (token.text.equalsIgnoreCase(artist)) {
                     result.add(project);
                 }
             }
