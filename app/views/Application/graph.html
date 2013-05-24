@@ -25,49 +25,35 @@ _gaq.push(['_trackPageview']);
 var selectedButton = "button1";
 var buttonList = [ "button1", "button2", "button3", "button4", "button5" ];
 
-var hasShrunk = false;
-
-function shrinkIfNeeded() {
-  if (hasShrunk) {
-    return;
-  }
-    
-  hasShrunk = true;
-  $("#sigma-example-parent").animate(
-    { height: "200px" },
-    {
-      duration: 1000,
-      step: function(myHeight) {
-        sigInst.resize();
-      }
-    }
-  );
-}
-
 function radioButtonClick(clickedName) {
   selectedButton = clickedName;
     
   for (var i = 0; i < buttonList.length; i++) {
     var buttonName = buttonList[i];
     if (buttonName == clickedName) {
+      document.getElementById(buttonName).style.border = "thick solid " + getButtonColor(buttonName);
       document.getElementById(buttonName).style.background = getButtonColor(buttonName);
-      document.getElementById(buttonName).style.color = '#dddddd';
+      document.getElementById(buttonName).style.color = '#ffffff';
     } else {
-      document.getElementById(buttonName).style.background = '#dddddd';
-      document.getElementById(buttonName).style.color = getButtonColor(buttonName);
+      document.getElementById(buttonName).style.background = '#ffffff';
+      document.getElementById(buttonName).style.color = '#000000';
+      
+      document.getElementById(buttonName).style.border = "thick solid #ffffff";
+      document.getElementById(buttonName).style.borderBottom = "thick solid " + getButtonColor(buttonName);
     }
   }
 }
 
 function radioButtonOver(clickedName) {
   if (clickedName != selectedButton) {
-    document.getElementById(clickedName).style.background = '#ffffff';
+    document.getElementById(clickedName).style.border = "thick solid " + getButtonColor(clickedName);
   }
 }
 
 function radioButtonOut(clickedName) {
   if (clickedName != selectedButton) {
-    document.getElementById(clickedName).style.background = '#cccccc';
+    document.getElementById(clickedName).style.border = "thick solid #ffffff";
+    document.getElementById(clickedName).style.borderBottom = "thick solid " + getButtonColor(clickedName);
   }
 }
 
@@ -165,7 +151,7 @@ function getButtonColor(buttonName) {
     return RED;
   }
   if (buttonName == "button4") {
-    return ORANGE;
+    return YELLOW;
   }
   if (buttonName == "button5") {
     return BROWN;
@@ -183,7 +169,7 @@ function getEdgeColor(arrayName) {
     return RED;
   }
   if (arrayName == "artists") {
-    return ORANGE;
+    return YELLOW;
   }
   if (arrayName == "multiple") {
     return BROWN;
@@ -245,12 +231,12 @@ function linkByArrays(arrayName) {
 }
 
 var GRAY = '#666';
-var LIGHT_GRAY = '#ccc';
-var RED = '#f00';
-var GREEN = '#0a0';
-var BLUE = '#00f';
+var RED = '#ee2c2c';
+var BRIGHT_RED = '#f00';
+var GREEN = '#228b22';
+var BLUE = '#009acd';
 var BROWN = '#822';
-var ORANGE = '#f90';
+var YELLOW = '#ffcc11';
 
 function init() {
   var projectsJson = JSON.parse(document.getElementById("projectData").innerHTML);
@@ -267,8 +253,8 @@ function init() {
     sigInst.addNode(
       name, 
       {
-        'x': Math.random() * 40,
-        'y': Math.random() * 5,
+        'x': Math.random() * 30,
+        'y': Math.random() * 30,
         'size': 4,
         'color': GRAY,
       }
@@ -293,18 +279,18 @@ function init() {
       if (nodes.indexOf(e.source) < 0 && nodes.indexOf(e.target) < 0) {
         e.color = GRAY;
       } else {
-        e.color = GREEN; 
+        e.color = BROWN; 
         neighbors[e.source] = 1;
         neighbors[e.target] = 1;
       }
     }).iterNodes(function(n) {
       if (!neighbors[n.id] && nodes.indexOf(n.id) < 0) {
-        if (n.color != RED) {
-          n.color = LIGHT_GRAY;
+        if (n.color != BRIGHT_RED) {
+          n.color = GRAY;
         }
       } else {
-        if (n.color != RED) {
-          n.color = GREEN;
+        if (n.color != BRIGHT_RED) {
+          n.color = BROWN;
         }
       }
     }).draw();
@@ -313,15 +299,14 @@ function init() {
     var clickedNodeId = nodes[0];
     sigInst.iterNodes(function(currentNode) {
       if (currentNode.id == clickedNodeId) {
-        currentNode.color = RED;
+        currentNode.color = BRIGHT_RED;
         currentNode.active = true;
       } else {
-        currentNode.color = LIGHT_GRAY;
+        currentNode.color = GRAY;
         currentNode.active = false;
       }
     }).draw();
   
-    shrinkIfNeeded();
     $('#projectView').load('@{fullProjectInset()}', {'name': clickedNodeId});
   }).draw();
     
@@ -342,41 +327,53 @@ if (document.addEventListener) {
 <style type="text/css">
   .sigma-parent {
     position: relative;
-    border-top: 2px solid #ccc;
-    -moz-border-top: 2px solid #ccc;
-    -webkit-border-top: 2px solid #ccc;
-    border-bottom: 2px solid #ccc;
-    -moz-border-bottom: 2px solid #ccc;
-    -webkit-border-bottom: 2px solid #ccc;
+    border: none;
+    -moz-border: none;
+    -webkit-border: none;
     background: #fff;
     margin-left: 0px;
     padding-left: 0px;
-    height: 400px;
-    width: 100%;
+    height: 550px;
+    width: 610px;
     left: 0px;
     right: 0px;
   }  
 </style>
 
 </head>
-<body style="width:100%; padding-left:0px; margin-left:0px">
+<body style="width:1050px;padding-left:0px;margin:0px;">
   <div id="projectData" style="display:none;">
     ${projectsJson}
   </div>
-<div id="wrap">
-<div id="main">
   <br style="clear:both" />
   
-  <div class="span12 sigma-parent" id="sigma-example-parent">
+  <div id="projectView" style="float:left;height:600px;width:430px;margin-top:23px">
+    <div style="margin-left:20px;margin-top:100px;">
+      <div style="font-size:16px">
+        The Exchange Archive is a <strong>research database for projects about exchange</strong>. 
+        
+        <br /><br />
+        From unconventional dialog to reciprocity systems, the Exchange Archive supports 
+        <strong>research</strong> about contemporary exchange practices. We aim to 
+        <strong>support</strong> artistic research by making 
+        <strong>legible</strong> the people, ideas, and materials that surround exchange-based work today.
+       
+        <br /><br />
+        The Exchange Archive highlights <strong>connections</strong> between works. 
+        
+        <br /><br />
+        You can <a href="@{Application.form()}">add your project</a> or just explore!
+      </div>
+    </div>
   </div>
-    
-  <br />
-  <div style="padding-left:10px;float:left;">
+  <span style="clear:both"></span>
+  
+  <div style="float:right;margin-right:10px;margin-top:5px;">
     <div style="font-weight:bold">
       View Project Connections By:
     </div>
     <div>
-      <table border="1" style="font-size:18px;border-collapse:collapse;">
+      <table border="0" cellspacing="10" style="margin-top:-7px;margin-left:-10px;margin-right:-10px;font-size:18px;width:630px;text-align:center;">
         <tr>
           <td class="buttonCell" id="button1" onmouseout="radioButtonOut('button1')" onmouseover="radioButtonOver('button1')" onclick="linkByArrays('tags');radioButtonClick('button1');">&nbsp;Tags&nbsp;</td>
           <td class="buttonCell" id="button2" onmouseout="radioButtonOut('button2')" onmouseover="radioButtonOver('button2')" onclick="linkByArrays('peers');radioButtonClick('button2');">&nbsp;Peers&nbsp;</td>
@@ -385,33 +382,9 @@ if (document.addEventListener) {
           <td class="buttonCell" id="button5" onmouseout="radioButtonOut('button5')" onmouseover="radioButtonOver('button5')" onclick="linkByAll();radioButtonClick('button5');">&nbsp;All&nbsp;</td>
         </tr>
       </table>
+    </div> 
+
+    <div class="span12 sigma-parent" id="sigma-example-parent">
     </div>
-      
-    <br />
-    <br />
-      
-    <div style="font-weight:bold">
-      Search:
-    </div>
-    #{form @Application.search(), enctype:'multipart/form-data'}
-      <input type="text" name="target" id="target" maxlength="50">
-      <input type="submit" name="search" id="search" value="Search">
-    #{/}
   </div>
-  
-  <div id="projectView" style="float:left;height:600px;width:500px;padding-left:50px;">
-    <span style="font-size:40px;font-weight:bold;">THE EXCHANGE ARCHIVE</span>
-    <br />
-    <span style="font-size:32px;">
-      <strong>Artists</strong> do not create work in a <strong>vacuum</strong>.
-    </span>
-  </div>
-</div>
-</div>
-<div id="footer" style="clear:both;text-align:center">
-  <hr />
-  <a style="color:#000000" href="@{Application.about()}">About</a> 
-  &nbsp;|&nbsp;
-  <a style="color:#000000" href="@{Application.contact()}">Contact</a>
-</div>
 </body>

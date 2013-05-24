@@ -9,11 +9,14 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 import java.util.regex.Pattern;
 
+import models.CloudNode;
 import models.Project;
 import models.ProjectForJson;
 import models.ProjectToken;
@@ -31,6 +34,10 @@ public class Application extends Controller {
     public static final int MAX_PROJECTS_PER_IP_ADDRESS = 1000;
     
     private static final int MAX_TO_RETURN = 10;
+    
+    private static final String ARTIST = "artist";
+    private static final String INSPIRATION = "inspiration";
+    private static final String TAG = "tag";
     
     
     public static void captcha(final String id) {
@@ -127,6 +134,60 @@ public class Application extends Controller {
     public static boolean isMobile() {
         String isMobile = flash.get("isMobile");
         return isMobile != null && isMobile.equals("true");
+    }
+    
+    private static List<CloudNode> getCloudNodes(final String type) {
+        assert type != null && (
+            type.equals(ARTIST)
+            || type.equals(INSPIRATION)
+            || type.equals(TAG)
+        );
+        
+        Map<String, Integer> nameCount = new HashMap<String, Integer>();
+        List<Project> projects = Project.findAll();
+        for (Project project: projects) {
+            project.initializeSets();
+            
+            Set<ProjectToken> source;
+            if (type.equals(ARTIST)) {
+                source = project.artistSet;
+            } else if (type.equals(INSPIRATION)) {
+                source = new HashSet<ProjectToken>();
+                source.addAll(project.peerSet);
+                source.addAll(project.otherInspirationSet);
+            } else if (type.equals(TAG)) {
+                source = project.tagSet;
+            } else {
+                throw new IllegalStateException();
+            }
+            
+            for (ProjectToken token: source) {
+                if (nameCount.containsKey(token.text)) {
+                    nameCount.put(token.text, nameCount.get(token.text) + 1);
+                } else {
+                    nameCount.put(token.text, 1);
+                }
+            }
+        }
+        
+        List<CloudNode> cloudNodes = new ArrayList<CloudNode>();
+        for (Entry<String, Integer> entry: nameCount.entrySet()) {
+            cloudNodes.add(
+                new CloudNode(
+                    entry.getKey(),
+                    entry.getValue(),
+                    getUrlStringOfType(entry.getKey(), type)
+                )
+            );
+        }
+        
+        return cloudNodes;
+    }
+    
+    public static void artistCloud() {
+        com.google.gson.Gson gson2 = new Gson();
+        String cloudNodesJson = gson2.toJson(getCloudNodes(ARTIST));
+        render(cloudNodesJson);
     }
     
     public static void graph() {
@@ -625,6 +686,32 @@ public class Application extends Controller {
                 e.printStackTrace();
             }
         }
+    }
+    
+    private static String getUrlStringOfType(
+        final String text,
+        final String type
+    ) {
+        assert type != null && (
+            type.equals(ARTIST)
+            || type.equals(INSPIRATION)
+            || type.equals(TAG)
+        );
+        
+        String result = "";
+        try {
+            result = new URI(
+                "http", 
+                "www.theexchangearchive.com", 
+                "/application/" + type,
+                type + "=" + text,
+                null
+            ).toASCIIString();
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
+        
+        return result;
     }
     
     private static String getUrlString(final String projectTitle) {

@@ -1,0 +1,61 @@
+#{extends 'main.html' /}
+#{set title:'EXCHANGE ARCHIVE - Cloud' /}
+
+<!DOCTYPE html>
+<!--[if lt IE 7]> <html class="ie6 oldie"> <![endif]-->
+<!--[if IE 7]>    <html class="ie7 oldie"> <![endif]-->
+<!--[if IE 8]>    <html class="ie8 oldie"> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html class="">
+<!--<![endif]-->
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" media="screen" href="@{'/public/stylesheets/newStyle.css'}">
+<link rel="stylesheet" media="screen" href="@{'/public/stylesheets/main.css'}">
+<script src="@{'/public/javascripts/respond.min.js'}" type="text/javascript" ></script>
+        
+<!--[if lt IE 9]>
+<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+
+<link rel="stylesheet" media="screen" href="@{'/public/stylesheets/cloud.css'}">
+<script type="text/javascript" src="http://visapi-gadgets.googlecode.com/svn/trunk/termcloud/tc.js"></script>
+<script type="text/javascript" src="http://www.google.com/jsapi"></script>
+
+<script type="text/javascript">
+  google.load("visualization", "1");
+  google.setOnLoadCallback(draw);
+  
+  function draw() {
+    data = new google.visualization.DataTable();
+    data.addColumn('string', 'Label');
+    data.addColumn('number', 'Value');
+    data.addColumn('string', 'Link');
+    var cloudNodesJson = JSON.parse(document.getElementById("cloudNodeData").innerHTML);
+
+    data.addRows(cloudNodesJson.length);
+    for (var i = 0; i < cloudNodesJson.length; i++) {
+      var cloudNode = cloudNodesJson[i];
+      data.setValue(i, 0, cloudNode.text);
+      data.setValue(i, 1, cloudNode.weight);
+      data.setValue(i, 2, cloudNode.url);
+    }        
+        
+    var outputDiv = document.getElementById('tcdiv');
+    var tc = new TermCloud(outputDiv);
+    tc.draw(data, null);
+  }
+</script>
+</head>
+
+<body>
+<div id="cloudNodeData" style="display:none;">
+  ${cloudNodesJson}
+</div>
+<div id="tcdiv" style="width:600px;height:600px;border:2px solid #ccc;"></div>
+</div>
+</body>
+
+</html>
