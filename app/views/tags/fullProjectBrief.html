@@ -1,7 +1,16 @@
 <div style="clear:both">
   <div>
     <a href="@{Application.project(_project.projectTitle)}">
-      <img src="@{Application.getImage2(_project.id)}" height="250px" />
+      #{if _project.imageBytes}
+        <img src="@{Application.getImage2(_project.id)}" height="250px" />
+      #{/if}
+      #{else}
+        <div style="width:246px;height:246px;border-style:solid;border-color:#000000;border-width:2px;color:#000000;position:relative;">
+          <div style="margin:5px;position:absolute;bottom:5px;">
+            ${_project.projectTitle}
+          </div>
+        </div>
+      #{/else}
     </a>
   </div>
   <div>
